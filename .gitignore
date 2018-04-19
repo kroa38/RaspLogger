@@ -1,4 +1,6 @@
 *.pyc
 credential*.*
+push.sh
+pull.sh
 
 
