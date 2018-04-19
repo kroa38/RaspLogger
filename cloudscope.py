@@ -30,13 +30,13 @@ On the arduino install the packages :
  
   No space left on device: '/usr/lib/python2.7/site-packages/pytz-2015.2.dist-info'
 """
-import time             # lib pour gestion heure
-import httplib2         # lib requette http
+import time  # lib pour gestion heure
+import httplib2  # lib requette http
 import base64
-import gspread          # lib for google spreadsheet
-import json             # lib pour fichiers json
-import os.path          # lib pour test fichiers
-import urllib2          # lib pour requettes internet
+import gspread  # lib for google spreadsheet
+import json  # lib pour fichiers json
+import os.path  # lib pour test fichiers
+import urllib2  # lib pour requettes internet
 
 from apiclient.discovery import build
 from apiclient.http import MediaFileUpload
@@ -154,11 +154,12 @@ def print_files_in_folder(folder_id):
                 param['pageToken'] = page_token
             children = drive_service.children().list(folderId=folder_id, **param).execute()
             if not len(children['items']):
-                log_error("No File in folder %s \r\t\t\t\t\tor bad folder_id in function :  print_files_in_folder() " % folder_id)
+                log_error(
+                    "No File in folder %s \r\t\t\t\t\tor bad folder_id in function :  print_files_in_folder() " % folder_id)
                 break
             for child in children.get('items', []):
                 print child['id']
-            #        file = service.files().get(fileId=child['id']).execute()
+            # file = service.files().get(fileId=child['id']).execute()
             #        print 'Title: %s' % file['title']
             page_token = children.get('nextPageToken')
             if not page_token:
@@ -246,7 +247,7 @@ def check_internet():
     :rtype : int (1 = true 0 = false)
     """
     try:
-        os.system("wget -q --delete-after www.google.fr")         # pour debloquer websense (quiet and delete after download.
+        os.system("wget -q --delete-after www.google.fr")  # pour debloquer websense (quiet and delete after download.
         _ = urllib2.urlopen('http://www.google.fr/', timeout=4)
         log_event("Internet is UP")
         return "1"
@@ -263,7 +264,7 @@ def get_ip_adress():
     """
     wlan0_ip = str(os.popen("ifconfig wlan0 | grep 'inet' | cut -d: -f2 | awk '{ print $2}'").read()).strip()
     ip_string = "IP  = " + wlan0_ip
-    #log_event(ip_string)
+    # log_event(ip_string)
     return ip_string
 
 
@@ -276,22 +277,23 @@ def email_ip_addr():
 
     gmailsendmessage(get_ip_adress())
 
+
 def tweet_ip_addr():
-	"""
-	"""
-	currentpathdir = os.path.dirname(os.path.realpath(__file__))
-	jsonfilename = os.path.join(currentpathdir, "credential_twitter.json")
+    """
+    """
+    currentpathdir = os.path.dirname(os.path.realpath(__file__))
+    jsonfilename = os.path.join(currentpathdir, "credential_twitter.json")
 
-	data_tweet = get_json_data_from_file(jsonfilename)
+    data_tweet = get_json_data_from_file(jsonfilename)
 
-	token = data_tweet['token']
-	token_secret = data_tweet['token_secret']
-	consumer_key = data_tweet['consumer_key']
-	consumer_secret = data_tweet['consumer_secret']
+    token = data_tweet['token']
+    token_secret = data_tweet['token_secret']
+    consumer_key = data_tweet['consumer_key']
+    consumer_secret = data_tweet['consumer_secret']
 
-	t= Twitter(auth=OAuth(token, token_secret, consumer_key, consumer_secret))
-	message = get_ip_adress()
-	t.statuses.update(status=message)
+    t = Twitter(auth=OAuth(token, token_secret, consumer_key, consumer_secret))
+    message = get_ip_adress()
+    t.statuses.update(status=message)
 
 
 def log_error(error_message):
