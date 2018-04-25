@@ -30,15 +30,15 @@ LENGHT_HCHC = 14  # nb de caracteres a retenir
 LENGHT_HCHP = 14  # nb de caracteres
 IMAX = 7
 LENGHT_IMAX = 8
-
+checksum = True
 
 #tmp = ser.read(122)
 #print (tmp)
 #ser.close()
 #exit()
 
+while True :
 
-while True:
         time.sleep(2)
         out = ''
         tmp = ''
@@ -64,11 +64,10 @@ while True:
                         sum = (sum + ord(words[HCHP][i])) & 0x3F
                 sum = (sum + 0x20) % 256
                 if chr(sum) != words[HCHP][LENGHT_HCHP+1]:
-                        print '**** Bad checksum ****'
+			checksum = FALSE
                 else:
                         value = int(words[HCHP].split()[1])
                         print value
-                print '--------------------'
 
                 sum = 0
 
@@ -77,11 +76,10 @@ while True:
                         sum = (sum + ord(words[HCHC][i])) & 0x3F
                 sum = (sum + 0x20) % 256
                 if chr(sum) != words[HCHC][LENGHT_HCHC+1]:
-                        print '**** Bad checksum ****'
+                        checksum = False
                 else:
                         value = int(words[HCHC].split()[1])
                         print value
-                print '--------------------'
 
                 sum = 0
                 print words[IMAX]
@@ -89,12 +87,13 @@ while True:
                         sum = (sum + ord(words[IMAX][i])) & 0x3F
                 sum = (sum + 0x20) % 256
                 if chr(sum) != words[IMAX][LENGHT_IMAX+1]:
-                        print '**** Bad checksum ****'
+                        checksum = False
                 else:
                         value = int(words[IMAX].split()[1])
                         print value
-                print '--------------------'
 
+                if checksum == True:
+                        break;
 
 
 
