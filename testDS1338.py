@@ -46,7 +46,5 @@ while True:
 
     print ""
     print "Raspberry Pi=\t" + time.strftime("%Y-%m-%d %H:%M:%S")
-
     print "rtc=\t\t%s" % rtc.read_datetime()
-    print "Delta time" + str(deltatime)
     time.sleep(10.0)
