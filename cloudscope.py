@@ -278,6 +278,23 @@ def email_ip_addr():
     gmailsendmessage(get_ip_adress())
 
 
+def tweet_message(msg):
+    """
+    """
+    currentpathdir = os.path.dirname(os.path.realpath(__file__))
+    jsonfilename = os.path.join(currentpathdir, "credential_twitter.json")
+
+    data_tweet = get_json_data_from_file(jsonfilename)
+
+    token = data_tweet['token']
+    token_secret = data_tweet['token_secret']
+    consumer_key = data_tweet['consumer_key']
+    consumer_secret = data_tweet['consumer_secret']
+
+    t = Twitter(auth=OAuth(token, token_secret, consumer_key, consumer_secret))
+    t.statuses.update(status=msg)
+
+
 def tweet_ip_addr():
     """
     """

@@ -2,7 +2,7 @@
 #
 
 import DS1338
-from cloudscope import check_internet, log_event
+from cloudscope import check_internet, log_event, tweet_message
 
 # Main Program
 
@@ -12,5 +12,5 @@ if check_internet() == "1":
     rtc.write_now()
     rtc.write_ctrl()
     log_event("rtc updated")
-
+    tweet_message("rtc updated")
 
