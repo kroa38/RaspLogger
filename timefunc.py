@@ -10,6 +10,13 @@ class TimeFunc:
 
     def __init__(self):
         pass
+    @staticmethod
+    def currenttime_to_iso8601():
+        """
+        convert current time to iso 8601 format
+        """
+        isotime = datetime.datetime.now().isoformat()
+        return isotime
 
     @staticmethod
     def epoch_to_iso8601(epochtime):
@@ -20,7 +27,6 @@ class TimeFunc:
         Out : String
         """
         return datetime.fromtimestamp(epochtime).isoformat()
-
     @staticmethod
     def iso8601_to_epoch(datestring):
         """

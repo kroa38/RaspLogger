@@ -33,7 +33,7 @@
 # SOFTWARE.
 
 from datetime import datetime
-
+#from timefunc import TimeFunc
 import smbus
 
 
@@ -130,6 +130,18 @@ class DS1338():
                 self._read_day(), self._read_hours(), self._read_minutes(),
                 self._read_seconds())
 
+    def timezone(self):
+        """ return offset timezone
+        """ 
+        if ( (self._read_month() > 3) and (self._read_month() < 10) ):
+           tz = 2
+        elif ( (self._read_month() == 3)  and (self._read_date() >=25) ):
+           tz = 2
+        elif ( (self._read_month() == 10)  and (self._read_date() <=28) ):
+           tz = 2
+        else:
+           tz = 1
+        return tz
 
     def read_str(self):
         """Return a string such as 'YY-DD-MMTHH-MM-SS'.
@@ -144,7 +156,14 @@ class DS1338():
         """
         return datetime((century - 1) * 100 + self._read_year(),
                 self._read_month(), self._read_date(), self._read_hours(),
+                self._read_minutes(), self._read_seconds(), 0, tzinfo=tzinfo).isoformat()
+
+    def read_epoch(self,century=21,tzinfo=None):
+        cdt = datetime((century-1)*100 + self._read_year(),
+                self._read_month(), self._read_date(), self._read_hours() - self.timezone(),
                 self._read_minutes(), self._read_seconds(), 0, tzinfo=tzinfo)
+
+        return(cdt -  datetime(1970,1,1)).total_seconds()
 
 
     def write_all(self, seconds=None, minutes=None, hours=None, day=None,

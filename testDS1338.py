@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+1524741260.0#!/usr/bin/env python
 #
 # Test SDL_DS1307
 # John C. Shovic, SwitchDoc Labs
@@ -18,9 +18,8 @@
 import sys
 import time
 import datetime
-
 import DS1338
-
+from timefunc import TimeFunc
 # Main Program
 
 print ""
@@ -46,5 +45,9 @@ while True:
 
     print ""
     print "Raspberry Pi=\t" + time.strftime("%Y-%m-%d %H:%M:%S")
-    print "rtc=\t\t%s" % rtc.read_datetime()
+    print "rtc iso =\t\t%s" % rtc.read_datetime()
+    print "rtc epoch=\t\t" + str(rtc.read_epoch())
+    rtcepoch = rtc.read_epoch()
+    print "rtc iso from epoch \t" + TimeFunc.epoch_to_iso8601(rtcepoch)
+    print " timezone \t%i"  % rtc.timezone()
     time.sleep(10.0)
