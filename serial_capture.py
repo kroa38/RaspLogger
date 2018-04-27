@@ -9,7 +9,11 @@ import serial       # install pyserial package
 # it extract the value of HCHC and HCHP and take care to the CRC.
 # take car about the port ttyAM0 or ttyS0
 
-def Capture_Linky():
+
+def capture_linky():
+    """
+    :return: dictionnary
+    """
 
     ser = serial.Serial(
         port='/dev/ttyS0',
@@ -30,14 +34,13 @@ def Capture_Linky():
     LENGHT_HCHP = 14  # nb de caracteres
     IMAX = 7
     LENGHT_IMAX = 8
-    checksum = True
 
-    Linky = {}
-    Linky["HP"] = 0
-    Linky["HC"] = 0
-    Linky["IMAX"] = 0
+    linky = {}
+    linky["HP"] = 0
+    linky["HC"] = 0
+    linky["IMAX"] = 0
 
-    while True :
+    for i in range(0,10) :    # try 10 times
 
             time.sleep(2)
             out = ''
@@ -59,36 +62,36 @@ def Capture_Linky():
 
             if len(words) == nb_line:
 
-                sum = 0
+                checksum = 0
                 for i in range(LENGHT_HCHP):
-                    sum = (sum + ord(words[HCHP][i])) & 0x3F
-                sum = (sum + 0x20) % 256
-                if chr(sum) != words[HCHP][LENGHT_HCHP+1]:
-                   checksum = FALSE
-                else:
-                   Linky["HP"] = int(words[HCHP].split()[1])
-
-                sum = 0
-                for i in range(LENGHT_HCHC):
-                   sum = (sum + ord(words[HCHC][i])) & 0x3F
-                sum = (sum + 0x20) % 256
-                if chr(sum) != words[HCHC][LENGHT_HCHC+1]:
-                   checksum = False
-                else:
-                   Linky["HC"] = int(words[HCHC].split()[1])
-
-                sum = 0
-                for i in range(LENGHT_IMAX):
-                    sum = (sum + ord(words[IMAX][i])) & 0x3F
-                sum = (sum + 0x20) % 256
-                if chr(sum) != words[IMAX][LENGHT_IMAX+1]:
+                    checksum = (checksum + ord(words[HCHP][i])) & 0x3F
+                checksum = (checksum + 0x20) % 256
+                if chr(checksum) != words[HCHP][LENGHT_HCHP+1]:
                     checksum = False
                 else:
-                    Linky["IMAX"] = int(words[IMAX].split()[1])
+                    linky["HP"] = int(words[HCHP].split()[1])
 
-                if checksum == True:
-                    break;
-    return Linky
+                checksum = 0
+                for i in range(LENGHT_HCHC):
+                    checksum = (checksum + ord(words[HCHC][i])) & 0x3F
+                checksum = (checksum + 0x20) % 256
+                if chr(checksum) != words[HCHC][LENGHT_HCHC+1]:
+                    checksum = False
+                else:
+                    linky["HC"] = int(words[HCHC].split()[1])
+
+                checksum = 0
+                for i in range(LENGHT_IMAX):
+                    checksum = (checksum + ord(words[IMAX][i])) & 0x3F
+                checksum = (checksum + 0x20) % 256
+                if chr(checksum) != words[IMAX][LENGHT_IMAX+1]:
+                    checksum = False
+                else:
+                    linky["IMAX"] = int(words[IMAX].split()[1])
+
+                if checksum :
+                    break
+    return linky
 
 
 
