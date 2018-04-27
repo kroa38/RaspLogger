@@ -29,15 +29,24 @@ def capture_linky():
 
     nb_line = 11      # la trame historique contient 11 lignes de champs
     HCHC = 3          # HCHC est a la ligne 3
-    HCHP = 4          # HPHC est a la ligne 4
     LENGHT_HCHC = 14  # nb de caracteres a retenir
+    HCHP = 4          # HPHC est a la ligne 4
     LENGHT_HCHP = 14  # nb de caracteres
+    PTEC = 5
+    LENGHT_PTEC = 9
+    IINST = 6
+    LENGHT_IINST = 9
     IMAX = 7
     LENGHT_IMAX = 8
+    PAPP = 8
+    LENGHT_PAPP = 10
 
     linky = {}
     linky["HP"] = 0
     linky["HC"] = 0
+    linky["PTEC"] = 0
+    linky["IINST"] = 0
+    linky["PAPP"] = 0
     linky["IMAX"] = 0
 
     for i in range(0,10) :    # try 10 times
@@ -81,6 +90,24 @@ def capture_linky():
                     linky["HC"] = int(words[HCHC].split()[1])
 
                 checksum = 0
+                for i in range(LENGHT_PTEC):
+                    checksum = (checksum + ord(words[PTEC][i])) & 0x3F
+                checksum = (checksum + 0x20) % 256
+                if chr(checksum) != words[PTEC][LENGHT_PTEC+1]:
+                    checksum = False
+                else:
+                    linky["PTEC"] = int(words[PTEC].split()[1])
+
+                checksum = 0
+                for i in range(LENGHT_IINST):
+                    checksum = (checksum + ord(words[IINST][i])) & 0x3F
+                checksum = (checksum + 0x20) % 256
+                if chr(checksum) != words[IINST][LENGHT_IINST+1]:
+                    checksum = False
+                else:
+                    linky["IINST"] = int(words[IINST].split()[1])
+
+                checksum = 0
                 for i in range(LENGHT_IMAX):
                     checksum = (checksum + ord(words[IMAX][i])) & 0x3F
                 checksum = (checksum + 0x20) % 256
@@ -88,6 +115,16 @@ def capture_linky():
                     checksum = False
                 else:
                     linky["IMAX"] = int(words[IMAX].split()[1])
+
+                checksum = 0
+                for i in range(LENGHT_PAPP):
+                    checksum = (checksum + ord(words[PAPP][i])) & 0x3F
+                checksum = (checksum + 0x20) % 256
+                if chr(checksum) != words[IINST][LENGHT_PAPP+1]:
+                    checksum = False
+                else:
+                    linky["PAPP"] = int(words[PAPP].split()[1])
+
 
                 if checksum :
                     break
