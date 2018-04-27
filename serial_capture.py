@@ -32,10 +32,10 @@ IMAX = 7
 LENGHT_IMAX = 8
 checksum = True
 
-#tmp = ser.read(122)
-#print (tmp)
-#ser.close()
-#exit()
+dico = {}
+dico["HP"] = 0
+dico["HC"] = 0
+dico["IMAX"] = 0
 
 while True :
 
@@ -55,10 +55,8 @@ while True :
                 else:
                       break
         words = out.split(chr(10))
-        #print words
-        #print len(words)
+
         if len(words) == nb_line:
-                print words[HCHP]
                 sum = 0
                 for i in range(LENGHT_HCHP):
                         sum = (sum + ord(words[HCHP][i])) & 0x3F
@@ -66,33 +64,28 @@ while True :
                 if chr(sum) != words[HCHP][LENGHT_HCHP+1]:
 			checksum = FALSE
                 else:
-                        value = int(words[HCHP].split()[1])
-                        print value
+                        dico["HP"] = int(words[HCHP].split()[1])
 
                 sum = 0
-
-                print words[HCHC]
                 for i in range(LENGHT_HCHC):
                         sum = (sum + ord(words[HCHC][i])) & 0x3F
                 sum = (sum + 0x20) % 256
                 if chr(sum) != words[HCHC][LENGHT_HCHC+1]:
                         checksum = False
                 else:
-                        value = int(words[HCHC].split()[1])
-                        print value
+                        dico["HC"] = int(words[HCHC].split()[1])
 
                 sum = 0
-                print words[IMAX]
                 for i in range(LENGHT_IMAX):
                         sum = (sum + ord(words[IMAX][i])) & 0x3F
                 sum = (sum + 0x20) % 256
                 if chr(sum) != words[IMAX][LENGHT_IMAX+1]:
                         checksum = False
                 else:
-                        value = int(words[IMAX].split()[1])
-                        print value
+                        dico["IMAX"] = int(words[IMAX].split()[1])
 
                 if checksum == True:
+                        print dico
                         break;
 
 
