@@ -12,7 +12,7 @@ import serial       # install pyserial package
 
 def capture_linky():
     """
-    :return: dictionnary
+    :return: dictionnary {'IINST': 410, 'HP': 213059463, 'IMAX': 90, 'HC': 123512034, 'PTEC': 'HC..', 'PAPP': 20165}
     """
 
     ser = serial.Serial(
@@ -23,8 +23,7 @@ def capture_linky():
         bytesize=serial.SEVENBITS
     )
 
-    if(ser.is_open):
-        ser.close()
+    if not (ser.is_open):
         ser.open()
 
     nb_line = 11      # la trame historique contient 11 lignes de champs
@@ -44,12 +43,12 @@ def capture_linky():
     linky = {}
     linky["HP"] = 0
     linky["HC"] = 0
-    linky["PTEC"] = 0
+    linky["PTEC"] = ''
     linky["IINST"] = 0
     linky["PAPP"] = 0
     linky["IMAX"] = 0
 
-    for i in range(0,10) :    # try 10 times
+    for count in range(0,10) :    # try 10 times
 
             time.sleep(2)
             out = ''
@@ -57,13 +56,13 @@ def capture_linky():
 
             while ser.inWaiting() > 0:
                     tmp = ser.read(1)
-                    if tmp == chr(2):
+                    if tmp == chr(2): # wait for STX
                         break
-            tmp = ser.read()            # avoid chr(2)
+            tmp = ser.read()
 
             while ser.inWaiting() > 0:
                     tmp = ser.read(1)
-                    if tmp != chr(3):
+                    if tmp != chr(3): # ETX found
                         out += tmp
                     else:
                         break
@@ -96,7 +95,7 @@ def capture_linky():
                 if chr(checksum) != words[PTEC][LENGHT_PTEC+1]:
                     checksum = False
                 else:
-                    linky["PTEC"] = int(words[PTEC].split()[1])
+                    linky["PTEC"] = (words[PTEC].split()[1])
 
                 checksum = 0
                 for i in range(LENGHT_IINST):
@@ -120,14 +119,15 @@ def capture_linky():
                 for i in range(LENGHT_PAPP):
                     checksum = (checksum + ord(words[PAPP][i])) & 0x3F
                 checksum = (checksum + 0x20) % 256
-                if chr(checksum) != words[IINST][LENGHT_PAPP+1]:
+                if chr(checksum) != words[PAPP][LENGHT_PAPP+1]:
                     checksum = False
                 else:
                     linky["PAPP"] = int(words[PAPP].split()[1])
 
-
                 if checksum :
                     break
+
+    ser.close()
     return linky
 
 
