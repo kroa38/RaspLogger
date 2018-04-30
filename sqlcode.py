@@ -81,9 +81,8 @@ class SqlBase:
             nhc = dataliste[1]
             nmode = dataliste[2]
             tin = round(dataliste[3], 1)
-            ntimestamp = dataliste[4]
             tout = 99.9
-            nepoch = TimeFunc.iso8601_to_epoch(ntimestamp)
+            nepoch = TimeFunc.iso8601_to_epoch(dataliste[4])
             ndayna = TimeFunc.epoch_to_weekday_name(nepoch)
             nwdaynu = TimeFunc.epoch_to_weekday_number(nepoch)
             nhour = TimeFunc.epoch_to_hourminute(nepoch)
