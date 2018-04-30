@@ -20,7 +20,8 @@ def capture_linky():
         baudrate=1200,
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE,
-        bytesize=serial.SEVENBITS
+        bytesize=serial.SEVENBITS,
+        timeout=1
     )
 
     if not (ser.is_open):
@@ -48,84 +49,89 @@ def capture_linky():
     linky["PAPP"] = 0
     linky["IMAX"] = 0
 
-    for count in range(0,10) :    # try 10 times
+    tmp = ser.read(10)
 
-            time.sleep(2)
-            out = ''
-            tmp = ''
 
-            while ser.inWaiting() > 0:
-                    tmp = ser.read(1)
-                    if tmp == chr(2): # wait for STX
-                        break
-            tmp = ser.read()
+    if (len(tmp) == 10):
 
-            while ser.inWaiting() > 0:
-                    tmp = ser.read(1)
-                    if tmp != chr(3): # ETX found
-                        out += tmp
+        for count in range(0,10) :    # try 10 times
+
+                time.sleep(2)
+                out = ''
+                tmp = ''
+
+                for loop in range(0,220)
+                        tmp = ser.read(1)
+                        if tmp == chr(2): # wait for STX
+                            break
+                tmp = ser.read()
+
+                for loop in range(0, 220)
+                        tmp = ser.read(1)
+                        if tmp != chr(3): # ETX found
+                            out += tmp
+                        else:
+                            break
+                words = out.split(chr(10))
+
+                if len(words) == nb_line:
+
+                    checksum = 0
+                    for i in range(LENGHT_HCHP):
+                        checksum = (checksum + ord(words[HCHP][i])) & 0x3F
+                    checksum = (checksum + 0x20) % 256
+                    if chr(checksum) != words[HCHP][LENGHT_HCHP+1]:
+                        checksum = False
                     else:
+                        linky["HP"] = int(words[HCHP].split()[1])
+
+                    checksum = 0
+                    for i in range(LENGHT_HCHC):
+                        checksum = (checksum + ord(words[HCHC][i])) & 0x3F
+                    checksum = (checksum + 0x20) % 256
+                    if chr(checksum) != words[HCHC][LENGHT_HCHC+1]:
+                        checksum = False
+                    else:
+                        linky["HC"] = int(words[HCHC].split()[1])
+
+                    checksum = 0
+                    for i in range(LENGHT_PTEC):
+                        checksum = (checksum + ord(words[PTEC][i])) & 0x3F
+                    checksum = (checksum + 0x20) % 256
+                    if chr(checksum) != words[PTEC][LENGHT_PTEC+1]:
+                        checksum = False
+                    else:
+                        linky["PTEC"] = (words[PTEC].split()[1])
+
+                    checksum = 0
+                    for i in range(LENGHT_IINST):
+                        checksum = (checksum + ord(words[IINST][i])) & 0x3F
+                    checksum = (checksum + 0x20) % 256
+                    if chr(checksum) != words[IINST][LENGHT_IINST+1]:
+                        checksum = False
+                    else:
+                        linky["IINST"] = int(words[IINST].split()[1])
+
+                    checksum = 0
+                    for i in range(LENGHT_IMAX):
+                        checksum = (checksum + ord(words[IMAX][i])) & 0x3F
+                    checksum = (checksum + 0x20) % 256
+                    if chr(checksum) != words[IMAX][LENGHT_IMAX+1]:
+                        checksum = False
+                    else:
+                        linky["IMAX"] = int(words[IMAX].split()[1])
+
+                    checksum = 0
+                    for i in range(LENGHT_PAPP):
+                        checksum = (checksum + ord(words[PAPP][i])) & 0x3F
+                    checksum = (checksum + 0x20) % 256
+                    if chr(checksum) != words[PAPP][LENGHT_PAPP+1]:
+                        checksum = False
+                    else:
+                        linky["PAPP"] = int(words[PAPP].split()[1])
+
+                    if checksum :
                         break
-            words = out.split(chr(10))
-
-            if len(words) == nb_line:
-
-                checksum = 0
-                for i in range(LENGHT_HCHP):
-                    checksum = (checksum + ord(words[HCHP][i])) & 0x3F
-                checksum = (checksum + 0x20) % 256
-                if chr(checksum) != words[HCHP][LENGHT_HCHP+1]:
-                    checksum = False
-                else:
-                    linky["HP"] = int(words[HCHP].split()[1])
-
-                checksum = 0
-                for i in range(LENGHT_HCHC):
-                    checksum = (checksum + ord(words[HCHC][i])) & 0x3F
-                checksum = (checksum + 0x20) % 256
-                if chr(checksum) != words[HCHC][LENGHT_HCHC+1]:
-                    checksum = False
-                else:
-                    linky["HC"] = int(words[HCHC].split()[1])
-
-                checksum = 0
-                for i in range(LENGHT_PTEC):
-                    checksum = (checksum + ord(words[PTEC][i])) & 0x3F
-                checksum = (checksum + 0x20) % 256
-                if chr(checksum) != words[PTEC][LENGHT_PTEC+1]:
-                    checksum = False
-                else:
-                    linky["PTEC"] = (words[PTEC].split()[1])
-
-                checksum = 0
-                for i in range(LENGHT_IINST):
-                    checksum = (checksum + ord(words[IINST][i])) & 0x3F
-                checksum = (checksum + 0x20) % 256
-                if chr(checksum) != words[IINST][LENGHT_IINST+1]:
-                    checksum = False
-                else:
-                    linky["IINST"] = int(words[IINST].split()[1])
-
-                checksum = 0
-                for i in range(LENGHT_IMAX):
-                    checksum = (checksum + ord(words[IMAX][i])) & 0x3F
-                checksum = (checksum + 0x20) % 256
-                if chr(checksum) != words[IMAX][LENGHT_IMAX+1]:
-                    checksum = False
-                else:
-                    linky["IMAX"] = int(words[IMAX].split()[1])
-
-                checksum = 0
-                for i in range(LENGHT_PAPP):
-                    checksum = (checksum + ord(words[PAPP][i])) & 0x3F
-                checksum = (checksum + 0x20) % 256
-                if chr(checksum) != words[PAPP][LENGHT_PAPP+1]:
-                    checksum = False
-                else:
-                    linky["PAPP"] = int(words[PAPP].split()[1])
-
-                if checksum :
-                    break
 
     ser.close()
     return linky
