@@ -100,7 +100,7 @@ def capture_linky():
                     if chr(checksum) != words[PTEC][LENGHT_PTEC+1]:
                         checksum = False
                     else:
-                        linky["PTEC"] = (words[PTEC].split()[1])[0:1]
+                        linky["PTEC"] = (words[PTEC].split()[1])[0:2]
 
                     checksum = 0
                     for i in range(LENGHT_IINST):
