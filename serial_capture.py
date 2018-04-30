@@ -51,8 +51,7 @@ def capture_linky():
 
     tmp = ser.read(10)
 
-
-    if (len(tmp) == 10):
+    if len(tmp) == 10:
 
         for count in range(0,10) :    # try 10 times
 
@@ -60,13 +59,13 @@ def capture_linky():
                 out = ''
                 tmp = ''
 
-                for loop in range(0,220)
+                for loop in range(0,220):
                         tmp = ser.read(1)
                         if tmp == chr(2): # wait for STX
                             break
                 tmp = ser.read()
 
-                for loop in range(0, 220)
+                for loop in range(0, 220):
                         tmp = ser.read(1)
                         if tmp != chr(3): # ETX found
                             out += tmp
