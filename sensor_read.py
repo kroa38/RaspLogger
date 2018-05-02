@@ -69,21 +69,18 @@ while True:
 
     try:
 
-        print adr, " Trying to connect. You might need to press the side button ..."
         pexpect.spawn('sudo hciconfig hci0 down')
         time.sleep(1)
         pexpect.spawn('sudo hciconfig hci0 up')
         time.sleep(1)
-        pexpect.spawn('hcitool lecc ' + adr)
-        tool = pexpect.spawn('gatttool -b ' + adr + ' --interactive')
-        tool.expect('\[LE\]>')
-        tool.sendline('connect')
 
-        if (tool.expect('Connection successful.*\[LE\]>')):
-            print "connected !"
-        else:
-            print "not connected !"
-            break
+        tool = pexpect.spawn('gatttool -b ' + adr + ' --interactive')
+        tool.expect('\[LE\]>', timeout=600)
+        print "Preparing to connect. You might need to press the side button..."
+        tool.sendline('connect')
+        # test for success of connect
+        tool.expect('Connection successful.*\[LE\]>')
+        print "connected !"
 
         print adr, " Enabling sensors ..."
 
