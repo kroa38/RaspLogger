@@ -8,38 +8,21 @@ from datetime import datetime
 
 adr = "78:C5:E5:6E:EA:0F"
 
-logdir = "/tmp/pihome"
-
-try:
-    os.mkdir(logdir)
-except:
-    pass
 
 cnt = 0
-it = 0
-at = 0
 ht = 0
 pt = 0
 hu = 0
 pr = 0
 lt = 0
-value_CO2 = 0
 exc = 0
 act = 0
 post = ""
 stamp = ""
 handle = ""
 
-ZERO_POINT_VOLTAGE = 0.324  # define the output of the sensor in volts when the concentration of
-REACTION_VOLTAGE = 0.020  # define the voltage drop of the sensor when moving the sensor from air
 
-DC_GAIN = 8.5
-a = 2.602
-b = ZERO_POINT_VOLTAGE
-c = REACTION_VOLTAGE / (2.602 - 3)
-
-
-def calcTmp(ambT, objT):
+def calcTmp(objT,ambT):
 
     m_tmpAmb = ambT/128.0
     Vobj2 = objT * 0.00000015625
@@ -112,15 +95,8 @@ while True:
             v = tool.after.split()
             rawObjT = long(float.fromhex(v[2] + v[1]))
             rawAmbT = long(float.fromhex(v[4] + v[3]))
-            (at, it) = calcTmp(rawAmbT, rawObjT)
-
-            cnt = cnt + 1
-
-            stamp = datetime.now().ctime()
-            act = 0
-
+            (at, it) = calcTmp(rawObjT,rawAmbT)
             log_values()
-
             time.sleep(3)
 
     except KeyboardInterrupt:
@@ -133,8 +109,6 @@ while True:
             pexpect.run('sudo hcitool ledc ' + handle)
         tool.sendline('quit')
         tool.close(force=True)
-        exc = exc + 1
-        act = 1
         log_values()
 
 
