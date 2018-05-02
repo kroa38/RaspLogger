@@ -8,20 +8,6 @@ from datetime import datetime
 
 adr = "78:C5:E5:6E:EA:0F"
 
-
-cnt = 0
-ht = 0
-pt = 0
-hu = 0
-pr = 0
-lt = 0
-exc = 0
-act = 0
-post = ""
-stamp = ""
-handle = ""
-
-
 def calcTmp(objT,ambT):
 
     m_tmpAmb = ambT/128.0
