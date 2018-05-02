@@ -62,8 +62,8 @@ def calcLight(rawL):
 
 def log_values():
 
-    print adr, " IRTMP %.1f" % it
-
+    print adr, " Obj TMP %.1f" % it
+    print adr, " Amb TMP %.1f" % at
 
 while True:
 
