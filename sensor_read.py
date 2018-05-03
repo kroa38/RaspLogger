@@ -7,12 +7,15 @@ import pexpect
 from datetime import datetime
 
 adr = "78:C5:E5:6E:EA:0F"
+handle = ""
 
 def calcTmp(objT,ambT):
 
     m_tmpAmb = ambT/128.0
+
     Vobj2 = objT * 0.00000015625
     Tdie2 = m_tmpAmb + 273.15
+
     S0 = 6.4E-14            # Calibration factor
     a1 = 1.75E-3
     a2 = -1.678E-5
@@ -79,6 +82,7 @@ while True:
             tool.sendline('char-read-hnd 0x25')
             tool.expect('descriptor: .*? \r')
             v = tool.after.split()
+            print v
             rawObjT = long(float.fromhex(v[2] + v[1]))
             rawAmbT = long(float.fromhex(v[4] + v[3]))
             (at, it) = calcTmp(rawObjT,rawAmbT)
