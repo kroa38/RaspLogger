@@ -11,13 +11,24 @@ it=0
 adr = "78:C5:E5:6E:EA:0F"
 handle = ""
 
-tosigned = lambda n: float(n-0x10000) if n>0x7fff else float(n)
-tosignedbyte = lambda n: float(n-0x100) if n>0x7f else float(n)
+#tosigned = lambda n: float(n-0x10000) if n>0x7fff else float(n)
+#tosignedbyte = lambda n: float(n-0x100) if n>0x7f else float(n)
+
+
+def tosigned(n):
+
+    if n > 0x7fff:
+        return float(n-0x10000)
+    else:
+        return float(n)
+
 
 def calcTmp(objT,ambT):
 
     objT = tosigned(objT)
     ambT = tosigned(ambT)
+
+    print objT,ambT
 
     m_tmpAmb = ambT/128.0
 
