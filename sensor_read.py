@@ -84,8 +84,9 @@ while True:
             v = tool.after.split()
             rawObjT = long(float.fromhex(v[2] + v[1]))
             rawAmbT = long(float.fromhex(v[4] + v[3]))
+            print (v[2] << 8 + v[1])
+            print (v[4] << 8 + v[3])
             (at, it) = calcTmp(rawObjT,rawAmbT)
-            log_values()
             time.sleep(3)
 
     except KeyboardInterrupt:
