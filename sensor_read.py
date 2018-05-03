@@ -7,6 +7,11 @@ import sys
 import time
 import pexpect
 
+it=0
+at=0
+ht=0
+hu=0
+
 adr = "78:C5:E5:6E:EA:0F"
 
 def calcTmp(objT,ambT):
@@ -34,9 +39,11 @@ def calcTmp(objT,ambT):
     return (tObj,m_tmpAmb)
 
 def calcHum(rawT, rawH):
-    temp = -40 + 165.0/65536.0 * rawT # [deg C]
-    hum = (float(rawH)/65536) * 100  # [%RH]
-    return (temp, hum)
+
+    t = -46.85 + 175.72/65536.0 * rawT # [deg C]
+    rawH = float(int(rawH) & ~0x0003)
+    hum = -6.0 + 125.0/65536.0 * rawH  # [%RH]
+    return (t, hum)
 
 def calcBaro(rawPr):
     pr = rawPr/100.0
@@ -51,12 +58,14 @@ def log_values():
 
     print adr, " Obj TMP %.1f" % it
     print adr, " Amb TMP %.1f" % at
+    print adr, " Hum TMP %.1f" % ht
+    print adr, " Humidity %.1f" % hu
 
 while True:
 
     try:
 
-        pexpect.run('sudo killall gatttool')
+        pexpect.run('sudo killall -SIGKILL gatttool')
         pexpect.run('sudo hciconfig hci0 down')
         pexpect.run('sudo hciconfig hci0 up')
 
@@ -72,6 +81,9 @@ while True:
         # enable IR temperature sensor
         tool.sendline('char-write-cmd 0x29 01')
         tool.expect('\[LE\]>')
+        # enable Humidity sensor
+        tool.sendline('char-write-cmd 0x3C 01')
+        tool.expect('\[LE\]>')
         # wait for the sensors to become ready
         time.sleep(1)
 
@@ -83,16 +95,23 @@ while True:
             rawObjT = long(float.fromhex(v[2])*256 + float.fromhex(v[1]) )
             rawAmbT = long(float.fromhex(v[4])*256 + float.fromhex(v[3]) )
             (it, at) = calcTmp(rawObjT,rawAmbT)
+            # read Humidity sensor
+            tool.sendline('char-read-hnd 0x38')
+            tool.expect('descriptor: .*? \r')
+            v = tool.after.split()
+            rawT = long(float.fromhex(v[2])*256 + float.fromhex(v[1]) )
+            rawH = long(float.fromhex(v[4])*256 + float.fromhex(v[3]) )
+            (ht, hu) = calcHum(rawT, rawH)
             log_values()
             time.sleep(3)
 
     except KeyboardInterrupt:
-        pexpect.run('sudo killall gatttool')
+        pexpect.run('sudo killall -SIGKILL gatttool')
         pexpect.run('sudo hciconfig hci0 down')
         sys.exit()
 
     except:
-        pexpect.run('sudo killall gatttool')
+        pexpect.run('sudo killall -SIGKILL gatttool')
         pexpect.run('sudo hciconfig hci0 down')
         sys.exit()
 
