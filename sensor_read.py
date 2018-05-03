@@ -6,35 +6,13 @@ import time
 import pexpect
 from datetime import datetime
 
-at=0
-it=0
 adr = "78:C5:E5:6E:EA:0F"
-handle = ""
-
-#tosigned = lambda n: float(n-0x10000) if n>0x7fff else float(n)
-#tosignedbyte = lambda n: float(n-0x100) if n>0x7f else float(n)
-
-
-def tosigned(n):
-
-    if n > 0x7fff:
-        return float(n-0x10000)
-    else:
-        return float(n)
-
 
 def calcTmp(objT,ambT):
 
-    objT = tosigned(objT)
-    ambT = tosigned(ambT)
-
-    print "caltemp func" ,objT,ambT
-
     m_tmpAmb = ambT/128.0
-
     Vobj2 = objT * 0.00000015625
     Tdie2 = m_tmpAmb + 273.15
-
     S0 = 6.4E-14            # Calibration factor
     a1 = 1.75E-3
     a2 = -1.678E-5
@@ -73,11 +51,10 @@ def log_values():
 while True:
 
     try:
-        pexpect.run('sudo killall gatttool')
+
+        pexpect.spawn('sudo hciconfig hci0 down')
         time.sleep(1)
-        pexpect.run('sudo hciconfig hci0 down')
-        time.sleep(1)
-        pexpect.run('sudo hciconfig hci0 up')
+        pexpect.spawn('sudo hciconfig hci0 up')
         time.sleep(1)
 
         tool = pexpect.spawn('gatttool -b ' + adr + ' --interactive')
@@ -102,8 +79,8 @@ while True:
             tool.sendline('char-read-hnd 0x25')
             tool.expect('descriptor: .*? \r')
             v = tool.after.split()
-            rawObjT = v[2] << 8 + v[1]
-            rawAmbT = v[4] << 8 + v[3]
+            rawObjT = long(float.fromhex(v[2] + v[1]))
+            rawAmbT = long(float.fromhex(v[4] + v[3]))
             (at, it) = calcTmp(rawObjT,rawAmbT)
             log_values()
             time.sleep(3)
