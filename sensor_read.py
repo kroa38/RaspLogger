@@ -10,6 +10,9 @@ adr = "78:C5:E5:6E:EA:0F"
 
 def calcTmp(objT,ambT):
 
+    if objT>32767:
+        objT = objT - 65536
+
     m_tmpAmb = ambT/128.0
     Vobj2 = objT * 0.00000015625
     Tdie2 = m_tmpAmb + 273.15
