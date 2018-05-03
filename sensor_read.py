@@ -13,9 +13,9 @@ def calcTmp(objT,ambT):
     m_tmpAmb = ambT/128.0
 
     Vobj2 = objT * 0.00000015625
-    Tdie = ambient + 273.15;
+    Tdie = ambient + 273.15
 
-    S0 = 5.593E-14;	     // Calibration factor
+    S0 = 5.593E-14
     a1 = 1.75E-3
     a2 = -1.678E-5
     b0 = -2.94E-5
