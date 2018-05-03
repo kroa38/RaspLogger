@@ -1,10 +1,11 @@
 #!/usr/bin/env python
+# thanks to the project : https://github.com/junkai/SensorTag
+# thanks to the project : https://github.com/msaunby/ble-sensor-pi
 
-import os
+
 import sys
 import time
 import pexpect
-from datetime import datetime
 
 adr = "78:C5:E5:6E:EA:0F"
 
@@ -54,12 +55,10 @@ def log_values():
 while True:
 
     try:
+
         pexpect.run('sudo killall gatttool')
-        time.sleep(1)
         pexpect.run('sudo hciconfig hci0 down')
-        time.sleep(1)
         pexpect.run('sudo hciconfig hci0 up')
-        time.sleep(1)
 
         tool = pexpect.spawn('gatttool -b ' + adr + ' --interactive')
         tool.expect('\[LE\]>', timeout=600)
@@ -88,15 +87,12 @@ while True:
             time.sleep(3)
 
     except KeyboardInterrupt:
-        tool.sendline('quit')
-        tool.close()
+        pexpect.run('sudo killall gatttool')
+        pexpect.run('sudo hciconfig hci0 down')
         sys.exit()
 
     except:
-        if handle != "":
-            pexpect.run('sudo hcitool ledc ' + handle)
-        tool.sendline('quit')
-        tool.close(force=True)
-        log_values()
-
+        pexpect.run('sudo killall gatttool')
+        pexpect.run('sudo hciconfig hci0 down')
+        sys.exit()
 
