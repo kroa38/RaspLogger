@@ -15,25 +15,6 @@ hu=0
 adr = "78:C5:E5:6E:EA:0F"
 
 
-
-
-
-def calcBaro(rawPr):
-    pr = rawPr/100.0
-    return (pr)
-
-def calcLight(rawL):
-    m = rawL & 0x0FFF
-    e = (rawL & 0xF000) >> 12
-    return (m*(0.01*pow(2.0,e)))
-
-def log_values():
-
-    print adr, " Obj TMP %.1f" % it
-    print adr, " Amb TMP %.1f" % at
-    print adr, " Hum TMP %.1f" % ht
-    print adr, " Humidity %.1f" % hu
-
 def init():
     """
     init gatttool
@@ -57,6 +38,7 @@ def init():
         # enable Humidity sensor
         handle.sendline('char-write-cmd 0x3C 01')
         handle.expect('\[LE\]>')
+        time.sleep(1)
     except:
         print("Exception was thrown during expect")
         sys.exit()
@@ -70,6 +52,7 @@ def read_sensor_humidity(handle):
     :return: dictionnary
     """
     # read humidity sensor (temp + humidity)
+    time.sleep(0.1)
     handle.sendline('char-read-hnd 0x38')
     handle.expect('descriptor: .*? \r')
     objhum = handle.after.split()
@@ -81,7 +64,7 @@ def read_sensor_humidity(handle):
     rawH = float(int(rawH) & ~0x0003)
     hum = -6.0 + 125.0/65536.0 * rawH  # [%RH]
 
-    dico = {"Hum_Temp": t, "Hum %": hum}
+    dico = {"Hum_Temp %2f": t, "Hum %": hum}
     print dico
 
 #-------------------------------------------------------------------------------------------
@@ -91,6 +74,7 @@ def read_sensor_temperature(handle):
     :return: dictionnary
     """
     # read IR temperature sensor TMP006
+    time.sleep(0.1)
     handle.sendline('char-read-hnd 0x25')
     handle.expect('descriptor: .*? \r')
     objtemp = handle.after.split()
@@ -123,63 +107,6 @@ def read_sensor_temperature(handle):
 
     print dico
 
-
-# while True:
-#
-#     try:
-#
-#         pexpect.run('sudo killall -SIGKILL gatttool')
-#         pexpect.run('sudo hciconfig hci0 down')
-#         pexpect.run('sudo hciconfig hci0 up')
-#
-#         tool = pexpect.spawn('gatttool -b ' + adr + ' --interactive')
-#         tool.expect('\[LE\]>', timeout=600)
-#         print "Preparing to connect. You might need to press the side button..."
-#         tool.sendline('connect')
-#         # test for success of connect
-#         tool.expect('Connection successful.*\[LE\]>')
-#         print "connected !"
-#         print adr, " Enabling sensors ..."
-#
-#         # enable IR temperature sensor
-#         tool.sendline('char-write-cmd 0x29 01')
-#         tool.expect('\[LE\]>')
-#         # enable Humidity sensor
-#         tool.sendline('char-write-cmd 0x3C 01')
-#         tool.expect('\[LE\]>')
-#         # enable barometer
-#         tool.sendline('char-write-cmd 0x44 01')
-#         tool.expect('\[LE\]>')
-#         # wait for the sensors to become ready
-#         time.sleep(1)
-#
-#         while True:
-#             # read IR temperature sensor
-#             tool.sendline('char-read-hnd 0x25')
-#             tool.expect('descriptor: .*? \r')
-#             v = tool.after.split()
-#             rawObjT = long(float.fromhex(v[2])*256 + float.fromhex(v[1]) )
-#             rawAmbT = long(float.fromhex(v[4])*256 + float.fromhex(v[3]) )
-#             (it, at) = calcTmp(rawObjT,rawAmbT)
-#             # read Humidity sensor
-#             tool.sendline('char-read-hnd 0x38')
-#             tool.expect('descriptor: .*? \r')
-#             v = tool.after.split()
-#             rawT = long(float.fromhex(v[2])*256 + float.fromhex(v[1]) )
-#             rawH = long(float.fromhex(v[4])*256 + float.fromhex(v[3]) )
-#             (ht, hu) = calcHum(rawT, rawH)
-#             log_values()
-#             time.sleep(3)
-#
-#     except KeyboardInterrupt:
-#         pexpect.run('sudo killall -SIGKILL gatttool')
-#         pexpect.run('sudo hciconfig hci0 down')
-#         sys.exit()
-#
-#     except:
-#         pexpect.run('sudo killall -SIGKILL gatttool')
-#         pexpect.run('sudo hciconfig hci0 down')
-#         sys.exit()
 
 handle = init()
 read_sensor_temperature(handle)
