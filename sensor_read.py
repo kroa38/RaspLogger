@@ -49,7 +49,7 @@ def read_sensor_humidity(handle):
     # enable humidity sensor
     handle.sendline('char-write-cmd 0x3c 01')
     handle.expect('\[LE\]>')
-    time.sleep(0.5)
+    time.sleep(1)
     # read humidity sensor (temp + humidity)
     handle.sendline('char-read-hnd 0x38')
     handle.expect('descriptor: .*? \r')
@@ -65,7 +65,7 @@ def read_sensor_humidity(handle):
     rawH = float(int(rawH) & ~0x0003)
     hum = -6.0 + 125.0/65536.0 * rawH  # [%RH]
 
-    dico = {"Hum_Temp %2f": round(t,1), "Hum %": round(hum,1)}
+    dico = {"Hum_Temp": round(t,1), "Hum %": round(hum,1)}
     print dico
 
 #-------------------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ def read_sensor_temperature(handle):
     # enable temp sensor
     handle.sendline('char-write-cmd 0x29 01')
     handle.expect('\[LE\]>')
-    time.sleep(0.5)
+    time.sleep(1)
     # read IR temperature sensor TMP006
     handle.sendline('char-read-hnd 0x25')
     handle.expect('descriptor: .*? \r')
