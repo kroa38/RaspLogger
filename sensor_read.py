@@ -9,7 +9,13 @@ from datetime import datetime
 adr = "78:C5:E5:6E:EA:0F"
 handle = ""
 
+tosigned = lambda n: float(n-0x10000) if n>0x7fff else float(n)
+tosignedbyte = lambda n: float(n-0x100) if n>0x7f else float(n)
+
 def calcTmp(objT,ambT):
+
+    objT = tosigned(objT)
+    ambT = tosigned(ambT)
 
     m_tmpAmb = ambT/128.0
 
@@ -83,8 +89,8 @@ while True:
             tool.expect('descriptor: .*? \r')
             v = tool.after.split()
             print v
-            rawObjT = long(float.fromhex(v[2] + v[1]))
-            rawAmbT = long(float.fromhex(v[4] + v[3]))
+            rawObjT = v[2] << 8 + v[1]
+            rawAmbT = v[4] << 8 + v[3]
             (at, it) = calcTmp(rawObjT,rawAmbT)
             log_values()
             time.sleep(3)
