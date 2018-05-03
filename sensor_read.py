@@ -58,10 +58,11 @@ def log_values():
 while True:
 
     try:
-
-        pexpect.spawn('sudo hciconfig hci0 down')
+        pexpect.run('sudo killall gatttool')
         time.sleep(1)
-        pexpect.spawn('sudo hciconfig hci0 up')
+        pexpect.run('sudo hciconfig hci0 down')
+        time.sleep(1)
+        pexpect.run('sudo hciconfig hci0 up')
         time.sleep(1)
 
         tool = pexpect.spawn('gatttool -b ' + adr + ' --interactive')
