@@ -6,6 +6,8 @@ import time
 import pexpect
 from datetime import datetime
 
+at=0
+it=0
 adr = "78:C5:E5:6E:EA:0F"
 handle = ""
 
