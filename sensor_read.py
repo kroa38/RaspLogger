@@ -10,7 +10,7 @@ adr = "78:C5:E5:6E:EA:0F"
 
 def calcTmp(objT,ambT):
 
-    if objT> 0x7FFF:
+    if objT > 0x7FFF:
         objT = objT - 0x10000
 
     m_tmpAmb = ambT/128.0
@@ -30,7 +30,7 @@ def calcTmp(objT,ambT):
     tObj = pow(pow(Tdie2,4) + (fObj/S),.25)
     tObj = (tObj - 273.15)
 
-    return (m_tmpAmb, tObj)
+    return (tObj,m_tmpAmb)
 
 def calcHum(rawT, rawH):
     temp = -40 + 165.0/65536.0 * rawT # [deg C]
@@ -54,10 +54,11 @@ def log_values():
 while True:
 
     try:
-
-        pexpect.spawn('sudo hciconfig hci0 down')
+        pexpect.run('sudo killall gatttool')
         time.sleep(1)
-        pexpect.spawn('sudo hciconfig hci0 up')
+        pexpect.run('sudo hciconfig hci0 down')
+        time.sleep(1)
+        pexpect.run('sudo hciconfig hci0 up')
         time.sleep(1)
 
         tool = pexpect.spawn('gatttool -b ' + adr + ' --interactive')
@@ -67,13 +68,11 @@ while True:
         # test for success of connect
         tool.expect('Connection successful.*\[LE\]>')
         print "connected !"
-
         print adr, " Enabling sensors ..."
 
         # enable IR temperature sensor
         tool.sendline('char-write-cmd 0x29 01')
         tool.expect('\[LE\]>')
-
         # wait for the sensors to become ready
         time.sleep(1)
 
@@ -84,7 +83,7 @@ while True:
             v = tool.after.split()
             rawObjT = long(float.fromhex(v[2])*256 + float.fromhex(v[1]) )
             rawAmbT = long(float.fromhex(v[4])*256 + float.fromhex(v[3]) )
-            (at, it) = calcTmp(rawObjT,rawAmbT)
+            (it, at) = calcTmp(rawObjT,rawAmbT)
             log_values()
             time.sleep(3)
 
