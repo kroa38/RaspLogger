@@ -59,9 +59,9 @@ while True:
 
     try:
 
-        pexpect.spawn('sudo hciconfig hci0 down')
+        pexpect.run('sudo hciconfig hci0 down')
         time.sleep(1)
-        pexpect.spawn('sudo hciconfig hci0 up')
+        pexpect.run('sudo hciconfig hci0 up')
         time.sleep(1)
 
         tool = pexpect.spawn('gatttool -b ' + adr + ' --interactive')
@@ -98,8 +98,7 @@ while True:
         sys.exit()
 
     except:
-        if tool != "":
-            pexpect.run('sudo hcitool ledc ' + tool)
+        #pexpect.run('sudo hcitool ledc ' + tool)
         tool.sendline('quit')
         tool.close(force=True)
         log_values()
