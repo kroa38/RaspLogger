@@ -11,9 +11,11 @@ adr = "78:C5:E5:6E:EA:0F"
 def calcTmp(objT,ambT):
 
     m_tmpAmb = ambT/128.0
+
     Vobj2 = objT * 0.00000015625
-    Tdie2 = m_tmpAmb + 273.15
-    S0 = 6.4E-14            # Calibration factor
+    Tdie = ambient + 273.15;
+
+    S0 = 5.593E-14;	     // Calibration factor
     a1 = 1.75E-3
     a2 = -1.678E-5
     b0 = -2.94E-5
@@ -21,13 +23,12 @@ def calcTmp(objT,ambT):
     b2 = 4.63E-9
     c2 = 13.4
     Tref = 298.15
-    S = S0*(1+a1*(Tdie2 - Tref)+a2*pow((Tdie2 - Tref),2))
-    Vos = b0 + b1*(Tdie2 - Tref) + b2*pow((Tdie2 - Tref),2)
+    S = S0*(1+a1*(Tdie - Tref)+a2*pow((Tdie - Tref),2))
+    Vos = b0 + b1*(Tdie - Tref) + b2*pow((Tdie - Tref),2)
     fObj = (Vobj2 - Vos) + c2*pow((Vobj2 - Vos),2)
-    tObj = pow(pow(Tdie2,4) + (fObj/S),.25)
-    tObj = (tObj - 273.15)
+    tObj = pow(pow(Tdie,4) + (fObj/S),.25)
 
-    return (m_tmpAmb, tObj)
+    return (m_tmpAmb, tObj-273.15)
 
 def calcHum(rawT, rawH):
     temp = -40 + 165.0/65536.0 * rawT # [deg C]
