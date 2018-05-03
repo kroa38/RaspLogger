@@ -28,7 +28,7 @@ def calcTmp(objT,ambT):
     objT = tosigned(objT)
     ambT = tosigned(ambT)
 
-    print objT,ambT
+    print "caltemp func" ,objT,ambT
 
     m_tmpAmb = ambT/128.0
 
@@ -73,10 +73,11 @@ def log_values():
 while True:
 
     try:
-
-        pexpect.spawn('sudo hciconfig hci0 down')
+        pexpect.run('sudo killall gatttool')
         time.sleep(1)
-        pexpect.spawn('sudo hciconfig hci0 up')
+        pexpect.run('sudo hciconfig hci0 down')
+        time.sleep(1)
+        pexpect.run('sudo hciconfig hci0 up')
         time.sleep(1)
 
         tool = pexpect.spawn('gatttool -b ' + adr + ' --interactive')
@@ -101,7 +102,6 @@ while True:
             tool.sendline('char-read-hnd 0x25')
             tool.expect('descriptor: .*? \r')
             v = tool.after.split()
-            print v
             rawObjT = v[2] << 8 + v[1]
             rawAmbT = v[4] << 8 + v[3]
             (at, it) = calcTmp(rawObjT,rawAmbT)
