@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# thanks to https://github.com/msaunby/ble-sensor-pi
 
 import os
 import sys
@@ -9,13 +8,7 @@ from datetime import datetime
 
 adr = "78:C5:E5:6E:EA:0F"
 
-tosigned = lambda n: float(n-0x10000) if n>0x7fff else float(n)
-tosignedbyte = lambda n: float(n-0x100) if n>0x7f else float(n)
-
 def calcTmp(objT,ambT):
-
-    objT = tosigned(objT)
-    ambT = tosigned(ambT)
 
     m_tmpAmb = ambT/128.0
     Vobj2 = objT * 0.00000015625
@@ -34,7 +27,7 @@ def calcTmp(objT,ambT):
     tObj = pow(pow(Tdie2,4) + (fObj/S),.25)
     tObj = (tObj - 273.15)
 
-    return m_tmpAmb, tObj-273.15
+    return (m_tmpAmb, tObj)
 
 def calcHum(rawT, rawH):
     temp = -40 + 165.0/65536.0 * rawT # [deg C]
@@ -50,13 +43,18 @@ def calcLight(rawL):
     e = (rawL & 0xF000) >> 12
     return (m*(0.01*pow(2.0,e)))
 
+def log_values():
+
+    print adr, " Obj TMP %.1f" % it
+    print adr, " Amb TMP %.1f" % at
+
 while True:
 
     try:
 
-        pexpect.run('sudo hciconfig hci0 down')
+        pexpect.spawn('sudo hciconfig hci0 down')
         time.sleep(1)
-        pexpect.run('sudo hciconfig hci0 up')
+        pexpect.spawn('sudo hciconfig hci0 up')
         time.sleep(1)
 
         tool = pexpect.spawn('gatttool -b ' + adr + ' --interactive')
@@ -81,17 +79,22 @@ while True:
             tool.sendline('char-read-hnd 0x25')
             tool.expect('descriptor: .*? \r')
             v = tool.after.split()
-            rawObjT = (v[2] << 8) + v[1]
-            rawAmbT = (v[4] << 8) + v[3]
+            rawObjT = long(float.fromhex(v[2] + v[1]))
+            rawAmbT = long(float.fromhex(v[4] + v[3]))
             (at, it) = calcTmp(rawObjT,rawAmbT)
-            print adr, " Obj TMP %.1f" % it
-            print adr, " Amb TMP %.1f" % at
+            log_values()
             time.sleep(3)
 
     except KeyboardInterrupt:
+        tool.sendline('quit')
+        tool.close()
         sys.exit()
 
     except:
-        sys.exit()
+        if handle != "":
+            pexpect.run('sudo hcitool ledc ' + handle)
+        tool.sendline('quit')
+        tool.close(force=True)
+        log_values()
 
 
