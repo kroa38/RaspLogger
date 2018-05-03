@@ -7,9 +7,6 @@ import pexpect
 from datetime import datetime
 
 adr = "78:C5:E5:6E:EA:0F"
-handle = ""
-at = 0
-it = 0
 
 def calcTmp(objT,ambT):
 
@@ -55,9 +52,9 @@ while True:
 
     try:
 
-        pexpect.run('sudo hciconfig hci0 down')
+        pexpect.spawn('sudo hciconfig hci0 down')
         time.sleep(1)
-        pexpect.run('sudo hciconfig hci0 up')
+        pexpect.spawn('sudo hciconfig hci0 up')
         time.sleep(1)
 
         tool = pexpect.spawn('gatttool -b ' + adr + ' --interactive')
@@ -84,9 +81,8 @@ while True:
             v = tool.after.split()
             rawObjT = long(float.fromhex(v[2] + v[1]))
             rawAmbT = long(float.fromhex(v[4] + v[3]))
-            print (v[2] << 8 + v[1])
-            print (v[4] << 8 + v[3])
             (at, it) = calcTmp(rawObjT,rawAmbT)
+            log_values()
             time.sleep(3)
 
     except KeyboardInterrupt:
