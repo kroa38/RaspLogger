@@ -32,6 +32,7 @@ def init():
     # test for success of connect
     try:
         handle.expect('Connection successful.*\[LE\]>')
+        print "Sensor Connected !"
         time.sleep(1)
     except:
         print("Exception was thrown during expect")
@@ -119,3 +120,4 @@ def read_sensor_temperature(handle):
 handle = init()
 read_sensor_temperature(handle)
 read_sensor_humidity(handle)
+handle.close()
