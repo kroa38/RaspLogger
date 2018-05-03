@@ -10,6 +10,13 @@ adr = "78:C5:E5:6E:EA:0F"
 
 def calcTmp(objT,ambT):
 
+    if objT > 0x7FFF:
+        objT = float(objT-0x10000)
+    else:
+        objT = float(objT)
+
+    ambT = float(ambT)
+
     m_tmpAmb = ambT/128.0
     Vobj2 = objT * 0.00000015625
     Tdie2 = m_tmpAmb + 273.15
@@ -79,8 +86,8 @@ while True:
             tool.sendline('char-read-hnd 0x25')
             tool.expect('descriptor: .*? \r')
             v = tool.after.split()
-            rawObjT = long(float.fromhex(v[2] + v[1]))
-            rawAmbT = long(float.fromhex(v[4] + v[3]))
+            rawObjT = v[2] << 8 + v[1]
+            rawAmbT = v[4] << 8 + v[3]
             (at, it) = calcTmp(rawObjT,rawAmbT)
             log_values()
             time.sleep(3)
