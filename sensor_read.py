@@ -32,12 +32,6 @@ def init():
     # test for success of connect
     try:
         handle.expect('Connection successful.*\[LE\]>')
-        # enable IR temperature sensor
-        handle.sendline('char-write-cmd 0x29 01')
-        handle.expect('\[LE\]>')
-        # enable Humidity sensor
-        handle.sendline('char-write-cmd 0x3C 01')
-        handle.expect('\[LE\]>')
         time.sleep(1)
     except:
         print("Exception was thrown during expect")
@@ -51,11 +45,18 @@ def read_sensor_humidity(handle):
 
     :return: dictionnary
     """
+
+    # enable humidity sensor
+    handle.sendline('char-write-cmd 0x3c 01')
+    handle.expect('\[LE\]>')
+    time.sleep(0.5)
     # read humidity sensor (temp + humidity)
-    time.sleep(0.1)
     handle.sendline('char-read-hnd 0x38')
     handle.expect('descriptor: .*? \r')
     objhum = handle.after.split()
+    # disable humidity sensor
+    handle.sendline('char-write-cmd 0x3c 00')
+    handle.expect('\[LE\]>')
 
     rawT = long(float.fromhex(objhum[2]) * 256 + float.fromhex(objhum[1]))
     rawH = long(float.fromhex(objhum[4]) * 256 + float.fromhex(objhum[3]))
@@ -73,11 +74,18 @@ def read_sensor_temperature(handle):
 
     :return: dictionnary
     """
+
+    # enable temp sensor
+    handle.sendline('char-write-cmd 0x29 01')
+    handle.expect('\[LE\]>')
+    time.sleep(0.5)
     # read IR temperature sensor TMP006
-    time.sleep(0.1)
     handle.sendline('char-read-hnd 0x25')
     handle.expect('descriptor: .*? \r')
     objtemp = handle.after.split()
+    # disable IR  temp sensor
+    handle.sendline('char-write-cmd 0x29 00')
+    handle.expect('\[LE\]>')
 
     obj_t = long(float.fromhex(objtemp[2]) * 256 + float.fromhex(objtemp[1]))
     die_t = long(float.fromhex(objtemp[4]) * 256 + float.fromhex(objtemp[3]))
