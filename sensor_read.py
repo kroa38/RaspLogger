@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# thanks to https://github.com/msaunby/ble-sensor-pi
 
 import os
 import sys
@@ -97,8 +98,8 @@ while True:
         sys.exit()
 
     except:
-        if handle != "":
-            pexpect.run('sudo hcitool ledc ' + handle)
+        if tool != "":
+            pexpect.run('sudo hcitool ledc ' + tool)
         tool.sendline('quit')
         tool.close(force=True)
         log_values()
