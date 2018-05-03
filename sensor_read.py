@@ -34,7 +34,7 @@ def calcTmp(objT,ambT):
     tObj = pow(pow(Tdie2,4) + (fObj/S),.25)
     tObj = (tObj - 273.15)
 
-    return (m_tmpAmb, tObj-273.15)
+    return m_tmpAmb, tObj-273.15
 
 def calcHum(rawT, rawH):
     temp = -40 + 165.0/65536.0 * rawT # [deg C]
@@ -49,11 +49,6 @@ def calcLight(rawL):
     m = rawL & 0x0FFF
     e = (rawL & 0xF000) >> 12
     return (m*(0.01*pow(2.0,e)))
-
-def log_values():
-
-    print adr, " Obj TMP %.1f" % it
-    print adr, " Amb TMP %.1f" % at
 
 while True:
 
@@ -86,21 +81,17 @@ while True:
             tool.sendline('char-read-hnd 0x25')
             tool.expect('descriptor: .*? \r')
             v = tool.after.split()
-            rawObjT = (v[2]<<8) + v[1]
-            rawAmbT = (v[4]<<8) + v[3]
+            rawObjT = (v[2] << 8) + v[1]
+            rawAmbT = (v[4] << 8) + v[3]
             (at, it) = calcTmp(rawObjT,rawAmbT)
-            log_values()
+            print adr, " Obj TMP %.1f" % it
+            print adr, " Amb TMP %.1f" % at
             time.sleep(3)
 
     except KeyboardInterrupt:
-        tool.sendline('quit')
-        tool.close()
         sys.exit()
 
     except:
-        #pexpect.run('sudo hcitool ledc ' + tool)
-        tool.sendline('quit')
-        tool.close(force=True)
-        log_values()
+        sys.exit()
 
 
