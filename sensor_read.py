@@ -64,7 +64,7 @@ def read_sensor_humidity(handle):
     rawH = float(int(rawH) & ~0x0003)
     hum = -6.0 + 125.0/65536.0 * rawH  # [%RH]
 
-    dico = {"Hum_Temp %2f": t, "Hum %": hum}
+    dico = {"Hum_Temp %2f": round(t,1), "Hum %": round(hum,1)}
     print dico
 
 #-------------------------------------------------------------------------------------------
@@ -103,7 +103,7 @@ def read_sensor_temperature(handle):
     tObj = pow(pow(Tdie2,4) + (fObj/S),.25)
     tObj = (tObj - 273.15)
 
-    dico = {"Temp_Amb": m_tmpAmb, "Temp_Obj": tObj}
+    dico = {"Temp_Amb": round(m_tmpAmb,1), "Temp_Obj": round(tObj,1)}
 
     print dico
 
