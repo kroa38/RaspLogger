@@ -45,7 +45,6 @@ def init():
         pexpect.run('sudo killall -SIGKILL gatttool')    # kill process if it is running
         pexpect.run('sudo hciconfig hci0 down')          # down hci
         pexpect.run('sudo hciconfig hci0 up')            # up  hci
-
         handle = pexpect.spawn('gatttool -b ' + adr + ' --interactive')
         handle.expect('\[LE\]>', timeout=600)
         print "Preparing to connect. You might need to press the side button..."
@@ -56,7 +55,7 @@ def init():
         print "Sensor Connected !"
         time.sleep(1)
     except pexpect.TIMEOUT:
-        print("pexpect TIMOUT exception")
+        print("pexpect TIMOUT exception : Probably Radio loss !!")
         sys.exit()
 
     return handle
@@ -77,7 +76,7 @@ def read_sensor_humidity(handle):
         handle.sendline('char-read-hnd 0x38')
         handle.expect('descriptor: .*? \r')
     except pexpect.TIMEOUT:
-        print("pexpect TIMOUT exception")
+        print("pexpect TIMOUT exception : Probably Radio loss !!")
         sys.exit()
 
     objhum = handle.after.split()
@@ -111,7 +110,7 @@ def read_sensor_temperature(handle):
         handle.sendline('char-read-hnd 0x25')
         handle.expect('descriptor: .*? \r')
     except pexpect.TIMEOUT:
-        print("pexpect TIMOUT exception")
+        print("pexpect TIMOUT exception : Probably Radio loss !!")
         sys.exit()
     objtemp = handle.after.split()
     # disable IR  temp sensor
@@ -162,7 +161,7 @@ def read_sensor_gyroscope(handle):
         handle.sendline('char-read-hnd 0x57')
         handle.expect('descriptor: .*? \r')
     except pexpect.TIMEOUT:
-        print("pexpect TIMOUT exception")
+        print("pexpect TIMOUT exception : Probably Radio loss !!")
         sys.exit()
     objmag = handle.after.split()
     # disable magnet
@@ -196,7 +195,7 @@ def read_sensor_accelerometer(handle):
         handle.sendline('char-write-cmd 0x31 00')
         handle.expect('\[LE\]>')
     except pexpect.TIMEOUT:
-        print("pexpect TIMOUT exception")
+        print("pexpect TIMOUT exception : Probably Radio loss !!")
         sys.exit()
     xmag = float.fromhex(objmag[1])
     ymag = float.fromhex(objmag[2])
@@ -225,7 +224,7 @@ def read_sensor_magnet(handle):
         handle.sendline('char-write-cmd 0x44 00')
         handle.expect('\[LE\]>')
     except pexpect.TIMEOUT:
-        print("pexpect TIMOUT exception")
+        print("pexpect TIMOUT exception : Probably Radio loss !!")
         sys.exit()
 
     xmag = float.fromhex(objmag[2]) * 256 + float.fromhex(objmag[1])
@@ -263,7 +262,7 @@ def read_sensor_barometer(handle):
         handle.sendline('char-write-cmd 0x4f 00')
         handle.expect('\[LE\]>')
     except pexpect.TIMEOUT:
-        print("pexpect TIMOUT exception")
+        print("pexpect TIMOUT exception : Probably Radio loss !!")
         sys.exit()
 
     rawT = long(float.fromhex(baro[2]) * 256 + float.fromhex(baro[1]))
