@@ -55,7 +55,7 @@ def init():
         handle.expect('Connection successful.*\[LE\]>')
         print "Sensor Connected !"
         time.sleep(1)
-    except pexpect.TIMOUT:
+    except pexpect.TIMEOUT:
         print("pexpect TIMOUT exception")
         sys.exit()
 
