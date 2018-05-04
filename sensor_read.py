@@ -29,6 +29,9 @@ def magforce(v):
 def accel(v):
     return tosignedbyte(v) / 64.0
 
+def gyro(v):
+    return (tosigned(v) * 1.0) / (65536/500)
+
 def init():
     """
     init gatttool
@@ -131,6 +134,32 @@ def read_sensor_temperature(handle):
     print dico
 
 
+def read_sensor_gyroscope(handle):
+    """
+
+    :return: dictionnary
+    """
+
+    # enable magnet
+    handle.sendline('char-write-cmd 0x5b 07')
+    handle.expect('\[LE\]>')
+    time.sleep(2)    # wait at least 2s
+    # read magnet values
+    handle.sendline('char-read-hnd 0x57')
+    handle.expect('descriptor: .*? \r')
+    objmag = handle.after.split()
+    # disable magnet
+    handle.sendline('char-write-cmd 0x5b 00')
+    handle.expect('\[LE\]>')
+
+    xmag = float.fromhex(objmag[2]) * 256 + float.fromhex(objmag[1])
+    ymag = float.fromhex(objmag[4]) * 256 + float.fromhex(objmag[3])
+    zmag = float.fromhex(objmag[6]) * 256 + float.fromhex(objmag[5])
+
+    dico = {"Gyro x": round(gyro(xmag),1), "Gyro y": round(gyro(ymag),1), "Gyro z": round(gyro(zmag),1)}
+    print dico
+
+
 def read_sensor_accelerometer(handle):
     """
 
@@ -153,7 +182,7 @@ def read_sensor_accelerometer(handle):
     ymag = float.fromhex(objmag[2])
     zmag = float.fromhex(objmag[3])
 
-    dico = {"Mag x": round(accel(xmag),1), "Mag y": round(accel(ymag),1), "Mag z": round(accel(zmag),1)}
+    dico = {"Acc x": round(accel(xmag),1), "Acc y": round(accel(ymag),1), "Acc z": round(accel(zmag),1)}
     print dico
 
 
@@ -193,7 +222,7 @@ def read_sensor_barometer(handle):
     global barometer
     handle.sendline('char-write-cmd 0x4f 02')
     handle.expect('\[LE\]>')
-    time.sleep(1)
+    time.sleep(2)
     # read calibration factors
     handle.sendline('char-read-hnd 0x52')
     handle.expect('descriptor: .*? \r')
@@ -202,10 +231,12 @@ def read_sensor_barometer(handle):
     # enable barometer
     handle.sendline('char-write-cmd 0x4f 01')
     handle.expect('\[LE\]>')
-    time.sleep(1)
+    time.sleep(2)
     handle.sendline('char-read-hnd 0x4b')
     handle.expect('descriptor: .*? \r')
     baro = handle.after.split()
+    handle.sendline('char-write-cmd 0x4f 00')
+    handle.expect('\[LE\]>')
     rawT = long(float.fromhex(baro[2]) * 256 + float.fromhex(baro[1]))
     rawP = long(float.fromhex(baro[4]) * 256 + float.fromhex(baro[3]))
     (temp, pres)= barometer.calc(rawT, rawP)
@@ -302,4 +333,5 @@ read_sensor_humidity(handle)
 read_sensor_barometer(handle)
 read_sensor_magnet(handle)
 read_sensor_accelerometer(handle)
+read_sensor_gyroscope(handle)
 handle.close()
