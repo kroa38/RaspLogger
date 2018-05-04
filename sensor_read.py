@@ -128,7 +128,6 @@ def read_sensor_barometer(handle):
     handle.sendline('char-read-hnd 0x52')
     handle.expect('descriptor: .*? \r')
     rawcal = handle.after.split()
-    print rawcal
     barometer = Barometer(rawcal)
     # enable barometer
     handle.sendline('char-write-cmd 0x4f 01')
