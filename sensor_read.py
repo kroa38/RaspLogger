@@ -7,18 +7,14 @@ import sys
 import time
 import pexpect
 
-it=0
-at=0
-ht=0
-hu=0
-
 adr = "78:C5:E5:6E:EA:0F"
 
+tosigned = lambda n: float(n-0x10000) if n>0x7fff else float(n)
 
 def init():
     """
     init gatttool
-    :return:
+    :return: handle
     """
 
     pexpect.run('sudo killall -SIGKILL gatttool')    # kill process if it is running
@@ -40,7 +36,6 @@ def init():
 
     return handle
 
-#-------------------------------------------------------------------------------------------
 def read_sensor_humidity(handle):
     """
 
@@ -69,7 +64,7 @@ def read_sensor_humidity(handle):
     dico = {"Hum_Temp": round(t,1), "Hum %": round(hum,1)}
     print dico
 
-#-------------------------------------------------------------------------------------------
+
 def read_sensor_temperature(handle):
     """
 
@@ -117,7 +112,113 @@ def read_sensor_temperature(handle):
     print dico
 
 
+
+def read_sensor_barometer(handle):
+    """
+
+    :return: dictionnary
+    """
+
+    # fetch barometer calibration
+    handle.sendline('char-write-cmd 0x4f 02')
+    handle.expect('\[LE\]>')
+    time.sleep(1)
+    # read IR temperature sensor TMP006
+    handle.sendline('char-read-hnd 0x52')
+    handle.expect('descriptor: .*? \r')
+    rawcal = handle.after.split()
+    barometer = Barometer(rawcal)
+    print barometer
+
+
+class Barometer:
+
+    # Ditto.
+    # Conversion algorithm for barometer temperature
+    #
+    #  Formula from application note, rev_X:
+    #  Ta = ((c1 * Tr) / 2^24) + (c2 / 2^10)
+    #
+    #  c1 - c8: calibration coefficients the can be read from the sensor
+    #  c1 - c4: unsigned 16-bit integers
+    #  c5 - c8: signed 16-bit integers
+    #
+
+    def __init__(self, rawCalibration):
+        self.m_barCalib = self.Calib(rawCalibration)
+        return
+
+    def calc(self, rawT, rawP):
+        self.m_raw_temp = tosigned(rawT)
+        self.m_raw_pres = rawP  # N.B.  Unsigned value
+        bar_temp = self.calcBarTmp(self.m_raw_temp)
+        bar_pres = self.calcBarPress(self.m_raw_temp, self.m_raw_pres)
+        return (bar_temp, bar_pres)
+
+
+    def calcBarTmp(self, raw_temp):
+        c1 = self.m_barCalib.c1
+        c2 = self.m_barCalib.c2
+        val = long((c1 * raw_temp) * 100)
+        temp = val >> 24
+        val = long(c2 * 100)
+        temp += (val >> 10)
+        return float(temp) / 100.0
+
+    # Conversion algorithm for barometer pressure (hPa)
+    #
+    # Formula from application note, rev_X:
+    # Sensitivity = (c3 + ((c4 * Tr) / 2^17) + ((c5 * Tr^2) / 2^34))
+    # Offset = (c6 * 2^14) + ((c7 * Tr) / 2^3) + ((c8 * Tr^2) / 2^19)
+    # Pa = (Sensitivity * Pr + Offset) / 2^14
+    #
+    def calcBarPress(self, Tr, Pr):
+        c3 = self.m_barCalib.c3
+        c4 = self.m_barCalib.c4
+        c5 = self.m_barCalib.c5
+        c6 = self.m_barCalib.c6
+        c7 = self.m_barCalib.c7
+        c8 = self.m_barCalib.c8
+        # Sensitivity
+        s = long(c3)
+        val = long(c4 * Tr)
+        s += (val >> 17)
+        val = long(c5 * Tr * Tr)
+        s += (val >> 34)
+        # Offset
+        o = long(c6) << 14
+        val = long(c7 * Tr)
+        o += (val >> 3)
+        val = long(c8 * Tr * Tr)
+        o += (val >> 19)
+        # Pressure (Pa)
+        pres = ((s * Pr) + o) >> 14
+        return float(pres) / 100.0
+
+    class Calib:
+
+        # This works too
+        # i = (hi<<8)+lo
+        def bld_int(self, lobyte, hibyte):
+            return (lobyte & 0x0FF) + ((hibyte & 0x0FF) << 8)
+
+        def __init__(self, pData):
+            self.c1 = self.bld_int(pData[1], pData[2])
+            self.c2 = self.bld_int(pData[3], pData[4])
+            self.c3 = self.bld_int(pData[5], pData[6])
+            self.c4 = self.bld_int(pData[7], pData[8])
+            self.c5 = tosigned(self.bld_int(pData[9], pData[10]))
+            self.c6 = tosigned(self.bld_int(pData[11], pData[12]))
+            self.c7 = tosigned(self.bld_int(pData[13], pData[14]))
+            self.c8 = tosigned(self.bld_int(pData[15], pData[16]))
+
+
+
+
+
+
 handle = init()
 read_sensor_temperature(handle)
 read_sensor_humidity(handle)
+read_sensor_barometer(handle)
 handle.close()
