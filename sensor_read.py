@@ -138,7 +138,7 @@ def read_sensor_magnet(handle):
     # enable magnet
     handle.sendline('char-write-cmd 0x44 01')
     handle.expect('\[LE\]>')
-    time.sleep(1)
+    time.sleep(2)    # wait at least 2s
     # read magnet values
     handle.sendline('char-read-hnd 0x40')
     handle.expect('descriptor: .*? \r')
