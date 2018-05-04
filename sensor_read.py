@@ -123,14 +123,20 @@ def read_sensor_barometer(handle):
     handle.sendline('char-write-cmd 0x4f 02')
     handle.expect('\[LE\]>')
     time.sleep(1)
-    # read IR temperature sensor TMP006
+    # read calibration factors
     handle.sendline('char-read-hnd 0x52')
     handle.expect('descriptor: .*? \r')
     rawcal = handle.after.split()
     print rawcal
     barometer = Barometer(rawcal)
-
-
+    # enable barometer
+    handle.sendline('char-write-cmd 0x4f 01')
+    handle.expect('\[LE\]>')
+    time.sleep(1)
+    handle.sendline('char-read-hnd 0x4b')
+    handle.expect('descriptor: .*? \r')
+    rawcal = handle.after.split()
+    print rawcal
 
 class Barometer:
 
@@ -212,9 +218,6 @@ class Barometer:
             self.c6 = tosigned(self.bld_int(pData[11], pData[12]))
             self.c7 = tosigned(self.bld_int(pData[13], pData[14]))
             self.c8 = tosigned(self.bld_int(pData[15], pData[16]))
-
-
-
 
 
 
