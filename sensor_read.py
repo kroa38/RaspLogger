@@ -120,6 +120,7 @@ def read_sensor_barometer(handle):
     """
 
     # fetch barometer calibration
+    global barometer
     handle.sendline('char-write-cmd 0x4f 02')
     handle.expect('\[LE\]>')
     time.sleep(1)
@@ -135,8 +136,13 @@ def read_sensor_barometer(handle):
     time.sleep(1)
     handle.sendline('char-read-hnd 0x4b')
     handle.expect('descriptor: .*? \r')
-    rawcal = handle.after.split()
-    print rawcal
+    baro = handle.after.split()
+    rawT = long(float.fromhex(baro[2]) * 256 + float.fromhex(baro[1]))
+    rawP = long(float.fromhex(baro[4]) * 256 + float.fromhex(baro[3]))
+    (temp, pres)= barometer.calc(rawT, rawP)
+    print "Baro" , temp,pres
+
+
 
 class Barometer:
 
