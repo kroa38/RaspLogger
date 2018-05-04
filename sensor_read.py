@@ -46,7 +46,7 @@ def init():
         pexpect.run('sudo hciconfig hci0 down')          # down hci
         pexpect.run('sudo hciconfig hci0 up')            # up  hci
         handle = pexpect.spawn('gatttool -b ' + adr + ' --interactive')
-        handle.expect('\[LE\]>', timeout=600)
+        handle.expect('\[LE\]>')
         print "Preparing to connect. You might need to press the side button..."
         handle.sendline('connect')
         # test for success of connect
