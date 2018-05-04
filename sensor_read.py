@@ -69,12 +69,17 @@ def read_sensor_humidity(handle):
     """
 
     # enable humidity sensor
-    handle.sendline('char-write-cmd 0x3c 01')
-    handle.expect('\[LE\]>')
-    time.sleep(1)
-    # read humidity sensor (temp + humidity)
-    handle.sendline('char-read-hnd 0x38')
-    handle.expect('descriptor: .*? \r')
+    try:
+        handle.sendline('char-write-cmd 0x3c 01')
+        handle.expect('\[LE\]>')
+        time.sleep(1)
+        # read humidity sensor (temp + humidity)
+        handle.sendline('char-read-hnd 0x38')
+        handle.expect('descriptor: .*? \r')
+    except pexpect.TIMEOUT:
+        print("pexpect TIMOUT exception")
+        sys.exit()
+
     objhum = handle.after.split()
     # disable humidity sensor
     handle.sendline('char-write-cmd 0x3c 00')
@@ -98,12 +103,16 @@ def read_sensor_temperature(handle):
     """
 
     # enable temp sensor
-    handle.sendline('char-write-cmd 0x29 01')
-    handle.expect('\[LE\]>')
-    time.sleep(1)
-    # read IR temperature sensor TMP006
-    handle.sendline('char-read-hnd 0x25')
-    handle.expect('descriptor: .*? \r')
+    try:
+        handle.sendline('char-write-cmd 0x29 01')
+        handle.expect('\[LE\]>')
+        time.sleep(1)
+        # read IR temperature sensor TMP006
+        handle.sendline('char-read-hnd 0x25')
+        handle.expect('descriptor: .*? \r')
+    except pexpect.TIMEOUT:
+        print("pexpect TIMOUT exception")
+        sys.exit()
     objtemp = handle.after.split()
     # disable IR  temp sensor
     handle.sendline('char-write-cmd 0x29 00')
@@ -145,12 +154,16 @@ def read_sensor_gyroscope(handle):
     """
 
     # enable magnet
-    handle.sendline('char-write-cmd 0x5b 07')
-    handle.expect('\[LE\]>')
-    time.sleep(2)    # wait at least 2s
-    # read magnet values
-    handle.sendline('char-read-hnd 0x57')
-    handle.expect('descriptor: .*? \r')
+    try:
+        handle.sendline('char-write-cmd 0x5b 07')
+        handle.expect('\[LE\]>')
+        time.sleep(2)    # wait at least 2s
+        # read magnet values
+        handle.sendline('char-read-hnd 0x57')
+        handle.expect('descriptor: .*? \r')
+    except pexpect.TIMEOUT:
+        print("pexpect TIMOUT exception")
+        sys.exit()
     objmag = handle.after.split()
     # disable magnet
     handle.sendline('char-write-cmd 0x5b 00')
@@ -171,17 +184,20 @@ def read_sensor_accelerometer(handle):
     """
 
     # enable magnet
-    handle.sendline('char-write-cmd 0x31 01')
-    handle.expect('\[LE\]>')
-    time.sleep(2)    # wait at least 2s
-    # read magnet values
-    handle.sendline('char-read-hnd 0x2D')
-    handle.expect('descriptor: .*? \r')
-    objmag = handle.after.split()
-    # disable magnet
-    handle.sendline('char-write-cmd 0x31 00')
-    handle.expect('\[LE\]>')
-
+    try:
+        handle.sendline('char-write-cmd 0x31 01')
+        handle.expect('\[LE\]>')
+        time.sleep(2)    # wait at least 2s
+        # read magnet values
+        handle.sendline('char-read-hnd 0x2D')
+        handle.expect('descriptor: .*? \r')
+        objmag = handle.after.split()
+        # disable magnet
+        handle.sendline('char-write-cmd 0x31 00')
+        handle.expect('\[LE\]>')
+    except pexpect.TIMEOUT:
+        print("pexpect TIMOUT exception")
+        sys.exit()
     xmag = float.fromhex(objmag[1])
     ymag = float.fromhex(objmag[2])
     zmag = float.fromhex(objmag[3])
@@ -197,16 +213,20 @@ def read_sensor_magnet(handle):
     """
 
     # enable magnet
-    handle.sendline('char-write-cmd 0x44 01')
-    handle.expect('\[LE\]>')
-    time.sleep(2)    # wait at least 2s
-    # read magnet values
-    handle.sendline('char-read-hnd 0x40')
-    handle.expect('descriptor: .*? \r')
-    objmag = handle.after.split()
-    # disable magnet
-    handle.sendline('char-write-cmd 0x44 00')
-    handle.expect('\[LE\]>')
+    try:
+        handle.sendline('char-write-cmd 0x44 01')
+        handle.expect('\[LE\]>')
+        time.sleep(2)    # wait at least 2s
+        # read magnet values
+        handle.sendline('char-read-hnd 0x40')
+        handle.expect('descriptor: .*? \r')
+        objmag = handle.after.split()
+        # disable magnet
+        handle.sendline('char-write-cmd 0x44 00')
+        handle.expect('\[LE\]>')
+    except pexpect.TIMEOUT:
+        print("pexpect TIMOUT exception")
+        sys.exit()
 
     xmag = float.fromhex(objmag[2]) * 256 + float.fromhex(objmag[1])
     ymag = float.fromhex(objmag[4]) * 256 + float.fromhex(objmag[3])
@@ -224,23 +244,28 @@ def read_sensor_barometer(handle):
 
     # fetch barometer calibration
     global barometer
-    handle.sendline('char-write-cmd 0x4f 02')
-    handle.expect('\[LE\]>')
-    time.sleep(2)
-    # read calibration factors
-    handle.sendline('char-read-hnd 0x52')
-    handle.expect('descriptor: .*? \r')
-    rawcal = handle.after.split()
-    barometer = Barometer(rawcal)
-    # enable barometer
-    handle.sendline('char-write-cmd 0x4f 01')
-    handle.expect('\[LE\]>')
-    time.sleep(2)
-    handle.sendline('char-read-hnd 0x4b')
-    handle.expect('descriptor: .*? \r')
-    baro = handle.after.split()
-    handle.sendline('char-write-cmd 0x4f 00')
-    handle.expect('\[LE\]>')
+    try:
+        handle.sendline('char-write-cmd 0x4f 02')
+        handle.expect('\[LE\]>')
+        time.sleep(2)
+        # read calibration factors
+        handle.sendline('char-read-hnd 0x52')
+        handle.expect('descriptor: .*? \r')
+        rawcal = handle.after.split()
+        barometer = Barometer(rawcal)
+        # enable barometer
+        handle.sendline('char-write-cmd 0x4f 01')
+        handle.expect('\[LE\]>')
+        time.sleep(2)
+        handle.sendline('char-read-hnd 0x4b')
+        handle.expect('descriptor: .*? \r')
+        baro = handle.after.split()
+        handle.sendline('char-write-cmd 0x4f 00')
+        handle.expect('\[LE\]>')
+    except pexpect.TIMEOUT:
+        print("pexpect TIMOUT exception")
+        sys.exit()
+
     rawT = long(float.fromhex(baro[2]) * 256 + float.fromhex(baro[1]))
     rawP = long(float.fromhex(baro[4]) * 256 + float.fromhex(baro[3]))
     (temp, pres)= barometer.calc(rawT, rawP)
