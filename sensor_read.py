@@ -23,7 +23,7 @@ def tosignedbyte(n):
     else:
         return float(n)
 
- def magforce(v):
+def magforce(v):
     return (tosigned(v) * 1.0) / (65536.0 / 2000.0)
 
 
