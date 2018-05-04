@@ -201,7 +201,7 @@ class Barometer:
         # This works too
         # i = (hi<<8)+lo
         def bld_int(self, lobyte, hibyte):
-            return int.fromhex(hibyte) * 256 + int.fromhex(lobyte)
+            return int(float.fromhex(hibyte) * 256 + float.fromhex(lobyte))
 
         def __init__(self, pData):
             self.c1 = self.bld_int(pData[1], pData[2])
