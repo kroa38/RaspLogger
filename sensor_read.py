@@ -9,7 +9,21 @@ import pexpect
 
 adr = "78:C5:E5:6E:EA:0F"
 
-tosigned = lambda n: float(n-0x10000) if n>0x7fff else float(n)
+def tosigned(n):
+    if n > 0x7fff:
+        return float(n-0x10000)
+    else
+        return float(n)
+
+def tosignedbyte(n):
+    if n > 0x7f:
+        return float(n-0x100)
+    else
+        return float(n)
+
+#tosigned = lambda n: float(n-0x10000) if n>0x7fff else float(n)
+#tosignedbyte = lambda n: float(n-0x100) if n>0x7f else float(n)
+
 
 def init():
     """
@@ -168,7 +182,6 @@ class Barometer:
         bar_pres = self.calcBarPress(self.m_raw_temp, self.m_raw_pres)
         return (bar_temp, bar_pres)
 
-
     def calcBarTmp(self, raw_temp):
         c1 = self.m_barCalib.c1
         c2 = self.m_barCalib.c2
@@ -212,7 +225,8 @@ class Barometer:
 
         # This works too
         # i = (hi<<8)+lo
-        def bld_int(self, lobyte, hibyte):
+        @staticmethod
+        def bld_int(lobyte, hibyte):
             return int(float.fromhex(hibyte) * 256 + float.fromhex(lobyte))
 
         def __init__(self, pData):
