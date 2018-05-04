@@ -325,13 +325,15 @@ class Barometer:
             self.c7 = tosigned(self.bld_int(pData[13], pData[14]))
             self.c8 = tosigned(self.bld_int(pData[15], pData[16]))
 
-
-
+count = 0
 handle = init()
-read_sensor_temperature(handle)
-read_sensor_humidity(handle)
-read_sensor_barometer(handle)
-read_sensor_magnet(handle)
-read_sensor_accelerometer(handle)
-read_sensor_gyroscope(handle)
+while count != 5:
+    print "------------------------"
+    read_sensor_temperature(handle)
+    read_sensor_humidity(handle)
+    read_sensor_barometer(handle)
+    read_sensor_magnet(handle)
+    read_sensor_accelerometer(handle)
+    read_sensor_gyroscope(handle)
+    count += 1
 handle.close()
