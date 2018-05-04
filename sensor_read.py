@@ -12,13 +12,13 @@ adr = "78:C5:E5:6E:EA:0F"
 def tosigned(n):
     if n > 0x7fff:
         return float(n-0x10000)
-    else
+    else:
         return float(n)
 
 def tosignedbyte(n):
     if n > 0x7f:
         return float(n-0x100)
-    else
+    else:
         return float(n)
 
 #tosigned = lambda n: float(n-0x10000) if n>0x7fff else float(n)
