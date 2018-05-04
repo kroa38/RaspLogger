@@ -26,6 +26,8 @@ def tosignedbyte(n):
 def magforce(v):
     return (tosigned(v) * 1.0) / (65536.0 / 2000.0)
 
+def accel(v):
+    return tosignedbyte(v) / 64.0
 
 def init():
     """
@@ -126,6 +128,32 @@ def read_sensor_temperature(handle):
 
     dico = {"Temp_Amb": round(m_tmpAmb,1), "Temp_Obj": round(tObj,1)}
 
+    print dico
+
+
+def read_sensor_accelerometer(handle):
+    """
+
+    :return: dictionnary
+    """
+
+    # enable magnet
+    handle.sendline('char-write-cmd 0x31 01')
+    handle.expect('\[LE\]>')
+    time.sleep(2)    # wait at least 2s
+    # read magnet values
+    handle.sendline('char-read-hnd 0x2D')
+    handle.expect('descriptor: .*? \r')
+    objmag = handle.after.split()
+    # disable magnet
+    handle.sendline('char-write-cmd 0x31 00')
+    handle.expect('\[LE\]>')
+
+    xmag = float.fromhex(objmag[1])
+    ymag = float.fromhex(objmag[2])
+    zmag = float.fromhex(objmag[3])
+
+    dico = {"Mag x": round(accel(xmag),1), "Mag y": round(accel(ymag),1), "Mag z": round(accel(zmag),1)}
     print dico
 
 
@@ -273,4 +301,5 @@ read_sensor_temperature(handle)
 read_sensor_humidity(handle)
 read_sensor_barometer(handle)
 read_sensor_magnet(handle)
+read_sensor_accelerometer(handle)
 handle.close()
