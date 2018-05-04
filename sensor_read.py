@@ -41,21 +41,21 @@ def init():
     init gatttool
     :return: handle
     """
-
-    pexpect.run('sudo killall -SIGKILL gatttool')    # kill process if it is running
-    pexpect.run('sudo hciconfig hci0 down')          # down hci
-    pexpect.run('sudo hciconfig hci0 up')            # up  hci
-
-    handle = pexpect.spawn('gatttool -b ' + adr + ' --interactive')
-    handle.expect('\[LE\]>', timeout=600)
-    print "Preparing to connect. You might need to press the side button..."
-    handle.sendline('connect')
-    # test for success of connect
     try:
+        pexpect.run('sudo killall -SIGKILL gatttool')    # kill process if it is running
+        pexpect.run('sudo hciconfig hci0 down')          # down hci
+        pexpect.run('sudo hciconfig hci0 up')            # up  hci
+
+        handle = pexpect.spawn('gatttool -b ' + adr + ' --interactive')
+        handle.expect('\[LE\]>', timeout=600)
+        print "Preparing to connect. You might need to press the side button..."
+        handle.sendline('connect')
+        # test for success of connect
+
         handle.expect('Connection successful.*\[LE\]>')
         print "Sensor Connected !"
         time.sleep(1)
-    except:
+    except pexpect.TIMOUT:
         print("Exception was thrown during expect")
         sys.exit()
 
