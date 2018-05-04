@@ -56,7 +56,7 @@ def init():
         print "Sensor Connected !"
         time.sleep(1)
     except pexpect.TIMOUT:
-        print("Exception was thrown during expect")
+        print("pexpect TIMOUT exception")
         sys.exit()
 
     return handle
