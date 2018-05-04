@@ -140,7 +140,8 @@ def read_sensor_barometer(handle):
     rawT = long(float.fromhex(baro[2]) * 256 + float.fromhex(baro[1]))
     rawP = long(float.fromhex(baro[4]) * 256 + float.fromhex(baro[3]))
     (temp, pres)= barometer.calc(rawT, rawP)
-    print "Baro" , temp,pres
+    dico = {"Temp_Baro": round(temp,1), "Pressure": round(pres,1)}
+    print dico
 
 
 
