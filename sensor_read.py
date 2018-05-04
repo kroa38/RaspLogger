@@ -127,8 +127,9 @@ def read_sensor_barometer(handle):
     handle.sendline('char-read-hnd 0x52')
     handle.expect('descriptor: .*? \r')
     rawcal = handle.after.split()
+    print rawcal
     barometer = Barometer(rawcal)
-    print barometer
+
 
 
 class Barometer:
@@ -200,7 +201,7 @@ class Barometer:
         # This works too
         # i = (hi<<8)+lo
         def bld_int(self, lobyte, hibyte):
-            return (lobyte & 0x0FF) + ((hibyte & 0x0FF) << 8)
+            return int.fromhex(hibyte) * 256 + int.fromhex(lobyte)
 
         def __init__(self, pData):
             self.c1 = self.bld_int(pData[1], pData[2])
