@@ -7,7 +7,7 @@ import sys
 import time
 import pexpect
 
-adr = "78:C5:E5:6E:EA:0F"
+adr = "78:C5:E5:6E:EA:0F"  # Sensortag bluetooth address
 
 
 def tosigned(n):
@@ -23,14 +23,18 @@ def tosignedbyte(n):
     else:
         return float(n)
 
+
 def magforce(v):
     return (tosigned(v) * 1.0) / (65536.0 / 2000.0)
+
 
 def accel(v):
     return tosignedbyte(v) / 64.0
 
+
 def gyro(v):
     return (tosigned(v) * 1.0) / (65536/500)
+
 
 def init():
     """
@@ -327,10 +331,12 @@ class Barometer:
             self.c7 = tosigned(self.bld_int(pData[13], pData[14]))
             self.c8 = tosigned(self.bld_int(pData[15], pData[16]))
 
+
+
 count = 0
 handle = init()
 while count != 5:
-    print "------------------------"
+    print "-----------------------------------------------------"
     read_sensor_temperature(handle)
     read_sensor_humidity(handle)
     read_sensor_barometer(handle)
