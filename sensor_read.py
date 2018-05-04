@@ -9,11 +9,13 @@ import pexpect
 
 adr = "78:C5:E5:6E:EA:0F"
 
+
 def tosigned(n):
     if n > 0x7fff:
         return float(n-0x10000)
     else:
         return float(n)
+
 
 def tosignedbyte(n):
     if n > 0x7f:
@@ -21,8 +23,8 @@ def tosignedbyte(n):
     else:
         return float(n)
 
-#tosigned = lambda n: float(n-0x10000) if n>0x7fff else float(n)
-#tosignedbyte = lambda n: float(n-0x100) if n>0x7f else float(n)
+ def magforce(v):
+    return (tosigned(v) * 1.0) / (65536.0 / 2000.0)
 
 
 def init():
@@ -49,6 +51,7 @@ def init():
         sys.exit()
 
     return handle
+
 
 def read_sensor_humidity(handle):
     """
@@ -126,6 +129,31 @@ def read_sensor_temperature(handle):
     print dico
 
 
+def read_sensor_magnet(handle):
+    """
+
+    :return: dictionnary
+    """
+
+    # enable magnet
+    handle.sendline('char-write-cmd 0x44 01')
+    handle.expect('\[LE\]>')
+    time.sleep(1)
+    # read magnet values
+    handle.sendline('char-read-hnd 0x40')
+    handle.expect('descriptor: .*? \r')
+    objmag = handle.after.split()
+    # disable magnet
+    handle.sendline('char-write-cmd 0x44 00')
+    handle.expect('\[LE\]>')
+
+    xmag = float.fromhex(objmag[2]) * 256 + float.fromhex(objmag[1])
+    ymag = float.fromhex(objmag[4]) * 256 + float.fromhex(objmag[3])
+    zmag = float.fromhex(objmag[6]) * 256 + float.fromhex(objmag[5])
+
+    dico = {"Mag x": round(magforce(xmag),1), "Mag y": round(magforce(ymag),1), "Mag z": round(magforce(zmag),1)}
+    print dico
+
 
 def read_sensor_barometer(handle):
     """
@@ -155,7 +183,6 @@ def read_sensor_barometer(handle):
     (temp, pres)= barometer.calc(rawT, rawP)
     dico = {"Temp_Baro": round(temp,1), "Pressure": round(pres,1)}
     print dico
-
 
 
 class Barometer:
