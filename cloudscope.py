@@ -38,6 +38,11 @@ import json  # lib pour fichiers json
 import os.path  # lib pour test fichiers
 import urllib2  # lib pour requettes internet
 
+import string
+import random
+
+
+
 from apiclient.discovery import build
 from apiclient.http import MediaFileUpload
 from oauth2client.file import Storage
@@ -298,6 +303,7 @@ def tweet_message(msg):
 def tweet_ip_addr():
     """
     """
+    char_rdn = random.choice(string.letters)
     currentpathdir = os.path.dirname(os.path.realpath(__file__))
     jsonfilename = os.path.join(currentpathdir, "credential_twitter.json")
 
@@ -309,7 +315,7 @@ def tweet_ip_addr():
     consumer_secret = data_tweet['consumer_secret']
 
     t = Twitter(auth=OAuth(token, token_secret, consumer_key, consumer_secret))
-    message = get_ip_adress()
+    message = get_ip_adress() + "   " + char_rdn
     t.statuses.update(status=message)
 
 
