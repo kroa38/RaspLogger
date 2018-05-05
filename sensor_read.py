@@ -359,13 +359,12 @@ class Barometer:
             self.c8 = tosigned(self.bld_int(pData[15], pData[16]))
 
 
-
 count = 0
 handle = init()
 while count != 15:
     print "-----------------------------------------------------"
     data = read_sensor_humidity(handle)
-    print " Temperature = " % data[Hum_Temp]     # {"Hum_Temp": round(t,1), "Hum %": round(hum,1)}
+    print " Temperature = " % data["Hum_Temp"]     # {"Hum_Temp": round(t,1), "Hum %": round(hum,1)}
     '''
     read_sensor_humidity(handle)
     read_sensor_barometer(handle)
