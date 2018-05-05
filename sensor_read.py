@@ -364,13 +364,6 @@ handle = init()
 while count != 15:
     print "-----------------------------------------------------"
     data = read_sensor_humidity(handle)
-    print " Temperature = " % data["Hum_Temp"]     # {"Hum_Temp": round(t,1), "Hum %": round(hum,1)}
-    '''
-    read_sensor_humidity(handle)
-    read_sensor_barometer(handle)
-    read_sensor_magnet(handle)
-    read_sensor_accelerometer(handle)
-    read_sensor_gyroscope(handle)
+    print " Temperature = %.1f" % data["Hum_Temp"]
     count += 1
-    '''
 handle.close()
