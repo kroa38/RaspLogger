@@ -28,12 +28,16 @@ On the arduino install the packages :
  error.log		(tracking errors)
  event.log		(tracking event)...
 
- /home/pi/.local/lib/python2.7/site-packages'
+*******
+ for raspberry pi it is needed to add path to this directory
+ if you want to start script from rc.local (at boot)
 
+ /home/pi/.local/lib/python2.7/site-packages'
+*******
   No space left on device: '/usr/lib/python2.7/site-packages/pytz-2015.2.dist-info'
 """
 import sys
-sys.path.append('/home/pi/.local/lib/python2.7/site-packages')
+sys.path.append('/home/pi/.local/lib/python2.7/site-packages')    # to start script from rc.local (at boot)
 import time  # lib pour gestion heure
 import httplib2  # lib requette http
 import base64
