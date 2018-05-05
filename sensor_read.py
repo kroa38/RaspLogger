@@ -92,7 +92,7 @@ def read_sensor_humidity(handle):
     hum = -6.0 + 125.0/65536.0 * rawH  # [%RH]
 
     dico = {"Hum_Temp": round(t,1), "Hum %": round(hum,1)}
-    print dico
+    return dico
 
 
 def read_sensor_temperature(handle):
@@ -143,7 +143,7 @@ def read_sensor_temperature(handle):
 
     dico = {"Temp_Amb": round(m_tmpAmb,1), "Temp_Obj": round(tObj,1)}
 
-    print dico
+    return dico
 
 
 def read_sensor_gyroscope(handle):
@@ -173,7 +173,7 @@ def read_sensor_gyroscope(handle):
     zmag = float.fromhex(objmag[6]) * 256 + float.fromhex(objmag[5])
 
     dico = {"Gyro x": round(gyro(xmag),1), "Gyro y": round(gyro(ymag),1), "Gyro z": round(gyro(zmag),1)}
-    print dico
+    return dico
 
 
 def read_sensor_accelerometer(handle):
@@ -202,7 +202,8 @@ def read_sensor_accelerometer(handle):
     zmag = float.fromhex(objmag[3])
 
     dico = {"Acc x": round(accel(xmag),1), "Acc y": round(accel(ymag),1), "Acc z": round(accel(zmag),1)}
-    print dico
+
+    return dico
 
 
 def read_sensor_magnet(handle):
@@ -232,7 +233,8 @@ def read_sensor_magnet(handle):
     zmag = float.fromhex(objmag[6]) * 256 + float.fromhex(objmag[5])
 
     dico = {"Mag x": round(magforce(xmag),1), "Mag y": round(magforce(ymag),1), "Mag z": round(magforce(zmag),1)}
-    print dico
+
+    return dico
 
 
 def read_sensor_barometer(handle):
@@ -271,7 +273,8 @@ def read_sensor_barometer(handle):
 
     alt = ((pow((1013.25/pres),1/5.257)-1)*(temp+273.15))/0.0065
     dico = {"Temp_Baro": round(temp,1), "Pressure": round(pres,1), "Alt":round(alt,1)}
-    print dico
+
+    return dico
 
 
 class Barometer:
@@ -359,13 +362,16 @@ class Barometer:
 
 count = 0
 handle = init()
-while count != 5:
+while count != 15:
     print "-----------------------------------------------------"
-    read_sensor_temperature(handle)
+    data = read_sensor_humidity(handle)
+    print " Temperature = " % data[Hum_Temp]     # {"Hum_Temp": round(t,1), "Hum %": round(hum,1)}
+    '''
     read_sensor_humidity(handle)
     read_sensor_barometer(handle)
     read_sensor_magnet(handle)
     read_sensor_accelerometer(handle)
     read_sensor_gyroscope(handle)
     count += 1
+    '''
 handle.close()
