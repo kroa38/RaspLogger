@@ -38,6 +38,7 @@ On the arduino install the packages :
 """
 import sys
 sys.path.append('/home/pi/.local/lib/python2.7/site-packages')    # to start script from rc.local (at boot)
+
 import time  # lib pour gestion heure
 import httplib2  # lib requette http
 import base64

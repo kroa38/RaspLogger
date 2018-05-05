@@ -36,7 +36,7 @@ def gyro(v):
     return (tosigned(v) * 1.0) / (65536/500)
 
 
-def init():
+def init_sensor():
     """
     init gatttool
     :return: handle
@@ -359,11 +359,3 @@ class Barometer:
             self.c8 = tosigned(self.bld_int(pData[15], pData[16]))
 
 
-count = 0
-handle = init()
-while count != 15:
-    print "-----------------------------------------------------"
-    data = read_sensor_humidity(handle)
-    print " Temperature = %.1f" % data["Hum_Temp"]
-    count += 1
-handle.close()
