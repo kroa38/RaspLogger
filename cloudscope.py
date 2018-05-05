@@ -32,8 +32,8 @@ On the arduino install the packages :
 
   No space left on device: '/usr/lib/python2.7/site-packages/pytz-2015.2.dist-info'
 """
+import sys
 sys.path.append('/home/pi/.local/lib/python2.7/site-packages')
-
 import time  # lib pour gestion heure
 import httplib2  # lib requette http
 import base64
