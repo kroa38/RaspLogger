@@ -286,6 +286,7 @@ def email_ip_addr():
 def tweet_message(msg):
     """
     """
+    char_rdn = random.choice(string.letters)
     currentpathdir = os.path.dirname(os.path.realpath(__file__))
     jsonfilename = os.path.join(currentpathdir, "credential_twitter.json")
 
@@ -297,7 +298,8 @@ def tweet_message(msg):
     consumer_secret = data_tweet['consumer_secret']
 
     t = Twitter(auth=OAuth(token, token_secret, consumer_key, consumer_secret))
-    t.statuses.update(status=msg)
+    message = msg + "  " + char_rdn
+    t.statuses.update(status=message)
 
 
 def tweet_ip_addr():
