@@ -36,27 +36,26 @@ def gyro(v):
     return (tosigned(v) * 1.0) / (65536/500)
 
 
-def init():
+def init_sensor():
     """
     init gatttool
     :return: handle
     """
-
-    pexpect.run('sudo killall -SIGKILL gatttool')    # kill process if it is running
-    pexpect.run('sudo hciconfig hci0 down')          # down hci
-    pexpect.run('sudo hciconfig hci0 up')            # up  hci
-
-    handle = pexpect.spawn('gatttool -b ' + adr + ' --interactive')
-    handle.expect('\[LE\]>', timeout=600)
-    print "Preparing to connect. You might need to press the side button..."
-    handle.sendline('connect')
-    # test for success of connect
     try:
+        pexpect.run('sudo killall -SIGKILL gatttool')    # kill process if it is running
+        pexpect.run('sudo hciconfig hci0 down')          # down hci
+        pexpect.run('sudo hciconfig hci0 up')            # up  hci
+        handle = pexpect.spawn('gatttool -b ' + adr + ' --interactive')
+        handle.expect('\[LE\]>')
+        print "Preparing to connect. You might need to press the side button..."
+        handle.sendline('connect')
+        # test for success of connect
+
         handle.expect('Connection successful.*\[LE\]>')
         print "Sensor Connected !"
         time.sleep(1)
-    except:
-        print("Exception was thrown during expect")
+    except pexpect.TIMEOUT:
+        print("pexpect TIMOUT exception : Probably Radio loss !!")
         sys.exit()
 
     return handle
@@ -69,12 +68,17 @@ def read_sensor_humidity(handle):
     """
 
     # enable humidity sensor
-    handle.sendline('char-write-cmd 0x3c 01')
-    handle.expect('\[LE\]>')
-    time.sleep(1)
-    # read humidity sensor (temp + humidity)
-    handle.sendline('char-read-hnd 0x38')
-    handle.expect('descriptor: .*? \r')
+    try:
+        handle.sendline('char-write-cmd 0x3c 01')
+        handle.expect('\[LE\]>')
+        time.sleep(1)
+        # read humidity sensor (temp + humidity)
+        handle.sendline('char-read-hnd 0x38')
+        handle.expect('descriptor: .*? \r')
+    except pexpect.TIMEOUT:
+        print("pexpect TIMOUT exception : Probably Radio loss !!")
+        sys.exit()
+
     objhum = handle.after.split()
     # disable humidity sensor
     handle.sendline('char-write-cmd 0x3c 00')
@@ -88,7 +92,7 @@ def read_sensor_humidity(handle):
     hum = -6.0 + 125.0/65536.0 * rawH  # [%RH]
 
     dico = {"Hum_Temp": round(t,1), "Hum %": round(hum,1)}
-    print dico
+    return dico
 
 
 def read_sensor_temperature(handle):
@@ -98,12 +102,16 @@ def read_sensor_temperature(handle):
     """
 
     # enable temp sensor
-    handle.sendline('char-write-cmd 0x29 01')
-    handle.expect('\[LE\]>')
-    time.sleep(1)
-    # read IR temperature sensor TMP006
-    handle.sendline('char-read-hnd 0x25')
-    handle.expect('descriptor: .*? \r')
+    try:
+        handle.sendline('char-write-cmd 0x29 01')
+        handle.expect('\[LE\]>')
+        time.sleep(1)
+        # read IR temperature sensor TMP006
+        handle.sendline('char-read-hnd 0x25')
+        handle.expect('descriptor: .*? \r')
+    except pexpect.TIMEOUT:
+        print("pexpect TIMOUT exception : Probably Radio loss !!")
+        sys.exit()
     objtemp = handle.after.split()
     # disable IR  temp sensor
     handle.sendline('char-write-cmd 0x29 00')
@@ -135,7 +143,7 @@ def read_sensor_temperature(handle):
 
     dico = {"Temp_Amb": round(m_tmpAmb,1), "Temp_Obj": round(tObj,1)}
 
-    print dico
+    return dico
 
 
 def read_sensor_gyroscope(handle):
@@ -145,12 +153,16 @@ def read_sensor_gyroscope(handle):
     """
 
     # enable magnet
-    handle.sendline('char-write-cmd 0x5b 07')
-    handle.expect('\[LE\]>')
-    time.sleep(2)    # wait at least 2s
-    # read magnet values
-    handle.sendline('char-read-hnd 0x57')
-    handle.expect('descriptor: .*? \r')
+    try:
+        handle.sendline('char-write-cmd 0x5b 07')
+        handle.expect('\[LE\]>')
+        time.sleep(2)    # wait at least 2s
+        # read magnet values
+        handle.sendline('char-read-hnd 0x57')
+        handle.expect('descriptor: .*? \r')
+    except pexpect.TIMEOUT:
+        print("pexpect TIMOUT exception : Probably Radio loss !!")
+        sys.exit()
     objmag = handle.after.split()
     # disable magnet
     handle.sendline('char-write-cmd 0x5b 00')
@@ -161,7 +173,7 @@ def read_sensor_gyroscope(handle):
     zmag = float.fromhex(objmag[6]) * 256 + float.fromhex(objmag[5])
 
     dico = {"Gyro x": round(gyro(xmag),1), "Gyro y": round(gyro(ymag),1), "Gyro z": round(gyro(zmag),1)}
-    print dico
+    return dico
 
 
 def read_sensor_accelerometer(handle):
@@ -171,23 +183,27 @@ def read_sensor_accelerometer(handle):
     """
 
     # enable magnet
-    handle.sendline('char-write-cmd 0x31 01')
-    handle.expect('\[LE\]>')
-    time.sleep(2)    # wait at least 2s
-    # read magnet values
-    handle.sendline('char-read-hnd 0x2D')
-    handle.expect('descriptor: .*? \r')
-    objmag = handle.after.split()
-    # disable magnet
-    handle.sendline('char-write-cmd 0x31 00')
-    handle.expect('\[LE\]>')
-
+    try:
+        handle.sendline('char-write-cmd 0x31 01')
+        handle.expect('\[LE\]>')
+        time.sleep(2)    # wait at least 2s
+        # read magnet values
+        handle.sendline('char-read-hnd 0x2D')
+        handle.expect('descriptor: .*? \r')
+        objmag = handle.after.split()
+        # disable magnet
+        handle.sendline('char-write-cmd 0x31 00')
+        handle.expect('\[LE\]>')
+    except pexpect.TIMEOUT:
+        print("pexpect TIMOUT exception : Probably Radio loss !!")
+        sys.exit()
     xmag = float.fromhex(objmag[1])
     ymag = float.fromhex(objmag[2])
     zmag = float.fromhex(objmag[3])
 
     dico = {"Acc x": round(accel(xmag),1), "Acc y": round(accel(ymag),1), "Acc z": round(accel(zmag),1)}
-    print dico
+
+    return dico
 
 
 def read_sensor_magnet(handle):
@@ -197,23 +213,28 @@ def read_sensor_magnet(handle):
     """
 
     # enable magnet
-    handle.sendline('char-write-cmd 0x44 01')
-    handle.expect('\[LE\]>')
-    time.sleep(2)    # wait at least 2s
-    # read magnet values
-    handle.sendline('char-read-hnd 0x40')
-    handle.expect('descriptor: .*? \r')
-    objmag = handle.after.split()
-    # disable magnet
-    handle.sendline('char-write-cmd 0x44 00')
-    handle.expect('\[LE\]>')
+    try:
+        handle.sendline('char-write-cmd 0x44 01')
+        handle.expect('\[LE\]>')
+        time.sleep(2)    # wait at least 2s
+        # read magnet values
+        handle.sendline('char-read-hnd 0x40')
+        handle.expect('descriptor: .*? \r')
+        objmag = handle.after.split()
+        # disable magnet
+        handle.sendline('char-write-cmd 0x44 00')
+        handle.expect('\[LE\]>')
+    except pexpect.TIMEOUT:
+        print("pexpect TIMOUT exception : Probably Radio loss !!")
+        sys.exit()
 
     xmag = float.fromhex(objmag[2]) * 256 + float.fromhex(objmag[1])
     ymag = float.fromhex(objmag[4]) * 256 + float.fromhex(objmag[3])
     zmag = float.fromhex(objmag[6]) * 256 + float.fromhex(objmag[5])
 
     dico = {"Mag x": round(magforce(xmag),1), "Mag y": round(magforce(ymag),1), "Mag z": round(magforce(zmag),1)}
-    print dico
+
+    return dico
 
 
 def read_sensor_barometer(handle):
@@ -224,30 +245,36 @@ def read_sensor_barometer(handle):
 
     # fetch barometer calibration
     global barometer
-    handle.sendline('char-write-cmd 0x4f 02')
-    handle.expect('\[LE\]>')
-    time.sleep(2)
-    # read calibration factors
-    handle.sendline('char-read-hnd 0x52')
-    handle.expect('descriptor: .*? \r')
-    rawcal = handle.after.split()
-    barometer = Barometer(rawcal)
-    # enable barometer
-    handle.sendline('char-write-cmd 0x4f 01')
-    handle.expect('\[LE\]>')
-    time.sleep(2)
-    handle.sendline('char-read-hnd 0x4b')
-    handle.expect('descriptor: .*? \r')
-    baro = handle.after.split()
-    handle.sendline('char-write-cmd 0x4f 00')
-    handle.expect('\[LE\]>')
+    try:
+        handle.sendline('char-write-cmd 0x4f 02')
+        handle.expect('\[LE\]>')
+        time.sleep(2)
+        # read calibration factors
+        handle.sendline('char-read-hnd 0x52')
+        handle.expect('descriptor: .*? \r')
+        rawcal = handle.after.split()
+        barometer = Barometer(rawcal)
+        # enable barometer
+        handle.sendline('char-write-cmd 0x4f 01')
+        handle.expect('\[LE\]>')
+        time.sleep(2)
+        handle.sendline('char-read-hnd 0x4b')
+        handle.expect('descriptor: .*? \r')
+        baro = handle.after.split()
+        handle.sendline('char-write-cmd 0x4f 00')
+        handle.expect('\[LE\]>')
+    except pexpect.TIMEOUT:
+        print("pexpect TIMOUT exception : Probably Radio loss !!")
+        sys.exit()
+
     rawT = long(float.fromhex(baro[2]) * 256 + float.fromhex(baro[1]))
     rawP = long(float.fromhex(baro[4]) * 256 + float.fromhex(baro[3]))
     (temp, pres)= barometer.calc(rawT, rawP)
 
     alt = ((pow((1013.25/pres),1/5.257)-1)*(temp+273.15))/0.0065
     dico = {"Temp_Baro": round(temp,1), "Pressure": round(pres,1), "Alt":round(alt,1)}
-    print dico
+
+    return dico
 
 
 class Barometer:
@@ -332,16 +359,3 @@ class Barometer:
             self.c8 = tosigned(self.bld_int(pData[15], pData[16]))
 
 
-
-count = 0
-handle = init()
-while count != 5:
-    print "-----------------------------------------------------"
-    read_sensor_temperature(handle)
-    read_sensor_humidity(handle)
-    read_sensor_barometer(handle)
-    read_sensor_magnet(handle)
-    read_sensor_accelerometer(handle)
-    read_sensor_gyroscope(handle)
-    count += 1
-handle.close()

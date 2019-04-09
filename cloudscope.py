@@ -27,9 +27,18 @@ On the arduino install the packages :
  
  error.log		(tracking errors)
  event.log		(tracking event)...
- 
+
+*******
+ for raspberry pi it is needed to add path to this directory
+ if you want to start script from rc.local (at boot)
+
+ /home/pi/.local/lib/python2.7/site-packages'
+*******
   No space left on device: '/usr/lib/python2.7/site-packages/pytz-2015.2.dist-info'
 """
+import sys
+sys.path.append('/home/pi/.local/lib/python2.7/site-packages')    # to start script from rc.local (at boot)
+
 import time  # lib pour gestion heure
 import httplib2  # lib requette http
 import base64
@@ -37,6 +46,11 @@ import gspread  # lib for google spreadsheet
 import json  # lib pour fichiers json
 import os.path  # lib pour test fichiers
 import urllib2  # lib pour requettes internet
+
+import string
+import random
+
+
 
 from apiclient.discovery import build
 from apiclient.http import MediaFileUpload
@@ -281,6 +295,7 @@ def email_ip_addr():
 def tweet_message(msg):
     """
     """
+    char_rdn = random.choice(string.letters)
     currentpathdir = os.path.dirname(os.path.realpath(__file__))
     jsonfilename = os.path.join(currentpathdir, "credential_twitter.json")
 
@@ -292,12 +307,14 @@ def tweet_message(msg):
     consumer_secret = data_tweet['consumer_secret']
 
     t = Twitter(auth=OAuth(token, token_secret, consumer_key, consumer_secret))
-    t.statuses.update(status=msg)
+    message = msg + "  " + char_rdn
+    t.statuses.update(status=message)
 
 
 def tweet_ip_addr():
     """
     """
+    char_rdn = random.choice(string.letters)
     currentpathdir = os.path.dirname(os.path.realpath(__file__))
     jsonfilename = os.path.join(currentpathdir, "credential_twitter.json")
 
@@ -309,7 +326,7 @@ def tweet_ip_addr():
     consumer_secret = data_tweet['consumer_secret']
 
     t = Twitter(auth=OAuth(token, token_secret, consumer_key, consumer_secret))
-    message = get_ip_adress()
+    message = get_ip_adress() + "   " + char_rdn
     t.statuses.update(status=message)
 
 
