@@ -18,12 +18,13 @@ def callback(bt_addr, rssi, packet, additional_info):
     if (bl[0]-al[0] > 3) or (bl[1] != al[1]):
         al[0] = bl[0]
         al[1] = bl[1]
-        #print  lst_cmp 
         ble_data = str("rssi,%d,%s" % (rssi, packet))
         json_body = set_json(ble_data)
-        client = InfluxDBClient('localhost', 8086, 'root', 'root', 'testdb')
-        client.create_database('testdb')
+        client = InfluxDBClient('localhost', 8086, 'root', 'root', 'test4db')
+        client.create_database('test4db')
         client.write_points(json_body)
+        #result = client.query('select value from Battery;')
+        #print("Result: {0}\n".format(result))
 
 def set_json(ble_data):
     blueduino_sensor_type = 1
@@ -69,25 +70,36 @@ def set_json(ble_data):
     else:
         location = "None"
 
-    print ("date time is %s" % time_string )
-    print ("rssi = %d" % rssi)
-    print ("dbm_1m = %d" % dbm_1m)
-    print ("sensor type = %d" % sensor_type)
-    print ("sensor number = %d" % sensor_number)
-    print ("batt_voltage = %.3f" % batt_voltage)
-    print ("bme_temp = %.1f" % bme_temp)
-    print ("altitude = %d" % altitude)
-    print ("pressure = %.1f" % pressure)
-    print ("gaz = %d" % gaz)
-    print ("temperature = %.1f" % temperature)
-    print ("humidity = %.2f" % humidity)
+    # print ("date time is %s" % time_string )
+    # print ("rssi = %d" % rssi)
+    # print ("dbm_1m = %d" % dbm_1m)
+    # print ("sensor type = %d" % sensor_type)
+    # print ("sensor number = %d" % sensor_number)
+    # print ("batt_voltage = %.3f" % batt_voltage)
+    # print ("bme_temp = %.1f" % bme_temp)
+    # print ("altitude = %d" % altitude)
+    # print ("pressure = %.1f" % pressure)
+    # print ("gaz = %d" % gaz)
+    # print ("temperature = %.1f" % temperature)
+    # print ("humidity = %.2f" % humidity)
 
     json_body = [
         {
-
+            "measurement": "Rssi",
+            "tags": {
+                "Sensor Number": sensor_number,
+                "Sensor Type": sensor_type
+                "Location": location
+            },
+            "time": time_string,
+            "fields": {
+                "value": rssi
+            }
+        },
             "measurement": "Battery",
             "tags": {
-                "Sensor": sensor_number,
+                "Sensor Number": sensor_number,
+                "Sensor Type": sensor_type
                 "Location": location
             },
             "time": time_string,
@@ -98,7 +110,8 @@ def set_json(ble_data):
         {
             "measurement": "Temperature",
             "tags": {
-                "Sensor": sensor_number,
+                "Sensor Number": sensor_number,
+                "Sensor Type": sensor_type
                 "Location": location
             },
             "time": time_string,
@@ -109,7 +122,8 @@ def set_json(ble_data):
         {
             "measurement": "Humidity",
             "tags": {
-                "Sensor": sensor_number,
+                "Sensor Number": sensor_number,
+                "Sensor Type": sensor_type
                 "Location": location
             },
             "time": time_string,
@@ -117,19 +131,42 @@ def set_json(ble_data):
                 "value": humidity
             }
         },
-
+        {
+            "measurement": "Altitude",
+            "tags": {
+                "Sensor Number": sensor_number,
+                "Sensor Type": sensor_type
+                "Location": location
+            },
+            "time": time_string,
+            "fields": {
+                "value": altitude
+            }
+        },
         {
             "measurement": "Pressure",
             "tags": {
-                "Sensor": sensor_number,
+                "Sensor Number": sensor_number,
+                "Sensor Type": sensor_type
                 "Location": location
             },
             "time": time_string,
             "fields": {
                 "value": pressure
             }
+        },        
+        {
+            "measurement": "Gaz",
+            "tags": {
+                "Sensor Number": sensor_number,
+                "Sensor Type": sensor_type
+                "Location": location
+            },
+            "time": time_string,
+            "fields": {
+                "value": gaz
+            }
         }
-
 
     ]
     return json_body
