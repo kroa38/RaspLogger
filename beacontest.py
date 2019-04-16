@@ -20,9 +20,18 @@ def callback(bt_addr, rssi, packet, additional_info):
         al[1] = bl[1]
         ble_data = str("rssi,%d,%s" % (rssi, packet))
         json_body = set_json(ble_data)
-        client = InfluxDBClient('localhost', 8086, 'root', 'root', 'test4db')
-        client.create_database('test4db')
-        client.write_points(json_body)
+        client = InfluxDBClient('localhost', 8086, 'root', 'root', 'testdb')
+        dbs = client.get_list_database()
+        d = next((d for d in dbs if d['name'] == 'testdb'), None)
+        if d is None: # not found
+            print ("create database ")
+            client.create_database('testdb')
+        result = client.write_points(json_body)
+        if result == True:
+            print("Write to Database Success")
+        else:
+            print("Fail to write to database")
+
         #result = client.query('select value from Battery;')
         #print("Result: {0}\n".format(result))
 
@@ -42,7 +51,11 @@ def set_json(ble_data):
     temperature = 0.0
     humidity = 0.0
     now = datetime.now()
-    time_string = now.strftime("%Y-%m-%dT%H:%M:%S")
+    localtime = time.localtime()
+    if localtime.tm_isdst:
+        time_string = now.strftime("%Y-%m-%dT%H:%M:%S CEST")
+    else:
+        time_string = now.strftime("%Y-%m-%dT%H:%M:%S CET")
 
     if sensor_type == blueduino_sensor_type:
         rssi = int(csv_reader[1], 0)
@@ -88,7 +101,7 @@ def set_json(ble_data):
             "measurement": "Rssi",
             "tags": {
                 "Sensor Number": sensor_number,
-                "Sensor Type": sensor_type
+                "Sensor Type": sensor_type,
                 "Location": location
             },
             "time": time_string,
@@ -96,10 +109,11 @@ def set_json(ble_data):
                 "value": rssi
             }
         },
+         {
             "measurement": "Battery",
             "tags": {
                 "Sensor Number": sensor_number,
-                "Sensor Type": sensor_type
+                "Sensor Type": sensor_type,
                 "Location": location
             },
             "time": time_string,
@@ -111,7 +125,7 @@ def set_json(ble_data):
             "measurement": "Temperature",
             "tags": {
                 "Sensor Number": sensor_number,
-                "Sensor Type": sensor_type
+                "Sensor Type": sensor_type,
                 "Location": location
             },
             "time": time_string,
@@ -123,7 +137,7 @@ def set_json(ble_data):
             "measurement": "Humidity",
             "tags": {
                 "Sensor Number": sensor_number,
-                "Sensor Type": sensor_type
+                "Sensor Type": sensor_type,
                 "Location": location
             },
             "time": time_string,
@@ -135,7 +149,7 @@ def set_json(ble_data):
             "measurement": "Altitude",
             "tags": {
                 "Sensor Number": sensor_number,
-                "Sensor Type": sensor_type
+                "Sensor Type": sensor_type,
                 "Location": location
             },
             "time": time_string,
@@ -147,19 +161,19 @@ def set_json(ble_data):
             "measurement": "Pressure",
             "tags": {
                 "Sensor Number": sensor_number,
-                "Sensor Type": sensor_type
+                "Sensor Type": sensor_type,
                 "Location": location
             },
             "time": time_string,
             "fields": {
                 "value": pressure
             }
-        },        
+        },
         {
             "measurement": "Gaz",
             "tags": {
                 "Sensor Number": sensor_number,
-                "Sensor Type": sensor_type
+                "Sensor Type": sensor_type,
                 "Location": location
             },
             "time": time_string,
