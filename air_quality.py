@@ -1,6 +1,6 @@
 import requests
 from influxdb import InfluxDBClient
-from ./cloudscope import get_json_data_from_file,log_error
+from cloudscope import get_json_data_from_file, log_error
 '''
 
 '''
@@ -23,14 +23,13 @@ def get_atmo():
     '''
     token like :
     {
-    "Token_ARA":"d54eefdcce645682f71b445715d0"
+    'Token_ARA':'d54eefdcce645682f71b445715d0'
     }
     '''
     data_json = get_json_data_from_file("credential.txt")
     air_ra_url = 'http://api.atmo-aura.fr/communes/38185/indices?api_token='
     api_token = data_json['Token_ARA']
     url = "%s%s" % (air_ra_url, api_token)
-
     r = requests.get(url)
     data = r.json()
 
