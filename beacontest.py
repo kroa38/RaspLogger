@@ -24,13 +24,13 @@ def callback(bt_addr, rssi, packet, additional_info):
         dbs = client.get_list_database()
         d = next((d for d in dbs if d['name'] == 'testdb'), None)
         if d is None: # not found
-            print ("create database ")
+            #print ("create database ")
             client.create_database('testdb')
         result = client.write_points(json_body)
-        if result == True:
-            print("Write to Database Success")
-        else:
-            print("Fail to write to database")
+        #if result == True:
+            #print("Write to Database Success")
+        #else:
+            #print("Fail to write to database")
 
         #result = client.query('select value from Battery;')
         #print("Result: {0}\n".format(result))
