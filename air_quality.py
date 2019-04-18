@@ -13,10 +13,10 @@ def store_to_database(json_body):
         print ("create database ")
         client.create_database(influx_database)
     result = client.write_points(json_body)
-    if result == True:
-        print("Write to Database Success")
-    else:
-        print("Fail to write to database")
+    #if result == True:
+    #    print("Write to Database Success")
+    #else:
+    #    print("Fail to write to database")
 
 def get_atmo():
 
@@ -27,9 +27,9 @@ def get_atmo():
     r = requests.get(url)
     data = r.json()
 
-    value_atmo = float(data['indices']['data'][0]['valeur'])
+    value_atmo = float(data['indices']['data'][1]['valeur'])
     value_atmo_int = int(value_atmo)
-    qual_atmo = str(data['indices']['data'][0]['qualificatif'])
+    qual_atmo = str(data['indices']['data'][1]['qualificatif'])
     #print int(value_atmo)
     #print qual_atmo
     json_body = [
@@ -56,7 +56,7 @@ def get_atmo():
 
 
 json_body = get_atmo()
-print json_body
+#print json_body
 store_to_database(json_body)
 
 
