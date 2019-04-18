@@ -1,5 +1,6 @@
 import requests
 from influxdb import InfluxDBClient
+from ./cloudscope import get_json_data_from_file,log_error
 '''
 
 '''
@@ -19,9 +20,15 @@ def store_to_database(json_body):
     #    print("Fail to write to database")
 
 def get_atmo():
-
-    air_ra_url = 'http://api.atmo-aura.fr/communes/38185/indices?'
-    api_token = 'api_token=d64189535a0084eefdcce6f71b4715d0'
+    '''
+    token like :
+    {
+    "Token_ARA":"d54eefdcce645682f71b445715d0"
+    }
+    '''
+    data_json = get_json_data_from_file("credential.txt")
+    air_ra_url = 'http://api.atmo-aura.fr/communes/38185/indices?api_token='
+    api_token = data_json['Token_ARA']
     url = "%s%s" % (air_ra_url, api_token)
 
     r = requests.get(url)
@@ -58,5 +65,3 @@ def get_atmo():
 json_body = get_atmo()
 #print json_body
 store_to_database(json_body)
-
-
