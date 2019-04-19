@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import sys
 import time
 from datetime import datetime
@@ -5,37 +6,37 @@ from datetime import datetime
 from timefunc import TimeFunc
 from beacontools import BeaconScanner,IBeaconFilter
 from influxdb import InfluxDBClient
+from util_dbase import write_to_dbase
 
 #rtc = DS1338.DS1338(1, 0x68)
 
 def callback(bt_addr, rssi, packet, additional_info):
+    '''
+    :param bt_addr:
+    :param rssi:
+    :param packet:
+    :param additional_info:
+    :return:
+    '''
     global al
     bl = [1234567890,"hello"]
     bl[0] = int(time.time())
     bl[1] = str(packet).split(',')
     bl[1] = bl[1][3]
     bl[1] = bl[1][9:13]
+    # if capture > 3s or sensor id is different.
     if (bl[0]-al[0] > 3) or (bl[1] != al[1]):
         al[0] = bl[0]
         al[1] = bl[1]
         ble_data = str("rssi,%d,%s" % (rssi, packet))
-        json_body = set_json(ble_data)
-        client = InfluxDBClient('localhost', 8086, 'root', 'root', 'testdb')
-        dbs = client.get_list_database()
-        d = next((d for d in dbs if d['name'] == 'testdb'), None)
-        if d is None: # not found
-            #print ("create database ")
-            client.create_database('testdb')
-        result = client.write_points(json_body)
-        #if result == True:
-            #print("Write to Database Success")
-        #else:
-            #print("Fail to write to database")
-
-        #result = client.query('select value from Battery;')
-        #print("Result: {0}\n".format(result))
+        jsony_body = set_json(ble_data)
+        write_to_dbase(jsony_body)
 
 def set_json(ble_data):
+    '''
+    :param ble_data:
+    :return:
+    '''
     blueduino_sensor_type = 1
     csv_reader = ble_data.split(',')
     uuid = csv_reader[5]
@@ -96,7 +97,7 @@ def set_json(ble_data):
     # print ("temperature = %.1f" % temperature)
     # print ("humidity = %.2f" % humidity)
 
-    json_body = [
+    jsony_body = [
         {
             "measurement": "Rssi",
             "tags": {
@@ -183,11 +184,16 @@ def set_json(ble_data):
         }
 
     ]
-    return json_body
+    return jsony_body
 
-al=[1555087419, "9999"]
-scanner = BeaconScanner(callback,device_filter=IBeaconFilter(uuid="2332a4c2"))
-scanner.start()
-while True:
-    time.sleep(5)
-scanner.stop()
+
+if __name__ == "__main__":
+    '''
+    Start this script in background with : " sudo beacontest.py & "
+    '''
+    al = [1555087419, "9999"]
+    scanner = BeaconScanner(callback,device_filter=IBeaconFilter(uuid="2332a4c2"))
+    scanner.start()
+    while True:
+        time.sleep(5)
+    #scanner.stop()

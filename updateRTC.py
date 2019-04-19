@@ -2,7 +2,7 @@
 #
 
 import DS1338
-from cloudscope import check_internet, log_event, tweet_message
+from util_funct import check_internet, log_event, tweet_message
 
 # Main Program
 
