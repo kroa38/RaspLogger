@@ -1,60 +1,60 @@
 #!/bin/sh
-echo "Start of script........................................."
-echo "Package update and upgrade.............................."
+echo "Start of script..............................................................."
+echo "Package update and upgrade...................................................."
 apt-get update & wait $!
-echo "........................................................"
+echo ".............................................................................."
 apt-get upgrade -y  & wait $!
-echo "install git............................................."
+echo "install git..................................................................."
 apt-get -y install git & wait $!
-echo "install python.........................................."
+echo "install python................................................................"
 apt-get -y install python-pip & wait $!
-echo "install libbluetooth-dev................................"
+echo "install libbluetooth-dev......................................................"
 apt-get -y install libbluetooth-dev & wait $!
-echo "install python-dev......................................"
+echo "install python-dev............................................................"
 apt-get -y install python-dev & wait $!
-echo "install apt-transport-https............................."
+echo "install apt-transport-https..................................................."
 apt-get -y install apt-transport-https & wait $!
-echo "install curl............................................"
+echo "install curl.................................................................."
 apt-get -y install curl & wait $!
-echo "........................................................"
+echo ".............................................................................."
 curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -  & wait $!
-echo "........................................................"
+echo ".............................................................................."
 echo "deb https://repos.influxdata.com/debian stretch stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
-echo "........................................................"
+echo ".............................................................................."
 echo "Package update" & wait $!
-echo "........................................................"
+echo ".............................................................................."
 apt-get update & wait $!
-echo "install influxdb........................................"
+echo "install influxdb.............................................................."
 apt-get -y install influxdb & wait $!
-echo "........................................................"
-echo "........................................................"
-echo ".............START PIP INSTALLATION....................."
-echo "........................................................"
-echo "install pybluez........................................."
+echo ".............................................................................."
+echo ".............................................................................."
+echo ".............START PIP INSTALLATION..........................................."
+echo ".............................................................................."
+echo "install pybluez..............................................................."
 pip install pybluez & wait $!
-echo "install beacontools....................................."
+echo "install beacontools..........................................................."
 pip install beacontools & wait $!
-echo "install influxdb........................................"
+echo "install influxdb.............................................................."
 pip install influxdb & wait $!
-echo "install oauth2client...................................."
+echo "install oauth2client.........................................................."
 pip install oauth2client & wait $!
-echo "install RPi.GPIO........................................"
+echo "install RPi.GPIO.............................................................."
 pip install RPi.GPIO & wait $!
-echo "install requests........................................"
+echo "install requests.............................................................."
 pip install requests & wait $!
-echo "install twitter........................................."
+echo "install twitter..............................................................."
 pip install twitter & wait $!
-echo "install smbus..........................................."
+echo "install smbus................................................................."
 pip install smbus & wait $!
-echo "install gspread........................................."
+echo "install gspread..............................................................."
 pip install gspread & wait $!
-echo "install urllib2........................................."
+echo "install urllib2..............................................................."
 pip install urllib2 & wait $!
-echo "install httplib2........................................"
+echo "install httplib2.............................................................."
 pip install httplib2 & wait $!
-echo "install pyserial........................................"
+echo "install pyserial.............................................................."
 pip install pyserial & wait $!
-echo "install google-api-python-client........................"
+echo "install google-api-python-client.............................................."
 pip install google-api-python-client & wait $!
-echo "........................................................"
-echo "End of script..........................................."
+echo ".............................................................................."
+echo "End of script................................................................."
