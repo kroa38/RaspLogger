@@ -1,3 +1,13 @@
+# __INSTALL__
+
+I recommand to read this blog for the first install on the Raspberry Pi Zero :  
+
+How to setup Wifi  
+How to setup SSH  
+
+https://medium.com/@aallan/setting-up-a-headless-raspberry-pi-zero-3ded0b83f274  
+
+
 
 # __InfluxdB on RAPSBERRY PI__
 - 1) Update, Upgrade, Install  
