@@ -6,6 +6,7 @@ Replace this two files in the beacontools package directory
 ```
 type : python -m site  
 ```
+The package is located in a 'dist-packages'  directory   
 
 ```
 sys.path = [
@@ -22,7 +23,6 @@ USER_BASE: '/root/.local' (doesn't exist)
 USER_SITE: '/root/.local/lib/python2.7/site-packages' (doesn't exist)  
 ENABLE_USER_SITE: True  
 
-The package is located in a 'dist-packages'  directory  
 ```
   
 
