@@ -3,7 +3,7 @@ import sys
 import time
 from datetime import datetime
 #import DS1338
-from timefunc import TimeFunc
+#from timefunc import TimeFunc
 from beacontools import BeaconScanner,IBeaconFilter
 from influxdb import InfluxDBClient
 from util_dbase import write_to_dbase
@@ -19,6 +19,7 @@ def callback(bt_addr, rssi, packet, additional_info):
     :return:
     '''
     global al
+    global debug_ble
     bl = [1234567890,"hello"]
     bl[0] = int(time.time())
     bl[1] = str(packet).split(',')
@@ -30,7 +31,10 @@ def callback(bt_addr, rssi, packet, additional_info):
         al[1] = bl[1]
         ble_data = str("rssi,%d,%s" % (rssi, packet))
         jsony_body = set_json(ble_data)
-        write_to_dbase(jsony_body)
+        if debug_ble:
+            print jsony_body
+        else:
+            write_to_dbase(jsony_body)
 
 def set_json(ble_data):
     '''
@@ -191,6 +195,7 @@ if __name__ == "__main__":
     '''
     Start this script in background with : " sudo beacontest.py & "
     '''
+    debug_ble = False
     al = [1555087419, "9999"]
     scanner = BeaconScanner(callback,device_filter=IBeaconFilter(uuid="2332a4c2"))
     scanner.start()
