@@ -10,6 +10,8 @@ echo "install python.........................................."
 apt-get -y install python-pip & wait $!
 echo "install libbluetooth-dev................................"
 apt-get -y install libbluetooth-dev & wait $!
+echo "install python-dev......................................"
+apt-get -y install python-dev & wait $!
 echo "install apt-transport-https............................."
 apt-get -y install apt-transport-https & wait $!
 echo "install curl............................................"
