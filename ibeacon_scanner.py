@@ -58,9 +58,9 @@ def set_json(ble_data):
     now = datetime.now()
     localtime = time.localtime()
     if localtime.tm_isdst:
-        time_string = now.strftime("%Y-%m-%dT%H:%M:%S CEST")
+        time_string = now.strftime("%Y-%m-%dT%H:%M:%S")
     else:
-        time_string = now.strftime("%Y-%m-%dT%H:%M:%S CET")
+        time_string = now.strftime("%Y-%m-%dT%H:%M:%S")
 
     if sensor_type == blueduino_sensor_type:
         rssi = int(csv_reader[1], 0)
@@ -109,7 +109,6 @@ def set_json(ble_data):
                 "Sensor Type": sensor_type,
                 "Location": location
             },
-            "time": time_string,
             "fields": {
                 "value": rssi
             }
@@ -121,7 +120,6 @@ def set_json(ble_data):
                 "Sensor Type": sensor_type,
                 "Location": location
             },
-            "time": time_string,
             "fields": {
                 "value": batt_voltage
             }
@@ -133,7 +131,6 @@ def set_json(ble_data):
                 "Sensor Type": sensor_type,
                 "Location": location
             },
-            "time": time_string,
             "fields": {
                 "value": temperature
             }
@@ -145,7 +142,6 @@ def set_json(ble_data):
                 "Sensor Type": sensor_type,
                 "Location": location
             },
-            "time": time_string,
             "fields": {
                 "value": humidity
             }
@@ -157,7 +153,6 @@ def set_json(ble_data):
                 "Sensor Type": sensor_type,
                 "Location": location
             },
-            "time": time_string,
             "fields": {
                 "value": altitude
             }
@@ -169,7 +164,6 @@ def set_json(ble_data):
                 "Sensor Type": sensor_type,
                 "Location": location
             },
-            "time": time_string,
             "fields": {
                 "value": pressure
             }
@@ -181,7 +175,6 @@ def set_json(ble_data):
                 "Sensor Type": sensor_type,
                 "Location": location
             },
-            "time": time_string,
             "fields": {
                 "value": gaz
             }
