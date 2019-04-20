@@ -1,20 +1,19 @@
 #!/bin/sh
 echo "Start of script........................................."
-echo "Package update and upgrade"
+echo "Package update and upgrade.............................."
 apt-get update & wait $!
 echo "........................................................"
 apt-get upgrade -y  & wait $!
-echo "........................................................"
-echo "Install usefull Package"
-apt-get install git & wait $!
-echo "........................................................"
-apt-get install python-pip & wait $!
-echo "........................................................"
-apt-get install libbluetooth-dev & wait $!
-echo "........................................................"
-apt-get install apt-transport-https & wait $!
-echo "........................................................"
-apt-get install curl & wait $!
+echo "install git............................................."
+apt-get -y install git & wait $!
+echo "install python.........................................."
+apt-get -y install python-pip & wait $!
+echo "install libbluetooth-dev................................"
+apt-get -y install libbluetooth-dev & wait $!
+echo "install apt-transport-https............................."
+apt-get -y install apt-transport-https & wait $!
+echo "install curl............................................"
+apt-get -y install curl & wait $!
 echo "........................................................"
 curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -  & wait $!
 echo "........................................................"
@@ -23,39 +22,37 @@ echo "........................................................"
 echo "Package update" & wait $!
 echo "........................................................"
 apt-get update & wait $!
-echo "........................................................"
-apt-get install influxdb & wait $!
-echo "........................................................"
-echo "........................................................"
-echo "........................................................"
-echo "Install usefull Python library"
+echo "install influxdb........................................"
+apt-get -y install influxdb & wait $!
 echo "........................................................"
 echo "........................................................"
+echo ".............START PIP INSTALLATION....................."
 echo "........................................................"
+echo "install pybluez........................................."
 pip install pybluez & wait $!
-echo "........................................................"
+echo "install beacontools....................................."
 pip install beacontools & wait $!
-echo "........................................................"
+echo "install influxdb........................................"
 pip install influxdb & wait $!
-echo "........................................................"
+echo "install oauth2client...................................."
 pip install oauth2client & wait $!
-echo "........................................................"
+echo "install RPi.GPIO........................................"
 pip install RPi.GPIO & wait $!
-echo "........................................................"
+echo "install requests........................................"
 pip install requests & wait $!
-echo "........................................................"
+echo "install twitter........................................."
 pip install twitter & wait $!
-echo "........................................................"
+echo "install smbus..........................................."
 pip install smbus & wait $!
-echo "........................................................"
+echo "install gspread........................................."
 pip install gspread & wait $!
-echo "........................................................"
+echo "install urllib2........................................."
 pip install urllib2 & wait $!
-echo "........................................................"
+echo "install httplib2........................................"
 pip install httplib2 & wait $!
-echo "........................................................"
+echo "install pyserial........................................"
 pip install pyserial & wait $!
-echo "........................................................"
+echo "install google-api-python-client........................"
 pip install google-api-python-client & wait $!
 echo "........................................................"
-echo "End of script"
+echo "End of script..........................................."
