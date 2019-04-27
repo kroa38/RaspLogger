@@ -30,6 +30,26 @@ This script install packages and library for Python.
 sudo sh ./install.sh
 ```
 
+# __TimeZone, UART, I2C__
+
+Use the 'raspi-config' command to setup your timezone !
+
+For I2C and UART edit the file /boot/config.txt and add this two
+parameters:
+
+```
+#enable I2C
+dtparam=i2c_arm=on
+
+#Enable UART
+enable_uart=1
+```
+
+Edit also the file /boot/cmdline.txt and suppress the text :
+```
+console=serial0,115200  
+```
+
 # __InfluxdB on RAPSBERRY PI__
 
 - 1) Update, Upgrade, Install  
