@@ -2,13 +2,12 @@
 from influxdb import InfluxDBClient
 from util_funct import log_event,log_error
 
-def write_to_dbase(jsony_body):
+def write_to_dbase(jsony_body,db_name):
     """
-    :param json array
+    :param json array,database name
     :return:
     """
 
-    db_name = "testdb"
     client = InfluxDBClient('localhost', 8086, 'root', 'root', db_name)
     dbs = client.get_list_database()
     d = next((d for d in dbs if d['name'] == db_name), None)

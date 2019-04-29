@@ -32,7 +32,7 @@ echo "##########################################################################
 echo ".............................................................................."
 curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -  & wait $!
 echo ".............................................................................."
-echo "deb https://repos.influxdata.com/debian stretch stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+echo "deb https://repos.influxdata.com/debian stretch stable" | sudo tee /etc/apt/sources.list.d/influxdb.list  
 echo ".............................................................................."
 echo "##############################################################################"
 echo "Package update" & wait $!

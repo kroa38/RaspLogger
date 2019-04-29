@@ -63,4 +63,4 @@ if __name__ == "__main__":
         if debug_print:
             print jsony_body
         else:
-            write_to_dbase(jsony_body)
+            write_to_dbase(jsony_body,"test_db")

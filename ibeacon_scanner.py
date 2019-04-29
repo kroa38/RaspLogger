@@ -34,7 +34,7 @@ def callback(bt_addr, rssi, packet, additional_info):
         if debug_ble:
             print jsony_body
         else:
-            write_to_dbase(jsony_body)
+            write_to_dbase(jsony_body,"test_db")
 
 def set_json(ble_data):
     '''
