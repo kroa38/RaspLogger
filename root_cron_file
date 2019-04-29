@@ -1,0 +1,15 @@
+# Cron jobs for duckdns & Linky
+#
+#
+#
+#
+
+*/15 * * * * bash /home/pi/RaspLogger/linky.sh hour > /dev/null 2>&1
+59 23 * * * bash /home/pi/RaspLogger/linky.sh day > /dev/null 2>&1
+58 23 * * 0 bash /home/pi/RaspLogger/linky.sh week > /dev/null 2>&1
+57 23 1 * * bash /home/pi/RaspLogger/linky.sh month > /dev/null 2>&1
+56 23 31 12 * bash /home/pi/RaspLogger/linky.sh year > /dev/null 2>&1
+
+
+0 */6 * * * bash /home/pi/duckdns/duck.sh > /dev/null 2>&1
+
