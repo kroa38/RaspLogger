@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import time
+import sys
 import serial       # install pyserial package
 from util_dbase import write_to_dbase
 from util_funct import log_error
@@ -138,7 +139,7 @@ def capture_linky():
     return linky
 
 
-def linky_to_json(linky_dict):
+def linky_to_json(linky_dict, occurence):
     """
     :param   dictionnary
     :return: json array
@@ -149,7 +150,8 @@ def linky_to_json(linky_dict):
         {
             "measurement": "Index_HC",
             "tags": {
-                "Location": "Linky"
+                "Location": "Linky",
+                "Occurence": occurence
             },
             "fields": {
                 "value": linky_dict['HC']
@@ -158,7 +160,8 @@ def linky_to_json(linky_dict):
         {
             "measurement": "Index_HP",
             "tags": {
-                "Location": "Linky"
+                "Location": "Linky",
+                "Occurence": occurence
             },
             "fields": {
                 "value": linky_dict['HP']
@@ -167,7 +170,8 @@ def linky_to_json(linky_dict):
         {
             "measurement": "Current_A",
             "tags": {
-                "Location": "Linky"
+                "Location": "Linky",
+                "Occurence": occurence
             },
             "fields": {
                 "value": linky_dict['IINST']
@@ -176,7 +180,8 @@ def linky_to_json(linky_dict):
         {
             "measurement": "Power_VA",
             "tags": {
-                "Location": "Linky"
+                "Location": "Linky",
+                "Occurence": occurence
             },
             "fields": {
                 "value": linky_dict['PAPP']
@@ -185,7 +190,8 @@ def linky_to_json(linky_dict):
         {
             "measurement": "Imax_A",
             "tags": {
-                "Location": "Linky"
+                "Location": "Linky",
+                "Occurence": occurence
             },
             "fields": {
                 "value": linky_dict['IMAX']
@@ -200,13 +206,17 @@ if __name__ == "__main__":
     start this script with cron : sudo crontab -e 
     for example every 15 minute
     0/15 * * * * python ../../this_script.py > /dev/null 2>&1
+    
+    argv : hour, day, week, month, year
     '''
+    argv = str(sys.argv)
+
     linky = capture_linky()
     # test if we have receive data from serial
     if linky['HC'] != 0:
-        json_body = linky_to_json(linky)
+        json_body = linky_to_json(linky, argv[1])
         # print json_body
-        write_to_dbase(json_body,"test_db")
+        write_to_dbase(json_body, "test_db")
     else:
         log_error("Linky Serial error !")
 
