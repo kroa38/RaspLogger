@@ -6,7 +6,7 @@ Replace this two files in the beacontools package directory
 ```
 type : python -m site  
 ```
-The package is located in a 'dist-packages'  directory   
+The package is located in a 'dist-packages' or 'site-packages' directory   
 
 ```
 sys.path = [
@@ -17,7 +17,7 @@ sys.path = [
     '/usr/lib/python2.7/lib-old',  
     '/usr/lib/python2.7/lib-dynload',  
     '/usr/local/lib/python2.7/dist-packages',  
-    '/usr/lib/python2.7/dist-packages',  
+    '/usr/lib/python2.7/dist-packages',      <--- Beacontools was insatlled here for me  
 ]  
 USER_BASE: '/root/.local' (doesn't exist)  
 USER_SITE: '/root/.local/lib/python2.7/site-packages' (doesn't exist)  
