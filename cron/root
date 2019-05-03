@@ -1,4 +1,4 @@
-# Cron jobs for duckdns & Linky
+# Cron jobs for duckdns, opendns, Linky, air_quality
 #
 #
 #
@@ -9,7 +9,7 @@
 58 23 * * 0 bash /home/pi/RaspLogger/linky.sh week > /dev/null 2>&1
 00 00 1 * * bash /home/pi/RaspLogger/linky.sh month > /dev/null 2>&1
 56 23 31 12 * bash /home/pi/RaspLogger/linky.sh year > /dev/null 2>&1
+12 06 * * * bash /home/pi/RaspLogger/air_quality.sh > /dev/null 2>&1
+5 * * * * bash /home/pi/RaspLogger/ip_update.sh > /dev/null 2>&1
 
-
-0 */6 * * * bash /home/pi/duckdns/duck.sh > /dev/null 2>&1
 
