@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys
 import time
+import site
 from datetime import datetime
 #import DS1338
 #from timefunc import TimeFunc
@@ -34,7 +35,7 @@ def callback(bt_addr, rssi, packet, additional_info):
         if debug_ble:
             print jsony_body
         else:
-            write_to_dbase(jsony_body,"test_db")
+            write_to_dbase(jsony_body,"ibeacon")
 
 def set_json(ble_data):
     '''
@@ -189,6 +190,7 @@ if __name__ == "__main__":
     Start this script in background with : " sudo beacontest.py & "
     '''
     debug_ble = False
+    site.ENABLE_USER_SITE = False
     al = [1555087419, "9999"]
     scanner = BeaconScanner(callback,device_filter=IBeaconFilter(uuid="2332a4c2"))
     scanner.start()
