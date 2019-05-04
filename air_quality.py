@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import requests
-from util_funct import get_json_data_from_file, log_error
+import os.path
+from util_funct import get_json_data_from_file, log_error,log_event
 from util_dbase import write_to_dbase
 
 def get_atmo():
@@ -12,7 +13,9 @@ def get_atmo():
     '''
     global debug_print
 
-    data_json = get_json_data_from_file("credential.txt")
+    currentpathdir = os.path.dirname(os.path.realpath(__file__))
+    cred_file = os.path.join(currentpathdir, "credential.txt")
+    data_json = get_json_data_from_file(cred_file)
     air_ra_url = 'http://api.atmo-aura.fr/communes/38185/indices?api_token='
     api_token = data_json['Token_ARA']
     url = "%s%s" % (air_ra_url, api_token)
@@ -20,6 +23,8 @@ def get_atmo():
     if r.status_code != requests.codes.ok:
         log_error("api.atmo-aura.fr unreachable ...")
         return 0
+    else:
+        log_event("air_quality update ok")
     data = r.json()
     value_atmo = float(data['indices']['data'][1]['valeur'])
     value_atmo_int = int(value_atmo)

@@ -52,10 +52,10 @@ import random
 
 
 
-from apiclient.discovery import build
-from apiclient.http import MediaFileUpload
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaFileUpload
 from oauth2client.file import Storage
-from apiclient import errors
+from googleapiclient import errors
 from email.mime.text import MIMEText
 from twitter import *
 
