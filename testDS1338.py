@@ -1,4 +1,4 @@
-1524741260.0#!/usr/bin/env python
+#!/usr/bin/env python
 #
 # Test SDL_DS1307
 # John C. Shovic, SwitchDoc Labs
