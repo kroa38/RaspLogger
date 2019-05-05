@@ -272,14 +272,16 @@ def check_internet():
 
 def get_ip_adress():
     """"
-    get the current ip address of WLAN and ETH1
+    get the current WAn ip address
     :itype none
     :rtype  string
     """
-    wlan0_ip = str(os.popen("ifconfig wlan0 | grep 'inet' | cut -d: -f2 | awk '{ print $2}'").read()).strip()
-    ip_string = "IP  = " + wlan0_ip
-    # log_event(ip_string)
-    return ip_string
+    url = "http://checkip.dyndns.org"
+    request = requests.get(url)
+    clean = request.text.split(': ', 1)[1]
+    your_ip = clean.split('</body></html>', 1)[0]
+  
+    return your_ip
 
 
 def email_ip_addr():
@@ -294,13 +296,6 @@ def email_ip_addr():
 
 def tweet_message(msg):
     """
-    example of token from Twitter API
-    {
-    "token":"928986788758966784-yMHM0R5Q7PTspgATDuRCR7refqIStpr",
-    "token_secret":"hhymhUCs1OCjJXXBbkrmZpC2vkNvXbIoPJ7rKiVsjJLtj",
-    "consumer_key":"ywxg7BjSiL3E4HucxiFgS8BKp",
-    "consumer_secret":"8Hz9Ug8WbMpndorF4gTk8Vru7eQqXnLRCuoupuKpgdBeBPvpHY"
-    }
     """
     char_rdn = random.choice(string.letters)
     currentpathdir = os.path.dirname(os.path.realpath(__file__))
@@ -320,13 +315,6 @@ def tweet_message(msg):
 
 def tweet_ip_addr():
     """
-    example of token from Twitter API
-    {
-    "token":"928986788758966784-yMHM0R5Q7PTspgATDuRCR7refqIStpr",
-    "token_secret":"hhymhUCs1OCjJXXBbkrmZpC2vkNvXbIoPJ7rKiVsjJLtj",
-    "consumer_key":"ywxg7BjSiL3E4HucxiFgS8BKp",
-    "consumer_secret":"8Hz9Ug8WbMpndorF4gTk8Vru7eQqXnLRCuoupuKpgdBeBPvpHY"
-    }
     """
     char_rdn = random.choice(string.letters)
     currentpathdir = os.path.dirname(os.path.realpath(__file__))
