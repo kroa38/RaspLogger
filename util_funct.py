@@ -379,5 +379,5 @@ def log_event(event_message):
 # print str(get_index())
 # put_index(12355)
 # print str(get_index())
-tweet_message("hel i raapi")
+#tweet_message("hel i raapi")
 
