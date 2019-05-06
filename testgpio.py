@@ -1,42 +1,36 @@
 #!/usr/bin/python
 import RPi.GPIO as GPIO
 import time
-
+from util_funct import get_json_data_from_file, log_error,log_event
+from util_dbase import write_to_dbase
 
 def interrupt_handler(channel):
     """
     Interrupt based GPIO handler
     """
-    global state
+    json_body = [{
+            "measurement": "Door",
+            "tags": {"Location": "Main Input"},
+            "fields": {"value": 1}    }]
+    write_to_dbase(json_body,"GPIO")
 
-    if channel == 5:
-        if state == 0:
-            state = 1
-            print("state reset by event on pin 5")
-            GPIO.output(20,1)
-            GPIO.output(21,1)
-            time.sleep(2)
-            GPIO.output(20,0)
-            GPIO.output(21,0)
-            
 
-if __name__ == '__main__'     
+if __name__ == "__main__":
+    ''' detect gpio 5
+
     '''
-    start this script with cron : sudo crontab -e 
-    for example every hour
-    0 * * * * python /this_script.py > /dev/null 2>&1
-    '''
-    state = 1 
-    GPIO.setmode(GPIO.BCM)     #set up GPIO using BCM numbering    
-    GPIO.setup(5, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    state = 1
+    GPIO.cleanup()
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BCM)     #set up GPIO using BCM numbering
+    GPIO.setup(5, GPIO.IN)     #, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(20, GPIO.OUT)
     GPIO.setup(21, GPIO.OUT)
-
     GPIO.add_event_detect(5, GPIO.FALLING,
                           callback=interrupt_handler,
                           bouncetime=200)
 
 
     while (True):
-        time.sleep(0)
+        time.sleep(5)
 
