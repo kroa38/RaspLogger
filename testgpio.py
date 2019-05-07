@@ -1,17 +1,20 @@
 #!/usr/bin/python
 import RPi.GPIO as GPIO
 import time
-from util_funct import get_json_data_from_file, log_error,log_event
+from util_funct import check_internet, tweet_message
 from util_dbase import write_to_dbase
 
 def interrupt_handler(channel):
-    """
-    Interrupt based GPIO handler
+    """  Interrupt based GPIO handler
+         write to dbase  event
+         send a tweet
     """
     json_body = [{
             "measurement": "Door",
             "tags": {"Location": "Main Input"},
             "fields": {"value": 1}    }]
+    if check_internet()==True:
+        tweet_message("Hop Hop..")
     write_to_dbase(json_body,"GPIO")
 
 
