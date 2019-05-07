@@ -28,7 +28,7 @@ def opendns():
         if debug_print:
             print "Failed to update OpenDNS.", r.text
     else:
-        #log_event("update OpenDNS ok: %s" % r.text)
+        log_event("update OpenDNS ok: %s" % r.text)
         if debug_print:
             print "Successfully updated IP:", r.text
 

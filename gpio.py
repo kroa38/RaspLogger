@@ -23,8 +23,8 @@ if __name__ == "__main__":
 
     '''
     state = 1
-    GPIO.cleanup()
     GPIO.setwarnings(False)
+    GPIO.cleanup()
     GPIO.setmode(GPIO.BCM)     #set up GPIO using BCM numbering
     GPIO.setup(5, GPIO.IN)     #, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(20, GPIO.OUT)
