@@ -89,7 +89,7 @@ sudo apt-get update
 sudo apt-get install influxdb  
 ```
 
-switch to the directory /home/pi and make:
+switch to the directory /home/pi and type:
 ```
 mkdir influxdb
 chown influxdb:influxdb influxdb  
@@ -105,9 +105,14 @@ chown influxdb:influxdb wal
 ```
 sudo nano /etc/influxdb/influxdb.conf
 ```
-- 3) Uncomment the lines below  
+- 3) modify data and http section  
 
 ```
+[data]
+  dir = "/home/pi/influxdb/data"
+  wal-dir = "/home/pi/influxdb/wal"
+  wal-fsync-delay = "5s"
+  
 [http]
   # Determines whether HTTP endpoint is enabled.
   enabled = true
@@ -117,6 +122,7 @@ sudo nano /etc/influxdb/influxdb.conf
 
   # Determines whether user authentication is enabled over HTTP/HTTPS.
   auth-enabled = false
+  
 ```
 - 4) Start service  
 
