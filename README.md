@@ -88,6 +88,18 @@ echo "deb https://repos.influxdata.com/debian stretch stable" | sudo tee /etc/ap
 sudo apt-get update  
 sudo apt-get install influxdb  
 ```
+
+switch to the directory /home/pi and make:
+```
+mkdir influxdb
+chown influxdb:influxdb influxdb  
+cd influxdb  
+mkdir data  
+chown influxdb:influxdb data
+mkdir wal  
+chown influxdb:influxdb wal 
+```
+
 - 2) Edit File influxdb.conf  
 
 ```
