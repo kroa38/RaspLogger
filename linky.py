@@ -214,7 +214,7 @@ if __name__ == "__main__":
     if linky['HC'] != 0:
         json_body = linky_to_json(linky, arg)
         #print json_body
-        write_to_dbase(json_body, "test_db")
+        write_to_dbase(json_body, "linky")
     else:
         log_error("Linky Serial error !")
 
