@@ -14,11 +14,24 @@ https://sourceforge.net/projects/win32diskimager/
 
 4)
 use Gparted to resize the root partition and create a new extended  
-and logical partition : Name this aprtition : home
+and logical partition : Name this one: home 
 
 edit file /etc/fstab to auto mount the new partition 
 
-PARTUUID=0eb18792-05  /home           ext4    rw,user,auto,exec 0       0
+PARTUUID=0eb18792-05  /home ext4  rw,user,auto,exec 0  0  
+
+5)
+Update and upgrade system:  
+```
+sudo apt-get update  
+sudo apt-get upgrade  
+```
+
+6)
+Install git
+```
+sudo apt-get install git
+```
 
 # WIFI and SSH 
 
