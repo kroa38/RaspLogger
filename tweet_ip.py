@@ -10,4 +10,6 @@ def tweet_ip():
     if check_internet()==True:
         tweet_ip_address()
 
+if __name__ == "__main__":
+    tweet_ip()
 
