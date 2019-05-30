@@ -66,10 +66,13 @@ dtparam=i2c_arm=on
 enable_uart=1
 ```
 
+
 Edit also the file /boot/cmdline.txt and suppress the text :
 ```
 console=serial0,115200  
 ```
+example file  
+dwc_otg.lpm_enable=0 console=tty1 root=PARTUUID=dab3eba4-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait  
 
 # __InfluxdB on RAPSBERRY PI__
 
