@@ -12,6 +12,14 @@ https://www.sdcard.org/
 Write the image on the the SD card :   
 https://sourceforge.net/projects/win32diskimager/
 
+4)
+use Gparted to resize the root partition and create a new extended  
+and logical partition : Name this aprtition : home
+
+edit file /etc/fstab to auto mount the new partition 
+
+PARTUUID=0eb18792-05  /home           ext4    rw,user,auto,exec 0       0
+
 # WIFI and SSH 
 
 I recommand to read this blog for the first install on the Raspberry Pi Zero :  
