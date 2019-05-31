@@ -97,5 +97,15 @@ echo "##########################################################################
 echo "Copy timezone file ..........................................................."
 cp -f etc/timezone /etc/.
 echo "##############################################################################"
+echo "Create influxdb directory Wal and Data
+cd ..
+mkdir influxdb
+chown influxdb:influxdb influxdb
+cd influxdb
+mkdir data
+chown influxdb:influxdb data
+mkdir wal
+chown influxdb:influxdb wal
+echo "##############################################################################"
 echo "End of script................................................................."
 echo "##############################################################################"
