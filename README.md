@@ -35,11 +35,25 @@ sudo apt-get install git
 
 # WIFI and SSH 
 
-I recommand to read this blog for the first install on the Raspberry Pi Zero :  
-
 How to setup Wifi  
-How to setup SSH  
 
+Create a file : "wpa_supplicant.conf"  into the "boot" partition 
+insert into the lines below and replace COUNTRY, SSID and PASSWORD by yours  
+
+```
+country=COUNTRY
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+network={
+       ssid="SSID"
+       psk="PASSWORD"
+       key_mgmt=WPA-PSK
+    }
+```
+How to setup SSH  
+create an empty file named "ssh" into the "boot"  partition  
+
+I recommand to read this blog for the first install on the Raspberry Pi Zero :
 https://medium.com/@aallan/setting-up-a-headless-raspberry-pi-zero-3ded0b83f274  
 
 # __Boot and start Install script__
