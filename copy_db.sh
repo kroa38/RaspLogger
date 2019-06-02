@@ -5,5 +5,5 @@
 
 if [ 'mount | grep USB_KEY' ]
 then
-   cp -rf /home/pi/influxdb/ /home/pi/USB_KEY/.
+   cp -ru /home/pi/influxdb/ /home/pi/USB_KEY/.
 fi
