@@ -97,8 +97,11 @@ echo "##########################################################################
 echo "Copy timezone file ..........................................................."
 cp -f etc/timezone /etc/.
 echo "##############################################################################"
-echo "Create influxdb directory Wal and Data
+echo "Create USB_KEY directory for making a copy of database
 cd ..
+mkdir USB_KEY
+echo "##############################################################################"
+echo "Create influxdb directory Wal and Data
 mkdir influxdb
 chown influxdb:influxdb influxdb
 cd influxdb
