@@ -135,7 +135,7 @@ sudo nano /etc/influxdb/influxdb.conf
   bind-address = ":8086"
 
   # Determines whether user authentication is enabled over HTTP/HTTPS.
-  auth-enabled = false
+  auth-enabled = true
   
 ```
 - 4) Start service  
@@ -160,3 +160,20 @@ systemctl enable influxdb.service
 ```
 systemctl status influxdb.service
 ```
+- 7) Create admin user 
+     
+ ```
+ influx
+ 
+ CREATE USER admin WITH PASSWORD '<password>' WITH ALL PRIVILEGES
+  ```
+  - 8) Create a standard user with read privileges
+     
+ ```
+ influx
+ 
+ CREATE USER paul WITH PASSWORD 'timeseries4days'
+ GRANT READ on "linky" to "paul"
+ GRANT READ on "air_quality" to "paul"
+ GRANT READ on "ibeacon" to "paul"
+  ```
