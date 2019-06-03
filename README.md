@@ -45,8 +45,8 @@ This one is automounted by adding a line on fstab:
 proc            /proc           proc    defaults          0       0
 PARTUUID=77dd3a50-01  /boot           vfat    defaults          0       2
 PARTUUID=77dd3a50-02  /               ext4    defaults,noatime  0       1
-PARTUUID=77dd3a50-05  /home           ext4    rw,user,auto,exec 0       0
-PARTUUID=BA65-589A  /home/pi/USB_KEY  vfat    rw,user,auto,exec 0       4
+PARTUUID=77dd3a50-05  /home           ext4    rw,user,auto,exec 0       2
+PARTUUID=BA65-589A  /home/pi/USB_KEY  vfat    rw,user,auto,exec 0       2
 
 Use the command 'blkid' to find the UUID of the key  
 
