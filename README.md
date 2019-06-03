@@ -16,9 +16,12 @@ https://sourceforge.net/projects/win32diskimager/
 use Gparted to resize the root partition and create a new extended  
 and logical partition : Name this one: home 
 
-edit file /etc/fstab to auto mount the new partition 
-
+edit file /etc/fstab to auto mount the new partition and add for example:  
 PARTUUID=0eb18792-05  /home ext4  rw,user,auto,exec 0  0  
+
+5)
+Copy from rootfs the 'pi' directory to the new partition /home
+Remove from rootfs the /home directory
 
 5)
 Update and upgrade system:  
@@ -32,6 +35,17 @@ Install git
 ```
 sudo apt-get install git
 ```
+
+# External USB Key (Database copy)  
+
+I recommand to save the database content to another location.  
+I use a external USB Key plugged to the Micro USB port of the Rpi Zero.  
+
+The USB key is mounted in the new partion in '/home/USB_KEY'
+The script 'copy_db.sh' automaticaly copy the entire database to the USB Key  
+The script once every day by using Cron.
+
+
 
 # WIFI and SSH 
 
