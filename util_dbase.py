@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-from influxdb import InfluxDBClient
-from util_funct import log_event,log_error
+import os.path
+nanofrom influxdb import InfluxDBClient
+from util_funct import get_json_data_from_file,log_event,log_error
 
 def write_to_dbase(jsony_body,db_name):
     """
