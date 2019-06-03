@@ -86,6 +86,30 @@ create an empty file named "ssh" into the "boot"  partition
 I recommand to read this blog for the first install on the Raspberry Pi Zero :
 https://medium.com/@aallan/setting-up-a-headless-raspberry-pi-zero-3ded0b83f274  
 
+
+# __Configure SSH__
+
+i strongly recommand to setup this configuration for "/etc/ssh/sshd_config" file  
+
+```
+IgnoreRhosts yes  
+PermitEmptyPasswords no  
+MaxAuthTries 3  
+PermitRootLogin no  
+```
+
+Are you connected to the remote with SSH ?  
+Yes: type this command to reload configuration  
+```
+systemctl reload ssh.service  
+```
+
+Check intrusion and attempt  
+```
+systemctl status ssh.service  
+```
+
+
 # __Boot and start Install script__
 
 After boot start the install script :
