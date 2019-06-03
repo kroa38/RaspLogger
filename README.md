@@ -89,6 +89,9 @@ https://medium.com/@aallan/setting-up-a-headless-raspberry-pi-zero-3ded0b83f274
 
 # __Configure SSH__
 
+Good info from :
+https://linux-audit.com/audit-and-harden-your-ssh-configuration/
+
 i strongly recommand to setup this configuration for "/etc/ssh/sshd_config" file  
 
 ```
