@@ -207,20 +207,11 @@ systemctl enable influxdb.service
 ```
 systemctl status influxdb.service
 ```
-- 7) Create admin user 
+
+- 7) Init the databases and users
      
- ```
- influx
- 
- CREATE USER admin WITH PASSWORD '<password>' WITH ALL PRIVILEGES
-  ```
-  - 8) Create a standard user with read privileges
-     
- ```
- influx
- 
- CREATE USER paul WITH PASSWORD 'timeseries4days'
- GRANT READ on "linky" to "paul"
- GRANT READ on "air_quality" to "paul"
- GRANT READ on "ibeacon" to "paul"
-  ```
+This create the 3 databases and one admin user and one reader user
+```
+python util_dbase.py
+```
+
