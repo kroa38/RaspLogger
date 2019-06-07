@@ -42,25 +42,15 @@ I recommand to save the database content to another location.
 I use a external USB Key plugged to the Micro USB port of the Rpi Zero.  
 This one is automounted by adding a line on fstab:
 
-proc            /proc           proc    defaults          0       0
-PARTUUID=77dd3a50-01  /boot           vfat    defaults          0       2
-PARTUUID=77dd3a50-02  /               ext4    defaults,noatime  0       1
-PARTUUID=77dd3a50-05  /home           ext4    rw,user,auto,exec 0       2
-PARTUUID=BA65-589A  /home/pi/USB_KEY  vfat    rw,user,auto,exec 0       2
+Use the command 'blkid' to find the UUID of the key the add a line
+to the /etc/fstab file to mount the key at boot  
 
-Use the command 'blkid' to find the UUID of the key  
-
-/dev/mmcblk0p1: LABEL="boot" UUID="16D2-035F" TYPE="vfat" PARTUUID="77dd3a50-01"  
-/dev/mmcblk0p2: LABEL="rootfs" UUID="d065e631-6b9d-48c0-a8fe-e663b42828e0" TYPE="ext4" PARTUUID="77dd3a50-02"  
-/dev/mmcblk0p5: LABEL="home" UUID="1091244b-8b8c-4abc-9482-1d5ebf2e6787" TYPE="ext4" PARTUUID="77dd3a50-05"  
-/dev/sda1: LABEL="ARROW_KEY" UUID="BA65-589A" TYPE="vfat"  
-/dev/mmcblk0: PTUUID="77dd3a50" PTTYPE="dos"  
-
-
+```
+UUID=BA65-589A  /home/pi/USB_KEY  vfat    rw,user,auto,exec 0       2
+```
 The USB key is mounted in the new partion in '/home/USB_KEY'
-The script 'copy_db.sh' automaticaly copy the entire database to the USB Key  
-The script once every day by using Cron.
-
+The script 'db_backup.sh' automaticaly backup the entire database to the USB Key  
+The script run once per day by using Cron.
 
 
 # WIFI and SSH 
