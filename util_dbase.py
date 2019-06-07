@@ -11,8 +11,8 @@ def write_to_dbase(jsony_body,db_name):
     currentpathdir = os.path.dirname(os.path.realpath(__file__))
     cred_file = os.path.join(currentpathdir, "credential.txt")
     data_json = get_json_data_from_file(cred_file)
-    db_user = data_json['DATABASE_USER']
-    db_password = data_json['DATABASE_PASSWORD']
+    db_user = data_json['DATABASE_USER_ADMIN']
+    db_password = data_json['DATABASE_PASSWORD_ADMIN']
     client = InfluxDBClient('localhost', 8086, db_user, db_password, db_name)
     dbs = client.get_list_database()
     d = next((d for d in dbs if d['name'] == db_name), None)
