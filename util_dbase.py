@@ -23,7 +23,7 @@ def write_to_dbase(jsony_body,db_name):
     if not result:
         log_error("Database write error")
 
-def init_dbase()
+def init_dbase():
 	"""
     :param none
     :return: none
