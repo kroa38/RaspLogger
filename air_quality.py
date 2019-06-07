@@ -24,7 +24,8 @@ def get_atmo():
         log_error("api.atmo-aura.fr unreachable ...")
         return 0
     else:
-        log_event("air_quality update ok")
+        if debug_print:
+            log_event("air_quality update ok")
     data = r.json()
     value_atmo = float(data['indices']['data'][1]['valeur'])
     value_atmo_int = int(value_atmo)
