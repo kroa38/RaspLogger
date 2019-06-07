@@ -182,7 +182,7 @@ sudo nano /etc/influxdb/influxdb.conf
   bind-address = ":8086"
 
   # Determines whether user authentication is enabled over HTTP/HTTPS.
-  auth-enabled = true
+  auth-enabled = false
   
 ```
 - 4) Start service  
