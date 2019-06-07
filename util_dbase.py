@@ -23,3 +23,29 @@ def write_to_dbase(jsony_body,db_name):
     if not result:
         log_error("Database write error")
 
+def init_dbase()
+	"""
+    :param none
+    :return: none
+    """
+    currentpathdir = os.path.dirname(os.path.realpath(__file__))
+    cred_file = os.path.join(currentpathdir, "credential.txt")
+    data_json = get_json_data_from_file(cred_file)
+	
+	client = InfluxDBClient('localhost', 8086)
+	
+	client.create_database('linky')
+	client.create_database('air_quality')
+	client.create_database('ibeacon')
+	
+    db_user = data_json['DATABASE_USER_ADMIN']
+    db_password = data_json['DATABASE_PASSWORD_ADMIN']	
+	client.create_user(db_user,db_password,admin=True)
+	
+    db_user = data_json['DATABASE_USER_READER']
+    db_password = data_json['DATABASE_PASSWORD_READER']	
+	client.create_user(db_user,db_password,admin=False)	
+	client.grant_privilege('read','ibeacon',db_user)
+	client.grant_privilege('read','linky',db_user)
+	client.grant_privilege('read','air_quality',db_user)
+    
