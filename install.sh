@@ -95,20 +95,13 @@ echo "install pyserial..........................................................
 pip install pyserial & wait $!
 echo "##############################################################################"
 echo "Copy timezone file ..........................................................."
-cp -f etc/timezone /etc/.
-echo "##############################################################################"
-echo "Create USB_KEY directory for making a copy of database
-cd ..
-mkdir USB_KEY
+cp -f /home/pi/RaspLogger/etc/timezone /etc/.
 echo "##############################################################################"
 echo "Create influxdb directory Wal and Data
-mkdir influxdb
-chown influxdb:influxdb influxdb
-cd influxdb
-mkdir data
-chown influxdb:influxdb data
-mkdir wal
-chown influxdb:influxdb wal
+mkdir /home/pi/influxdb
+mkdir /home/pi/influxdb/data
+mkdir /home/pi/influxdb/wal
+chown -R influxdb:influxdb /home/pi/influxdb
 echo "##############################################################################"
 echo "End of script................................................................."
 echo "##############################################################################"
