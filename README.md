@@ -208,10 +208,14 @@ systemctl enable influxdb.service
 systemctl status influxdb.service
 ```
 
-- 7) Init the databases and users
+- 7) Init the databases and users  
      
-This create the 3 databases and one admin user and one reader user
+This create the 3 databases and one admin user and one reader user  
+
 ```
 python util_dbase.py
 ```
+Important !!
+option "auth-enabled = false" must be declared into  /etc/influxdb/influxdb.conf  
+and be changed to "auth-enabled = true" after !
 
