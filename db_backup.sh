@@ -1,9 +1,14 @@
 
+
+
 #!/bin/bash
 # Backup database to USB key flash disk
 # first test if usb key is mounted
 # then make a secure copy
 
+echo "***********************************"
+echo "         BACKUP DATABASE           "
+echo "***********************************"
 if [ 'mount | grep USB_KEY & wait $!' ]
 then
     echo "USB key is present"
@@ -24,5 +29,8 @@ then
     else
         echo "influd backup fail"
     fi
+else
 echo "USB Key not present ! "
 fi
+echo "END BACKUP"
+echo "***********************************"
