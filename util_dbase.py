@@ -34,7 +34,7 @@ def init_dbase():
 	
     db_user = data_json['DATABASE_USER_ADMIN']
     db_password = data_json['DATABASE_PASSWORD_ADMIN']
-    client = InfluxDBClient('localhost', 8086, db_user, db_password)
+    client = InfluxDBClient('localhost', 8086)
 	
     client.create_database('linky')
     client.create_database('air_quality')
@@ -50,4 +50,10 @@ def init_dbase():
     client.grant_privilege('read','ibeacon',db_user)
     client.grant_privilege('read','linky',db_user)
     client.grant_privilege('read','air_quality',db_user)
-    
+
+if __name__ == "__main__":
+    '''
+    start this script for creating the databases
+    option "auth-enabled = false" must be declared into  /etc/influxdb/influxdb.conf
+    '''
+    init_dbase()
