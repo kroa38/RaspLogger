@@ -134,6 +134,8 @@ dwc_otg.lpm_enable=0 console=tty1 root=PARTUUID=dab3eba4-02 rootfstype=ext4 elev
 
 # __InfluxdB on RAPSBERRY PI__
 
+ Prefered Version: 1.7.6-1
+
 - 1) Update, Upgrade, Install  
 
 ```
