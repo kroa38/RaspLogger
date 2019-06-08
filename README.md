@@ -13,15 +13,12 @@ Write the image on the the SD card :
 https://sourceforge.net/projects/win32diskimager/
 
 4)
-use Gparted to resize the root partition and create a new extended  
-and logical partition : Name this one: home 
-
-edit file /etc/fstab to auto mount the new partition and add for example:  
-PARTUUID=0eb18792-05  /home ext4  rw,user,auto,exec 0  0  
-
-5)
-Copy from rootfs the 'pi' directory to the new partition /home
-Remove from rootfs the /home directory
+Expand the root partition to use the full space of the SD card  
+```
+raspi-config
+-> advance option
+-> expand filesystem
+```
 
 5)
 Update and upgrade system:  
