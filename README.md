@@ -36,17 +36,17 @@ Install git
 sudo apt-get install git
 ```
 
-# External USB Key (Database copy)  
+# External USB Key (Database backup)  
 
 I recommand to save the database content to another location.  
 I use a external USB Key plugged to the Micro USB port of the Rpi Zero.  
 This one is automounted by adding a line on fstab:
 
-Use the command 'blkid' to find the UUID of the key the add a line
+Use the command 'blkid' to find the UUID of the key and then add a line
 to the /etc/fstab file to mount the key at boot  
 
 ```
-UUID=BA65-589A  /home/pi/USB_KEY  vfat    rw,user,auto,exec 0       2
+UUID=BA65-589A  /home/pi/USB_KEY  vfat    rw,user,auto,exec 0    1
 ```
 The USB key is mounted in the new partion in '/home/USB_KEY'
 The script 'db_backup.sh' automaticaly backup the entire database to the USB Key  
@@ -70,10 +70,10 @@ network={
        key_mgmt=WPA-PSK
     }
 ```
-How to setup SSH  
-create an empty file named "ssh" into the "boot"  partition  
+Setup SSH  
+create an empty file named "ssh" into the "boot" partition  
 
-I recommand to read this blog for the first install on the Raspberry Pi Zero :
+I recommand to read this good blog for the first install on the Raspberry Pi Zero :
 https://medium.com/@aallan/setting-up-a-headless-raspberry-pi-zero-3ded0b83f274  
 
 
@@ -106,7 +106,7 @@ systemctl status ssh.service
 # __Boot and start Install script__
 
 After boot start the install script :
-This script install packages and library for Python.  
+This script install all necessary packages.  
 
 ```
 sudo sh ./install.sh
