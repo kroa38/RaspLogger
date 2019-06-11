@@ -98,7 +98,18 @@ Check intrusion and attempt
 ```
 systemctl status ssh.service  
 ```
+# __SYSLOG__
 
+due to the huge amount of attack on ssh port i recommand
+to remove auth log.
+
+```
+sudo nano /etc/rsyslog.conf
+and comment the line :
+
+#auth,authpriv.*               /var/log/auth.log
+
+```
 
 # __Boot and start Install script__
 
