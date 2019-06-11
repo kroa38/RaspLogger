@@ -86,6 +86,7 @@ IgnoreRhosts yes
 PermitEmptyPasswords no  
 MaxAuthTries 3  
 PermitRootLogin no  
+MaxSessions 1
 ```
 
 Are you connected to the remote with SSH ?  
