@@ -98,7 +98,22 @@ Check intrusion and attempt
 ```
 systemctl status ssh.service  
 ```
+# __PAM__
+
+Secure your ssh connexion by adding delay on failure on the file 'sshd' in pam.d
+```
+sudo /etc/pam.d/sshd
+```
+add the line below to add a delay of 10s on failure
+
+```
+auth  optional  pam_faildelay.so  delay=10000000
+```
+
+
 # __SYSLOG__
+
+
 
 due to the huge amount of attack on ssh port i recommand
 to remove auth log.
