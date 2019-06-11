@@ -105,12 +105,15 @@ to remove auth log.
 
 ```
 sudo nano /etc/rsyslog.conf
-and comment the line :
-
-#auth,authpriv.*               /var/log/auth.log
-
 ```
-
+and comment the line :
+```
+#auth,authpriv.*               /var/log/auth.log
+```
+restart syslog 
+```
+ sudo service rsyslog restart
+```
 # __Boot and start Install script__
 
 After boot start the install script :
