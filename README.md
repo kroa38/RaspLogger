@@ -102,7 +102,7 @@ systemctl status ssh.service
 
 Secure your ssh connexion by adding delay on failure on the file 'sshd' in pam.d
 ```
-sudo /etc/pam.d/sshd
+sudo nano /etc/pam.d/sshd
 ```
 add the line below to add a delay of 10s on failure
 
