@@ -1,4 +1,4 @@
-# Install a Fresh Raspbian image.
+# Install a Fresh Raspbian Lite image.
 
 1)  
 Download a fresh Raspbian image( i recommand the light version)   
