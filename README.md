@@ -1,4 +1,14 @@
-# Install a Fresh Raspbian Lite image.
+# __Raspberrypi Zero-W with data Sensor and InfluxdB__
+
+ Collect data from Bluetooth Sensor (Temp, Hum, Press,Gaz,Batt Level)  
+ Collect Linky Smart Energy Counter  
+ Collect Air Quality   
+ Collect I/O Event  
+ Store data to InfluxdB  
+ 
+ -> Display data from Grafana Cloud service
+
+## Install a Fresh Raspbian Lite image.
 
 1)  
 Download a fresh Raspbian image( i recommand the light version)   
@@ -33,7 +43,7 @@ Install git
 sudo apt-get install git
 ```
 
-# External USB Key (Database backup)  
+## External USB Key (Database backup)  
 
 I recommand to save the database content to another location.  
 I use a external USB Key plugged to the Micro USB port of the Rpi Zero.  
@@ -50,7 +60,7 @@ The script 'db_backup.sh' automaticaly backup the entire database to the USB Key
 The script run once per day by using Cron.
 
 
-# WIFI and SSH 
+## WIFI and SSH 
 
 How to setup Wifi  
 
@@ -74,7 +84,7 @@ I recommand to read this good blog for the first install on the Raspberry Pi Zer
 https://medium.com/@aallan/setting-up-a-headless-raspberry-pi-zero-3ded0b83f274  
 
 
-# __Configure SSH__
+## __Configure SSH__
 
 Good info from :
 https://linux-audit.com/audit-and-harden-your-ssh-configuration/
@@ -99,7 +109,7 @@ Check intrusion and attempt
 ```
 systemctl status ssh.service  
 ```
-# __PAM__
+## __PAM__
 
 Secure your ssh connexion by adding delay on failure on the file 'sshd' in pam.d
 ```
@@ -112,7 +122,7 @@ auth  optional  pam_faildelay.so  delay=10000000
 ```
 
 
-# __SYSLOG__
+## __SYSLOG__
 
 
 
@@ -130,7 +140,7 @@ restart syslog
 ```
  sudo service rsyslog restart
 ```
-# __Boot and start Install script__
+## __Boot and start Install script__
 
 After boot start the install script :
 This script install all necessary packages.  
@@ -139,7 +149,7 @@ This script install all necessary packages.
 sudo sh ./install.sh
 ```
 
-# __TimeZone, UART, I2C__
+## __TimeZone, UART, I2C__
 
 Use the 'raspi-config' command to setup your timezone !
 
@@ -162,7 +172,7 @@ console=serial0,115200
 example file  
 dwc_otg.lpm_enable=0 console=tty1 root=PARTUUID=dab3eba4-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait  
 
-# __InfluxdB on RAPSBERRY PI__
+## __InfluxdB on RAPSBERRY PI__
 
  Prefered Version: 1.7.6-1
 
