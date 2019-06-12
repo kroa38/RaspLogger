@@ -1,9 +1,9 @@
 # __Raspberrypi Zero-W with data Sensor and InfluxdB__
 
  Collect data from Bluetooth Sensor (Temp, Hum, Press,Gaz,Batt Level)  
- Collect Linky Smart Energy Counter  
- Collect Air Quality   
- Collect I/O Event  
+ Collect Linky Smart Energy Counter  (Uart)
+ Collect Air Quality (grad data from web)  
+ Collect I/O Event  (door event or other)
  Store data to InfluxdB  
  
  -> Display data from Grafana Cloud service
