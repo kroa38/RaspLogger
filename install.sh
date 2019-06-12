@@ -64,7 +64,12 @@ mkdir /home/pi/influxdb/wal
 chown -R influxdb:influxdb /home/pi/influxdb
 echo "##############################################################################"
 echo "Create Users in database......................................................"
-python util_dbase.py & wait $!
+if [ -f /home/pi/RaspLogger/credential.txt ]
+then
+	python util_dbase.py & wait $!
+else
+	echo "No credential file  : Database Users not created"
+fi
 echo "##############################################################################"
 echo "Restart Influxdb......................................................"
 service influxdb restart & wait $!
