@@ -30,7 +30,13 @@ def init_dbase():
     """
     currentpathdir = os.path.dirname(os.path.realpath(__file__))
     cred_file = os.path.join(currentpathdir, "credential.txt")
-    data_json = get_json_data_from_file(cred_file)
+    try:
+        data_json = get_json_data_from_file(cred_file)
+    except:
+	print("**********************************")
+	print("* Error : no file credential.txt *")	
+	print("**********************************")
+	return
 	
     db_user = data_json['DATABASE_USER_ADMIN']
     db_password = data_json['DATABASE_PASSWORD_ADMIN']
