@@ -1,3 +1,8 @@
+Copy and replace the root file to /var/spool/cron/crontabs
+```
+cp -rf cron/root /var/spool/cron/crontabs/.
+```
+
 # CRON file for schedulling Linky capture 
 
 Linky capture every 15 minutes     
