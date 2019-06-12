@@ -49,13 +49,13 @@ echo "Copy timezone file .......................................................
 cp -f /home/pi/RaspLogger/etc/timezone /etc/.
 echo "##############################################################################"
 echo "Copy cron file ..........................................................."
-cp -rf cron/root /var/spool/cron/crontabs/.
+cp -rf /home/pi/RaspLogger/cron/root /var/spool/cron/crontabs/.
 echo "##############################################################################"
 echo "Copy influxdb.conf file ..........................................................."
-cp -rf influxdb/influxdb.conf /etc/influxdb/.
+cp -rf /home/pi/RaspLogger/influxdb/influxdb.conf /etc/influxdb/.
 echo "##############################################################################"
 echo "Copy sshd_config file ..........................................................."
-cp -rf ssh/sshd_config /etc/ssh/.
+cp -rf /home/pi/RaspLogger/ssh/sshd_config /etc/ssh/.
 echo "##############################################################################"
 echo "Create influxdb directory Wal and Data
 mkdir /home/pi/influxdb
