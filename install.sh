@@ -51,6 +51,9 @@ echo "##########################################################################
 echo "Copy cron file ..........................................................."
 cp -rf cron/root /var/spool/cron/crontabs/.
 echo "##############################################################################"
+echo "Copy influxdb.conf file ..........................................................."
+cp -rf influxdb/influxdb.conf /etc/influxdb/.
+echo "##############################################################################"
 echo "Create influxdb directory Wal and Data
 mkdir /home/pi/influxdb
 mkdir /home/pi/influxdb/data
