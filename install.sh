@@ -54,6 +54,9 @@ echo "##########################################################################
 echo "Copy influxdb.conf file ..........................................................."
 cp -rf influxdb/influxdb.conf /etc/influxdb/.
 echo "##############################################################################"
+echo "Copy sshd_config file ..........................................................."
+cp -rf ssh/sshd_config /etc/ssh/.
+echo "##############################################################################"
 echo "Create influxdb directory Wal and Data
 mkdir /home/pi/influxdb
 mkdir /home/pi/influxdb/data
