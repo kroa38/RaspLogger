@@ -48,6 +48,9 @@ echo "##########################################################################
 echo "Copy timezone file ..........................................................."
 cp -f /home/pi/RaspLogger/etc/timezone /etc/.
 echo "##############################################################################"
+echo "Copy cron file ..........................................................."
+cp -rf cron/root /var/spool/cron/crontabs/.
+echo "##############################################################################"
 echo "Create influxdb directory Wal and Data
 mkdir /home/pi/influxdb
 mkdir /home/pi/influxdb/data
