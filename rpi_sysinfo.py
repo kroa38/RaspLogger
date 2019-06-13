@@ -147,4 +147,4 @@ if __name__ == "__main__":
     if debug_print:
         print json_body
     else:
-        write_to_dbase(json_body, "system")
+        write_to_dbase(json_body, "sysinfo")
