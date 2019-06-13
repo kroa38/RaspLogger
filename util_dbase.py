@@ -45,6 +45,7 @@ def init_dbase():
     client.create_database('linky')
     client.create_database('air_quality')
     client.create_database('ibeacon')
+    client.create_database('sysinfo')
 	
     db_user = data_json['DATABASE_USER_ADMIN']
     db_password = data_json['DATABASE_PASSWORD_ADMIN']	
@@ -56,7 +57,8 @@ def init_dbase():
     client.grant_privilege('read','ibeacon',db_user)
     client.grant_privilege('read','linky',db_user)
     client.grant_privilege('read','air_quality',db_user)
-
+    client.grant_privilege('read','sysinfo',db_user)
+    client.create_retention_policy('sysinfo_ret','7d','0','sysinfo',False,'7d')
 if __name__ == "__main__":
     '''
     start this script for creating the databases
