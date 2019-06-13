@@ -27,9 +27,9 @@ def get_atmo():
         if debug_print:
             log_event("air_quality update ok")
     data = r.json()
-    value_atmo = float(data['indices']['data'][1]['valeur'])
+    value_atmo = float(data['indices']['data'][0]['valeur'])
     value_atmo_int = int(value_atmo)
-    qual_atmo = str(data['indices']['data'][1]['qualificatif'])
+    qual_atmo = str(data['indices']['data'][0]['qualificatif'])
     if debug_print:
         print int(value_atmo)
         print qual_atmo
