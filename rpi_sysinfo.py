@@ -140,7 +140,7 @@ if __name__ == "__main__":
     for example every day
     0 * * * * python /this_script.py > /dev/null 2>&1
     '''
-    debug_print = True
+    debug_print = False
 
     json_body = rpi_sysinfo()
 
