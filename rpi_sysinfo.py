@@ -5,7 +5,7 @@ This module add some function to monitor the Raspberrry health
 - Space used on SD Card and USB Key
 The collected info are sent to a database
 """
-
+from util_dbase import write_to_dbase
 import subprocess
 
 
