@@ -43,17 +43,17 @@ Install git
 sudo apt-get install git
 ```
 
-## External USB Key (Database backup)  
+## External SSD Disk (Database backup)  
 
 I recommand to save the database content to another location.  
-I use a external USB Key plugged to the Micro USB port of the Rpi Zero.  
+I use a external SSD(128Gb M2 Type SATA) plugged to the Micro USB port of the Rpi Zero.  
 This one is automounted by adding a line on fstab:
 
 Use the command 'blkid' to find the UUID of the key and then add a line
 to the /etc/fstab file to mount the key at boot  
 
 ```
-UUID=BA65-589A  /home/pi/USB_KEY  vfat    rw,user,auto,exec 0    1
+PARTUUID=c20396db-01  /home/pi/USB_KEY    ext4    rw,user,auto,exec,discard,noatime  0      1  
 ```
 The USB key is mounted in the new partion in '/home/USB_KEY'
 The script 'db_backup.sh' automaticaly backup the entire database to the USB Key  
