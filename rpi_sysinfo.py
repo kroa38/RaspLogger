@@ -22,21 +22,30 @@ def rpi_sysinfo():
     cmd = ['df', '-m', '--output=size', '/']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
-    sd_size = int(o.split(' ')[5])
+    try:
+        sd_size = int(o.split(' ')[5])
+    except:
+        sd_size = 0
     if debug_print:
         print ("Size %d" % sd_size)
 
     cmd = ['df', '-m', '--output=avail', '/']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
-    sd_avail = int(o.split(' ')[1])
+    try:
+        sd_avail = int(o.split(' ')[1])
+    except:
+        sd_avail = 0
     if debug_print:
         print ("Avail %d" % sd_avail)
 
     cmd = ['df', '-m', '--output=used', '/']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
-    sd_used = int(o.split(' ')[2])
+    try:
+        sd_used = int(o.split(' ')[2])
+    except:
+        sd_used = 0
     if debug_print:
         print ("Used %d" %sd_used)
 
@@ -44,7 +53,10 @@ def rpi_sysinfo():
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
     o = o.split(' ')[1]
-    sd_pcent = int(o.split('%')[0])
+    try:
+        sd_pcent = int(o.split('%')[0])
+    except:
+        sd_pcent = 0
     if debug_print:
         print ("Percent %d" % sd_pcent)
 
@@ -53,7 +65,10 @@ def rpi_sysinfo():
     o, e = proc.communicate()
     o = o.split('/')
     o = o[0]
-    sd_meta = int(o)
+    try:
+        sd_meta = int(o)
+    except:
+        sd_meta = 0
     if debug_print:
         print ("Influxdb meta Used %d" % sd_meta)
 
@@ -62,7 +77,10 @@ def rpi_sysinfo():
     o, e = proc.communicate()
     o = o.split('/')
     o = o[0]
-    sd_data = int(o)
+    try:
+        sd_data = int(o)
+    except:
+        sd_data = 0
     if debug_print:
         print ("Influxdb data Used %d" % sd_data)
 
@@ -71,7 +89,10 @@ def rpi_sysinfo():
     o, e = proc.communicate()
     o = o.split('/')
     o = o[0]
-    sd_wal = int(o)
+    try:
+        sd_wal = int(o)
+    except:
+        sd_wal = 0
     if debug_print:
         print ("Influxdb wal Used %d" % sd_wal)
 
@@ -81,21 +102,30 @@ def rpi_sysinfo():
     cmd = ['df', '-m', '--output=size', '/home/pi/USB_KEY']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
-    usb_size = int(o.split(' ')[3])
+    try:
+        usb_size = int(o.split(' ')[3])
+    except:
+        usb_size = 0
     if debug_print:
         print ("Size %d" % usb_size)
 
     cmd = ['df', '-m', '--output=avail', '/home/pi/USB_KEY']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
-    usb_avail = int(o.split()[1])
+    try:
+        usb_avail = int(o.split()[1])
+    except:
+        usb_avail = 0
     if debug_print:
         print ("Avail %d" %usb_avail)
 
     cmd = ['df', '-m', '--output=used', '/home/pi/USB_KEY']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
-    usb_used = int(o.split()[1])
+    try:
+        usb_used = int(o.split()[1])
+    except:
+        usb_used = 0
     if debug_print:
         print ("Used %d" % usb_used)
 
@@ -103,7 +133,10 @@ def rpi_sysinfo():
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
     o = o.split(' ')[2]
-    usb_pcent = int(o.split('%')[0])
+    try:
+        usb_pcent = int(o.split('%')[0])
+    except:
+        usb_pcent = 0
     if debug_print:
         print ("Percent %d" % usb_pcent)
 
@@ -112,7 +145,10 @@ def rpi_sysinfo():
     o, e = proc.communicate()
     o = o.split('\t')
     o = o[0]
-    db_backup = int(o)
+    try:
+        db_backup = int(o)
+    except:
+        db_backup = 0
     if debug_print:
         print ("Influxdb backup size %d" % db_backup)
 
