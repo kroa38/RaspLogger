@@ -66,10 +66,26 @@ echo "##########################################################################
 echo "Copy influxdb.conf file ..........................................................."
 cp -rf /home/pi/RaspLogger/influxdb/influxdb.conf /etc/influxdb/.
 echo "##############################################################################"
-echo "Create influxdb directory Wal and Data
-mkdir /home/pi/influxdb
-mkdir /home/pi/influxdb/data
-mkdir /home/pi/influxdb/wal
+echo "Create influxdb directory Wal,Data,Meta
+if [ ! -d /home/pi/USB_KEY/influxdb ]
+then
+    mkdir /home/pi/USB_KEY/influxdb
+fi
+
+if [ ! -d /home/pi/USB_KEY/influxdb/meta ]
+then
+    mkdir /home/pi/USB_KEY/influxdb/meta
+fi
+
+if [ ! -d /home/pi/USB_KEY/influxdb/data ]
+then
+    mkdir /home/pi/USB_KEY/influxdb/data
+fi
+
+if [ ! -d /home/pi/USB_KEY/influxdb/wal ]
+then
+    mkdir /home/pi/USB_KEY/influxdb/wal
+fi
 chown -R influxdb:influxdb /home/pi/influxdb
 echo "##############################################################################"
 echo "Create Users in database......................................................"
