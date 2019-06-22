@@ -60,7 +60,7 @@ def rpi_sysinfo():
     if debug_print:
         print ("Percent %d" % sd_pcent)
 
-    cmd = ['du', '-sm', '/var/lib/influxdb/meta']
+    cmd = ['du', '-sm', '/home/pi/USB_KEY/influxdb/meta']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
     o = o.split('/')
@@ -72,7 +72,7 @@ def rpi_sysinfo():
     if debug_print:
         print ("Influxdb meta Used %d" % sd_meta)
 
-    cmd = ['du', '-sm', '/home/pi/influxdb/data']
+    cmd = ['du', '-sm', '/home/pi/USB_KEY/influxdb/data']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
     o = o.split('/')
@@ -84,7 +84,7 @@ def rpi_sysinfo():
     if debug_print:
         print ("Influxdb data Used %d" % sd_data)
 
-    cmd = ['du', '-sm', '/home/pi/influxdb/wal']
+    cmd = ['du', '-sm', '/home/pi/USB_KEY/influxdb/wal']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
     o = o.split('/')
