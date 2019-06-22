@@ -81,21 +81,21 @@ def rpi_sysinfo():
     cmd = ['df', '-m', '--output=size', '/home/pi/USB_KEY']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
-    usb_size = int(o.split(' ')[5])
+    usb_size = int(o.split(' ')[3])
     if debug_print:
         print ("Size %d" % usb_size)
 
     cmd = ['df', '-m', '--output=avail', '/home/pi/USB_KEY']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
-    usb_avail = int(o.split(' ')[1])
+    usb_avail = int(o.split()[1])
     if debug_print:
         print ("Avail %d" %usb_avail)
 
     cmd = ['df', '-m', '--output=used', '/home/pi/USB_KEY']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
-    usb_used = int(o.split(' ')[5])
+    usb_used = int(o.split()[1])
     if debug_print:
         print ("Used %d" % usb_used)
 
