@@ -43,6 +43,7 @@ def set_json(ble_data):
     :return:
     '''
     blueduino_sensor_type = 1
+    bluenrg_sensor_type = 2
     csv_reader = ble_data.split(',')
     uuid = csv_reader[5]
     sensor_type = int(uuid[9:11], 0)
@@ -85,9 +86,9 @@ def set_json(ble_data):
         humidity = float(int(csv_reader[9], 0))/100
 
     if sensor_number == 1:
-        location = "Chambre_Parents"
+        location = "Outside"
     else:
-        location = "None"
+        location = "Inside"
 
     # print ("date time is %s" % time_string )
     # print ("rssi = %d" % rssi)
