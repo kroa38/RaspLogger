@@ -29,7 +29,21 @@ def get_atmo():
     data = r.json()
     value_atmo = float(data['indices']['data'][0]['valeur'])
     value_atmo_int = int(value_atmo)
-    qual_atmo = str(data['indices']['data'][0]['qualificatif'])
+    
+    if value_atmo_int < 10 :
+        qual_atmo = "Très bon"
+    elif value_atmo_int > 10 and value_atmo_int <=40:
+        qual_atmo = "Bon"
+    elif value_atmo_int > 40 and value_atmo_int <=50:    
+        qual_atmo = "Moyen"
+    elif value_atmo_int > 50 and value_atmo_int <=80:    
+        qual_atmo = "Médiocre"  
+    elif value_atmo_int > 80 and value_atmo_int <=90:    
+        qual_atmo = "Mauvais"  
+    else: 
+        qual_atmo = "Très Mauvais"   
+        
+    #qual_atmo = str(data['indices']['data'][0]['qualificatif'])
     if debug_print:
         print int(value_atmo)
         print qual_atmo
