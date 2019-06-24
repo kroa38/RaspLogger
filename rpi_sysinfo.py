@@ -60,9 +60,6 @@ def rpi_sysinfo():
     if debug_print:
         print ("Percent %d" % sd_pcent)
 
-
-
-
     cmd = ['du', '-sm', '/home/pi/USB_KEY/influxdb/meta']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
