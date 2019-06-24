@@ -7,7 +7,7 @@ The collected info are sent to a database
 """
 from util_dbase import write_to_dbase
 import subprocess
-
+import re
 
 def rpi_sysinfo():
     """
@@ -23,7 +23,7 @@ def rpi_sysinfo():
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
     try:
-        sd_size = int(o.split(' ')[5])
+        sd_size = int(re.findall('\d+',o)[1]) 
     except:
         sd_size = 0
     if debug_print:
@@ -33,7 +33,7 @@ def rpi_sysinfo():
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
     try:
-        sd_avail = int(o.split(' ')[1])
+        sd_avail = int(re.findall('\d+',o)[0]) 
     except:
         sd_avail = 0
     if debug_print:
@@ -43,7 +43,7 @@ def rpi_sysinfo():
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
     try:
-        sd_used = int(o.split(' ')[2])
+        sd_used = int(re.findall('\d+',o)[0]) 
     except:
         sd_used = 0
     if debug_print:
@@ -54,19 +54,20 @@ def rpi_sysinfo():
     o, e = proc.communicate()
     o = o.split(' ')[1]
     try:
-        sd_pcent = int(o.split('%')[0])
+        sd_pcent = int(re.findall('\d+',o)[0])
     except:
         sd_pcent = 0
     if debug_print:
         print ("Percent %d" % sd_pcent)
 
+
+
+
     cmd = ['du', '-sm', '/home/pi/USB_KEY/influxdb/meta']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
-    o = o.split('/')
-    o = o[0]
     try:
-        sd_meta = int(o)
+        sd_meta = int(re.findall('\d+',o)[0])
     except:
         sd_meta = 0
     if debug_print:
@@ -75,10 +76,8 @@ def rpi_sysinfo():
     cmd = ['du', '-sm', '/home/pi/USB_KEY/influxdb/data']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
-    o = o.split('/')
-    o = o[0]
     try:
-        sd_data = int(o)
+        sd_data = int(re.findall('\d+',o)[0])
     except:
         sd_data = 0
     if debug_print:
@@ -87,10 +86,8 @@ def rpi_sysinfo():
     cmd = ['du', '-sm', '/home/pi/USB_KEY/influxdb/wal']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
-    o = o.split('/')
-    o = o[0]
     try:
-        sd_wal = int(o)
+        sd_wal = int(re.findall('\d+',o)[0])
     except:
         sd_wal = 0
     if debug_print:
@@ -103,7 +100,7 @@ def rpi_sysinfo():
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
     try:
-        usb_size = int(o.split(' ')[3])
+        usb_size = int(re.findall('\d+',o)[1]) 
     except:
         usb_size = 0
     if debug_print:
@@ -113,7 +110,7 @@ def rpi_sysinfo():
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
     try:
-        usb_avail = int(o.split()[1])
+        usb_avail = int(re.findall('\d+',o)[0])
     except:
         usb_avail = 0
     if debug_print:
@@ -123,7 +120,7 @@ def rpi_sysinfo():
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
     try:
-        usb_used = int(o.split()[1])
+        usb_used = int(re.findall('\d+',o)[0])
     except:
         usb_used = 0
     if debug_print:
@@ -132,9 +129,8 @@ def rpi_sysinfo():
     cmd = ['df', '-m', '--output=pcent', '/home/pi/USB_KEY']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
-    o = o.split(' ')[2]
     try:
-        usb_pcent = int(o.split('%')[0])
+        usb_pcent = int(re.findall('\d+',o)[0])
     except:
         usb_pcent = 0
     if debug_print:
@@ -143,10 +139,8 @@ def rpi_sysinfo():
     cmd = ['du', '-sm', '/home/pi/USB_KEY/influxdb_backup']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     o, e = proc.communicate()
-    o = o.split('\t')
-    o = o[0]
     try:
-        db_backup = int(o)
+        db_backup = int(re.findall('\d+',o)[0])
     except:
         db_backup = 0
     if debug_print:
