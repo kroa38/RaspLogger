@@ -28,7 +28,7 @@ def get_atmo():
             log_event("air_quality update ok")
     data = r.json()
     value_atmo = float(data['indices']['data'][0]['valeur'])
-    value_atmo_int = int(value_atmo)
+    value_atmo_int = round(value_atmo)
     
     if value_atmo_int < 10 :
         qual_atmo = "Très bon"
