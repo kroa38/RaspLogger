@@ -26,8 +26,8 @@ def callback(bt_addr, rssi, packet, additional_info):
     bl[1] = str(packet).split(',')
     bl[1] = bl[1][3]
     bl[1] = bl[1][9:13]
-    # if capture > 3s or sensor id is different.
-    if (bl[0]-al[0] > 3) or (bl[1] != al[1]):
+    # if capture > 10s or sensor id is different.
+    if (bl[0]-al[0] > 10) or (bl[1] != al[1]):
         al[0] = bl[0]
         al[1] = bl[1]
         ble_data = str("rssi,%d,%s" % (rssi, packet))
