@@ -58,7 +58,11 @@ def init_dbase():
     client.grant_privilege('read','linky',db_user)
     client.grant_privilege('read','air_quality',db_user)
     client.grant_privilege('read','sysinfo',db_user)
-    client.create_retention_policy('sysinfo_ret','7d','0','sysinfo',False,'7d')
+    client.create_retention_policy('autogen','7d','1','sysinfo',False,'7d')
+    client.create_retention_policy('autogen','0s','1','linky',False,'31d')
+    client.create_retention_policy('autogen','0s','1','air_quality',False,'31d')
+    client.create_retention_policy('autogen','0s','1','ibeacon',False,'31d')
+
 if __name__ == "__main__":
     '''
     start this script for creating the databases
