@@ -15,7 +15,7 @@ def interrupt_handler(channel):
             "fields": {"value": 1}    }]
     if check_internet()==True:
         tweet_message("Hop Hop..")
-    write_to_dbase(json_body,"GPIO")
+    write_to_dbase(json_body,"gpio")
 
 
 if __name__ == "__main__":
