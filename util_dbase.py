@@ -42,26 +42,37 @@ def init_dbase():
     db_password = data_json['DATABASE_PASSWORD_ADMIN']
     client = InfluxDBClient('localhost', 8086)
 	
+    # create databases	
     client.create_database('linky')
     client.create_database('air_quality')
     client.create_database('ibeacon')
     client.create_database('sysinfo')
+    client.create_database('gpio')
 	
+    # set retention policies for databases
+    client.create_retention_policy('autogen','0s','1','linky',False,'31d')
+    client.create_retention_policy('autogen','0s','1','air_quality',False,'31d')
+    client.create_retention_policy('autogen','0s','1','ibeacon',False,'31d')	
+    client.create_retention_policy('autogen','7d','1','sysinfo',False,'7d')	
+    client.create_retention_policy('autogen','0s','1','gpio',False,'31d')	
+	
+    # create admin user with read/write privilege	
     db_user = data_json['DATABASE_USER_ADMIN']
     db_password = data_json['DATABASE_PASSWORD_ADMIN']	
     client.create_user(db_user,db_password,admin=True)
-	
+
+    # create a user for grafana	
     db_user = data_json['DATABASE_USER_READER']
     db_password = data_json['DATABASE_PASSWORD_READER']	
     client.create_user(db_user,db_password,admin=False)	
+	
+    # set read privilege for grafana user  
     client.grant_privilege('read','ibeacon',db_user)
     client.grant_privilege('read','linky',db_user)
     client.grant_privilege('read','air_quality',db_user)
     client.grant_privilege('read','sysinfo',db_user)
-    client.create_retention_policy('autogen','7d','1','sysinfo',False,'7d')
-    client.create_retention_policy('autogen','0s','1','linky',False,'31d')
-    client.create_retention_policy('autogen','0s','1','air_quality',False,'31d')
-    client.create_retention_policy('autogen','0s','1','ibeacon',False,'31d')
+    client.grant_privilege('read','gpio',db_user)
+
 
 if __name__ == "__main__":
     '''
