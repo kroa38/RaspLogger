@@ -110,8 +110,8 @@ def set_json(ble_data):
         point = {
             "measurement": meas,
             "tags": {
-                "Sensor Number": sensor_number,
-                "Sensor Type": sensor_type,
+                "Sensor_Number": sensor_number,
+                "Sensor_Type": sensor_type,
                 "Location": location
             },
             "fields": {
