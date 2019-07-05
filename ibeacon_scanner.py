@@ -10,6 +10,9 @@ from influxdb import InfluxDBClient
 from util_dbase import write_to_dbase
 
 #rtc = DS1338.DS1338(1, 0x68)
+measurement_list = ["Rssi", "Battery", "Temperature","Humidity","Altitude","Pressure","Gaz"]
+points = []
+meas = "none"
 
 def callback(bt_addr, rssi, packet, additional_info):
     '''
@@ -103,87 +106,21 @@ def set_json(ble_data):
     # print ("temperature = %.1f" % temperature)
     # print ("humidity = %.2f" % humidity)
 
-    jsony_body = [
-        {
-            "measurement": "Rssi",
+    for meas in measurement_list:
+        point = {
+            "measurement": meas,
             "tags": {
                 "Sensor Number": sensor_number,
                 "Sensor Type": sensor_type,
                 "Location": location
             },
             "fields": {
-                "value": rssi
-            }
-        },
-         {
-            "measurement": "Battery",
-            "tags": {
-                "Sensor Number": sensor_number,
-                "Sensor Type": sensor_type,
-                "Location": location
-            },
-            "fields": {
-                "value": batt_voltage
-            }
-        },
-        {
-            "measurement": "Temperature",
-            "tags": {
-                "Sensor Number": sensor_number,
-                "Sensor Type": sensor_type,
-                "Location": location
-            },
-            "fields": {
-                "value": temperature
-            }
-        },
-        {
-            "measurement": "Humidity",
-            "tags": {
-                "Sensor Number": sensor_number,
-                "Sensor Type": sensor_type,
-                "Location": location
-            },
-            "fields": {
-                "value": humidity
-            }
-        },
-        {
-            "measurement": "Altitude",
-            "tags": {
-                "Sensor Number": sensor_number,
-                "Sensor Type": sensor_type,
-                "Location": location
-            },
-            "fields": {
-                "value": altitude
-            }
-        },
-        {
-            "measurement": "Pressure",
-            "tags": {
-                "Sensor Number": sensor_number,
-                "Sensor Type": sensor_type,
-                "Location": location
-            },
-            "fields": {
-                "value": pressure
-            }
-        },
-        {
-            "measurement": "Gaz",
-            "tags": {
-                "Sensor Number": sensor_number,
-                "Sensor Type": sensor_type,
-                "Location": location
-            },
-            "fields": {
-                "value": gaz
+                "value": value
             }
         }
+        points.append(point)   
 
-    ]
-    return jsony_body
+    return points
 
 
 if __name__ == "__main__":
