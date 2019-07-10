@@ -25,9 +25,29 @@ Linky capture every year 31 december at 23h56
 ```
 56 23 31 12 * bash /home/pi/RaspLogger/linky.sh year > /dev/null 2>&1  
 ```
-Update IP address to duckdns.org every 6 hours  
+Update IP address to duckdns.org every hours  
 ```
-0 */6 * * * bash /home/pi/duckdns/duck.sh > /dev/null 2>&1  
+5 * * * * bash /home/pi/RaspLogger/ip_update.sh > /dev/null 2>&1  
+```
+Database backup every day at 01h12  
+```
+12 01 * * * bash /home/pi/RaspLogger/db_backup.sh > /dev/null 2>&1
+```
+Update system info on database every day at 1h20  
+```
+20 01 * * * bash /home/pi/RaspLogger/rpi_sysinfo.sh > /dev/null 2>&1
+```
+Start ibeacon scanner after reboot  
+```
+@reboot bash /home/pi/RaspLogger/ibeacon_scanner.sh > /dev/null 2>&1
+```
+tweet ip adress after reboot  
+```
+@reboot bash /home/pi/RaspLogger/tweet_ip.sh > /dev/null 2>&1
+```
+Restart raspberry pi evry sunday at 1h04  
+```
+04 01 * * 7 /sbin/shutdown -r now > /dev/null 2>&1
 ```
 
 
