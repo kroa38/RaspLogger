@@ -15,5 +15,6 @@
 20 01 * * * bash /home/pi/RaspLogger/rpi_sysinfo.sh > /dev/null 2>&1
 @reboot bash /home/pi/RaspLogger/ibeacon_scanner.sh > /dev/null 2>&1
 @reboot bash /home/pi/RaspLogger/tweet_ip.sh > /dev/null 2>&1
+04 01 * * 7 /sbin/shutdown -r now > /dev/null 2>&1
 
 
