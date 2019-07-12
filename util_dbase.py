@@ -43,9 +43,9 @@ def init_dbase():
     :param none
     :return: none
     """
-	print("**********************************")
-	print("* INIT DBASE USERS               *")	
-	print("**********************************")
+    print("**********************************")
+    print("* INIT DBASE USERS               *")	
+    print("**********************************")
     currentpathdir = os.path.dirname(os.path.realpath(__file__))
     cred_file = os.path.join(currentpathdir, "credential.txt")
     try:
@@ -57,17 +57,17 @@ def init_dbase():
 	return
 	
     client = InfluxDBClient('localhost', 8086)     
-	print("**********************************")
-	print("* CREATE INFLUXDB GRAFANA USER   *")	
-	print("**********************************")   
+    print("**********************************")
+    print("* CREATE INFLUXDB GRAFANA USER   *")	
+    print("**********************************")   
     # create a user for grafana	
     db_user = data_json['DATABASE_USER_READER']
     db_password = data_json['DATABASE_PASSWORD_READER']	
     client.create_user(db_user,db_password,admin=False)	
  
-	print("**********************************")
-	print("* CREATE INFLUXDB ADMIN USER     *")	
-	print("**********************************")   
+    print("**********************************")
+    print("* CREATE INFLUXDB ADMIN USER     *")	
+    print("**********************************")   
     # create admin user with read/write privilege	
     db_user = data_json['DATABASE_USER_ADMIN']
     db_password = data_json['DATABASE_PASSWORD_ADMIN']	
