@@ -13,7 +13,9 @@
 21 */2 * * * bash /home/pi/RaspLogger/ip_update.sh > /dev/null 2>&1
 12 02 * * * bash /home/pi/RaspLogger/db_backup.sh > /dev/null 2>&1
 20 01 * * * bash /home/pi/RaspLogger/rpi_sysinfo.sh > /dev/null 2>&1
+5 3 * * 6 bash /home/pi/RaspLogger/reboot_pi.sh > /dev/null 2>&1
 @reboot bash /home/pi/RaspLogger/ibeacon_scanner.sh > /dev/null 2>&1
+@reboot bash /home/pi/RaspLogger/tweet_ip.sh > /dev/null 2>&1
 
 
 
