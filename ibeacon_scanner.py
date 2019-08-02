@@ -10,9 +10,8 @@ from influxdb import InfluxDBClient
 from util_dbase import write_to_dbase
 
 #rtc = DS1338.DS1338(1, 0x68)
-measurement_list = ["Rssi", "Battery", "Temperature","Humidity","Altitude","Pressure","Gaz"]
-points = []
-meas = "none"
+
+
 
 def callback(bt_addr, rssi, packet, additional_info):
     '''
@@ -45,80 +44,58 @@ def set_json(ble_data):
     :param ble_data:
     :return:
     '''
-    blueduino_sensor_type = 1
-    bluenrg_sensor_type = 2
     csv_reader = ble_data.split(',')
     uuid = csv_reader[5]
-    sensor_type = int(uuid[9:11], 0)
-    rssi = 0
-    dbm_1m = 0
-    sensor_number = 0
-    batt_voltage = 0.0
-    bme_temp = 0.0
-    altitude = 0
-    pressure = 0.0
-    gaz = 0
-    temperature = 0.0
-    humidity = 0.0
-    now = datetime.now()
-    localtime = time.localtime()
-    if localtime.tm_isdst:
-        time_string = now.strftime("%Y-%m-%dT%H:%M:%S")
-    else:
-        time_string = now.strftime("%Y-%m-%dT%H:%M:%S")
-
-    if sensor_type == blueduino_sensor_type:
-        rssi = int(csv_reader[1], 0)
-        dbm_1m = int(csv_reader[3], 0)
-        uuid_prefix = uuid[:8]
-        sensor_number = int(uuid[11:13], 0)
-        batt_voltage = float(int(uuid[14:18], 16))/1000
-        bme_temp = float(int(uuid[20:23], 16))
-        if bme_temp < 2000:
-            bme_temp = (bme_temp-1000.0)/10.0
+    type = int(uuid[9:11], 0)
+    id = int(uuid[11:13], 0)
+    mydict = {}
+    points = []
+    meas = "none"
+    
+    if type == 1:
+        mydict["Rssi"] = int(csv_reader[1], 0)
+        mydict["Battery"] = float(int(uuid[14:18], 16)) / 1000
+        mydict["Altitude"] = int(uuid[24:28], 16)
+        mydict["Pressure"] = float(int(uuid[28:32], 16)) / 10
+        mydict["Gaz"] = int(uuid[32:36], 16)
+        mydict["Humidity"] = float(int(csv_reader[9], 0)) / 100
+        mydict["Temperature"] = float(int(csv_reader[7], 0))
+        if mydict["Temperature"] < 2000:
+            mydict["Temperature"] = (mydict["Temperature"] - 1000) / 10
         else:
-            bme_temp = (bme_temp - 2000.0)/(-10.0)
-        altitude = int(uuid[24:28], 16)
-        pressure = float(int(uuid[28:32], 16))/10
-        gaz = int(uuid[32:36], 16)
-        temperature = float(int(csv_reader[7], 0))
-        if temperature < 2000:
-            temperature = (temperature-1000.0)/10.0
+            mydict["Temperature"] = (mydict["Temperature"] - 2000) / 10
+
+    if type == 2:
+        mydict["Rssi"] = int(csv_reader[1], 0)
+        mydict["Battery"] = float(int(uuid[14:18], 16)) / 1000
+        mydict["Luminosity"] = int(uuid[19:23], 16)
+        mydict["Pressure"] = float(int(uuid[28:32], 16)) / 10
+        mydict["Gaz"] = int(uuid[32:36], 16)
+        mydict["Humidity"] = float(int(csv_reader[9], 0)) / 100
+        mydict["Temperature"] = float(int(csv_reader[7], 0))
+        if mydict["Temperature"] > 1000:
+            mydict["Temperature"] = (mydict["Temperature"] - 1100) / 10
+            mydict["ILS"] = 1
         else:
-            temperature = (temperature - 2000.0)/(-10.0)
-        humidity = float(int(csv_reader[9], 0))/100
+            mydict["Temperature"] = (mydict["Temperature"] - 100) / 10
+            mydict["ILS"] = 0
 
-    if sensor_number == 1:
-        location = "Outside"
-    else:
-        location = "Inside"
 
-    # print ("date time is %s" % time_string )
-    # print ("rssi = %d" % rssi)
-    # print ("dbm_1m = %d" % dbm_1m)
-    # print ("sensor type = %d" % sensor_type)
-    # print ("sensor number = %d" % sensor_number)
-    # print ("batt_voltage = %.3f" % batt_voltage)
-    # print ("bme_temp = %.1f" % bme_temp)
-    # print ("altitude = %d" % altitude)
-    # print ("pressure = %.1f" % pressure)
-    # print ("gaz = %d" % gaz)
-    # print ("temperature = %.1f" % temperature)
-    # print ("humidity = %.2f" % humidity)
-
-    for meas in measurement_list:
+    for meas in mydict:
         point = {
             "measurement": meas,
             "tags": {
-                "Sensor_Number": sensor_number,
-                "Sensor_Type": sensor_type,
-                "Location": location
+                "Sensor_Number": id,
+                "Sensor_Type": type
             },
             "fields": {
-                "value": value
+                "value": mydict[meas]
             }
         }
-        points.append(point)   
+        points.append(point)
+
+    if debug_ble:
+        print points
 
     return points
 
