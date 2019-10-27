@@ -1,3 +1,6 @@
 #!/bin/bash
 
-sudo shutdown -r now
+sudo service influxdb stop
+sudo killall -9 python & wait $!
+sudo shutdown -r now & wait $!
+
