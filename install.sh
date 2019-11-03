@@ -3,104 +3,122 @@ echo "##########################################################################
 echo "Start of script..............................................................."
 echo "##############################################################################"
 echo "Package update ..............................................................."
-sudo apt-get update & wait $!
+apt-get update & process_id=$!
+wait $process_id
 echo "##############################################################################"
 echo "Package upgrade ..............................................................."
-sudo apt-get upgrade -y  & wait $!
+apt-get upgrade -y  & process_id=$!
+wait $process_id
 echo "##############################################################################"
 echo "install git..................................................................."
-sudo apt-get -y install git & wait $!
+apt-get -y install git & process_id=$!
+wait $process_id
 echo "##############################################################################"
 echo "install apt-transport-https..................................................."
-sudo apt-get -y install apt-transport-https & wait $!
+apt-get -y install apt-transport-https & process_id=$!
+wait $process_id
 echo "##############################################################################"
 echo "install bluetooth............................................................."
-sudo apt-get -y install bluetooth & wait $!
+apt-get -y install bluetooth & process_id=$!
+wait $process_id
 echo "##############################################################################"
 echo "install libbluetooth-dev......................................................"
-sudo apt-get -y install libbluetooth-dev & wait $!
+apt-get -y install libbluetooth-dev & process_id=$!
+wait $process_id
 echo "##############################################################################"
 echo "install python-dev............................................................"
-sudo apt-get -y install python-dev & wait $!
+apt-get -y install python-dev & process_id=$!
+wait $process_id
 echo "##############################################################################"
 echo "install python-pip............................................................"
-sudo apt-get -y install python-pip & wait $!
+apt-get -y install python-pip & process_id=$!
+wait $process_id
 echo "##############################################################################"
 echo "install curl.................................................................."
-sudo apt-get -y install curl & wait $!
+apt-get -y install curl & process_id=$!
+wait $process_id
 echo "##############################################################################"
 echo ".............................................................................."
-curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -  & wait $!
+curl -sL https://repos.influxdata.com/influxdb.key | apt-key add -  & process_id=$!
+wait $process_id
 echo ".............................................................................."
-echo "deb https://repos.influxdata.com/debian stretch stable" | sudo tee /etc/apt/sources.list.d/influxdb.list  
+echo "deb https://repos.influxdata.com/debian stretch stable" | tee /etc/apt/sources.list.d/influxdb.list
 echo ".............................................................................."
 echo "##############################################################################"
-echo "Package update" & wait $!
-sudo apt-get update & wait $!
+echo "Package update"
+apt-get update & process_id=$!
+wait $process_id
 echo "##############################################################################"
 echo "install influxdb.............................................................."
-sudo apt-get -y install influxdb & wait $!
+apt-get -y install influxdb & process_id=$!
+wait $process_id
 echo "##############################################################################"
 echo ".............INSTALL PYTHON PACKAGES .........................................."
 echo "##############################################################################"
-sudo pip install -r requirements.txt & wait $!
+pip install -r requirements.txt & process_id=$!
+wait $process_id
 echo "##############################################################################"
 echo ".............SYSTEM TIPS AND TRICKS .........................................."
 echo "##############################################################################"
 echo "##############################################################################"
 echo "Copy timezone file ..........................................................."
-sudo p -f /home/pi/RaspLogger/etc/timezone /etc/.
+cp -rf /home/pi/RaspLogger/etc/timezone /etc/.
 echo "##############################################################################"
 echo "Copy cron file ..........................................................."
-sudo cp -rf /home/pi/RaspLogger/cron/root /var/spool/cron/crontabs/.
+cp -rf /home/pi/RaspLogger/cron/root /var/spool/cron/crontabs/.
 echo "##############################################################################"
 echo "Restart cron service .................... ......................................."
-sudo service cron restart & wait $!
+service cron restart & process_id=$!
+wait $process_id
 echo "##############################################################################"
 echo "Copy sshd_config file ..........................................................."
 cp -rf /home/pi/RaspLogger/ssh/sshd_config /etc/ssh/.
 echo "##############################################################################"
 echo "Reload SSH service ..........................................................."
-sudo systemctl reload ssh.service & wait $!
+systemctl reload ssh.service & process_id=$!
 echo "##############################################################################"
 echo "Copy influxdb.conf file ..........................................................."
-sudo cp -rf /home/pi/RaspLogger/influxdb/influxdb.conf /etc/influxdb/.
+cp -rf /home/pi/RaspLogger/influxdb/influxdb.conf /etc/influxdb/.
 echo "##############################################################################"
-echo "Create influxdb directory Wal,Data,Meta
+echo "Create influxdb directory Wal,Data,Meta"
 if [ ! -d /home/pi/USB_KEY/influxdb ]
 then
-    sudo mkdir /home/pi/USB_KEY/influxdb
+    mkdir /home/pi/USB_KEY/influxdb
 fi
 
 if [ ! -d /home/pi/USB_KEY/influxdb/meta ]
 then
-   sudo mkdir /home/pi/USB_KEY/influxdb/meta
+   mkdir /home/pi/USB_KEY/influxdb/meta
 fi
 
 if [ ! -d /home/pi/USB_KEY/influxdb/data ]
 then
-    sudo mkdir /home/pi/USB_KEY/influxdb/data
+    mkdir /home/pi/USB_KEY/influxdb/data
 fi
 
 if [ ! -d /home/pi/USB_KEY/influxdb/wal ]
 then
-    sudo mkdir /home/pi/USB_KEY/influxdb/wal
+    mkdir /home/pi/USB_KEY/influxdb/wal
 fi
 chown -R influxdb:influxdb /home/pi/influxdb
 echo "##############################################################################"
 echo "Create Users in database......................................................"
 if [ -f /home/pi/RaspLogger/credential.txt ]
 then
-	sudo python util_dbase.py & wait $!
+	python util_dbase.py & process_id=$!
+	wait $process_id
 else
 	echo "No credential file  : Database Users not created"
 fi
 echo "##############################################################################"
 echo "Restart Influxdb......................................................"
-sudo service influxdb restart & wait $!
+service influxdb restart & process_id=$!
+wait $process_id
 echo "##############################################################################"
 echo "Enable Influxdb......................................................"
-sudo systemctl enable influxdb.service & wait $!
+systemctl enable influxdb.service & process_id=$!
+wait $process_id
 echo "##############################################################################"
 echo "End of script................................................................."
 echo "##############################################################################"
+
