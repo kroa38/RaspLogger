@@ -65,6 +65,11 @@ def set_json(ble_data):
         else:
             mydict["Temperature"] = (mydict["Temperature"] - 2000) / 10
 
+	if id == 1:
+		Location = 'Chambre_Parents'
+	if id == 2:
+		Location = 'None'
+
     if type == 2:
         mydict["Rssi"] = int(csv_reader[1], 0)
         mydict["Battery"] = float(int(uuid[14:18], 16)) / 1000
@@ -80,13 +85,16 @@ def set_json(ble_data):
             mydict["Temperature"] = (mydict["Temperature"] - 100) / 10
             mydict["ILS"] = 0
 
+	Location = 'None'
+
 
     for meas in mydict:
         point = {
             "measurement": meas,
             "tags": {
-                "Sensor_Number": id,
-                "Sensor_Type": type
+                "Sensor Number": id,
+                "Sensor Type": type,
+		"Location": Location
             },
             "fields": {
                 "value": mydict[meas]
@@ -112,3 +120,4 @@ if __name__ == "__main__":
     while True:
         time.sleep(5)
     #scanner.stop()
+
