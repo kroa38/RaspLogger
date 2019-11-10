@@ -266,18 +266,18 @@ Use influx_inspect command
  
  - 9) Import database  
  
- Drop the previous database 
+ Drop the previous database  
  
- Influx CLI :
- Drop database ibeacon
+ Influx CLI :  
+ Drop database ibeacon  
 
  After that exit influx cli and use influx command to import the database  
  
  influx -username 'admin' -password 'aP45YhN45' -import -path "/home/pi/USB_KEY/tmp/ibeacon2.csv"  
 
- After this import you must re-allow grants privileges for users and databases:
+ After this import you must re-allow grants privileges for users and databases:  
 
- ex : 
- grant all on "ibeacon" to "admin"
- grant read on "ibeacon" to "reader"
+ ex :  
+ grant all on "ibeacon" to "admin"  
+ grant read on "ibeacon" to "reader"  
  
