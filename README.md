@@ -258,3 +258,6 @@ Important !!
 option "auth-enabled = false" must be declared into  /etc/influxdb/influxdb.conf  
 and be changed to "auth-enabled = true" after !
 
+- 8) Export database into CSV format
+
+ influx_inspect export -database ibeacon -datadir "/home/pi/USB_KEY/influxdb/data/" -waldir "/home/pi/USB_KEY/influxdb/wal/" -out "/home/pi/USB_KEY/tmp/ibeacon.csv"
