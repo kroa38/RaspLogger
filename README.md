@@ -260,4 +260,24 @@ and be changed to "auth-enabled = true" after !
 
 - 8) Export database into CSV format
 
+Use influx_inspect command  
+
  influx_inspect export -database ibeacon -datadir "/home/pi/USB_KEY/influxdb/data/" -waldir "/home/pi/USB_KEY/influxdb/wal/" -out "/home/pi/USB_KEY/tmp/ibeacon.csv"
+ 
+ - 9) Import database  
+ 
+ Drop the previous database 
+ 
+ Influx CLI :
+ Drop database ibeacon
+
+ After that exit influx cli and use influx command to import the database  
+ 
+ influx -username 'admin' -password 'aP45YhN45' -import -path "/home/pi/USB_KEY/tmp/ibeacon2.csv"  
+
+ After this import you must re-allow grants privileges for users and databases:
+
+ ex : 
+ grant all on "ibeacon" to "admin"
+ grant read on "ibeacon" to "reader"
+ 
