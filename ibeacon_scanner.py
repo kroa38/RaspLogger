@@ -63,7 +63,7 @@ def set_json(ble_data):
         if mydict["Temperature"] < 2000:
             mydict["Temperature"] = (mydict["Temperature"] - 1000) / 10
         else:
-            mydict["Temperature"] = (mydict["Temperature"] - 2000) / 10
+            mydict["Temperature"] = (2000 - mydict["Temperature"]) / 10
 
 	if id == 1:
 		Location = 'Chambre_Parents'
