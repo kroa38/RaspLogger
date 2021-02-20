@@ -52,9 +52,12 @@ This one is automounted by adding a line on fstab:
 Use the command 'blkid' to find the UUID of the key and then add a line
 to the /etc/fstab file to mount the key at boot  
 
+Create a directory '/home/USB_KEY'
+
 ```
 PARTUUID=c20396db-01  /home/pi/USB_KEY    ext4    rw,user,auto,exec,discard,noatime  0      1  
 ```
+
 The USB key is mounted in the new partion in '/home/USB_KEY'
 The script 'db_backup.sh' automaticaly backup the entire database to the USB Key  
 The script run once per day by using Cron.
