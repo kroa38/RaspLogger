@@ -5,7 +5,7 @@
  Collect Air Quality (grad data from web)  
  Collect I/O Event  (door event or other)
  Store data to InfluxdB  
- 
+
  -> Display data from Grafana Cloud service
 
 ## Install a Fresh Raspbian Lite image.
@@ -22,53 +22,9 @@ https://www.sdcard.org/
 Write the image on the the SD card :   
 https://sourceforge.net/projects/win32diskimager/
 
-4)
-Expand the root partition to use the full space of the SD card  
-```
-raspi-config
--> advance option
--> expand filesystem
-```
-
-5)
-Update and upgrade system:  
-```
-sudo apt-get update  
-sudo apt-get upgrade  
-```
-
-6)
-Install git
-```
-sudo apt-get install git
-```
-
-## External SSD Disk (Database backup)  
-
-I recommand to save the database content to another location.  
-I use a external SSD(128Gb M2 Type SATA) plugged to the Micro USB port of the Rpi Zero.  
-This one is automounted by adding a line on fstab:
-
-Use the command 'blkid' to find the UUID of the key and then add a line
-to the /etc/fstab file to mount the key at boot  
-
-Create a directory '/home/USB_KEY'
-
-```
-PARTUUID=c20396db-01  /home/pi/USB_KEY    ext4    rw,user,auto,exec,discard,noatime  0      1  
-```
-
-The USB key is mounted in the new partion in '/home/USB_KEY'
-The script 'db_backup.sh' automaticaly backup the entire database to the USB Key  
-The script run once per day by using Cron.
-
-
-## WIFI and SSH 
-
-How to setup Wifi  
-
-Create a file : "wpa_supplicant.conf"  into the "boot" partition 
-insert into the lines below and replace COUNTRY, SSID and PASSWORD by yours  
+## Setup WiFi
+Create a file : "wpa_supplicant.conf"  into the "boot" partition
+insert the lines below and replace COUNTRY, SSID and PASSWORD by yours  
 
 ```
 country=COUNTRY
@@ -80,19 +36,129 @@ network={
        key_mgmt=WPA-PSK
     }
 ```
-Setup SSH  
-create an empty file named "ssh" into the "boot" partition  
+## Setup SSH  
 
-I recommand to read this good blog for the first install on the Raspberry Pi Zero :
+Create an empty file named "ssh" into the "boot" partition  
+```
+> sudo touch ssh
+```
+I recommend to read this good blog for the first install on the Raspberry Pi Zero :
 https://medium.com/@aallan/setting-up-a-headless-raspberry-pi-zero-3ded0b83f274  
 
+## UART, I2C
+
+To enable I2C and UART edit the file /boot/config.txt and add this two
+parameters:
+
+```
+> sudo vi /boot/config.txt
+
+#enable I2C
+dtparam=i2c_arm=on
+
+#Enable UART
+enable_uart=1
+```
+## Edit cmdline.txt
+
+Edit also the file /boot/cmdline.txt and suppress the text :
+```
+console=serial0,115200  
+```
+Example of lines
+```
+dwc_otg.lpm_enable=0 console=tty1 root=PARTUUID=dab3eba4-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait  
+```
+
+## Reboot
+
+Plug the SD card into the raspberry-pi and reboot
+
+login:
+
+```
+ssh pi@192.168.1.xx
+```
+use 'raspberry' as password
+
+## TimeZone
+
+```
+sudo raspi-config
+
+```
+
+## Expand filesystem
+Expand the root partition to use the full space of the SD card  
+```
+> sudo raspi-config
+-> advance option
+-> expand filesystem
+
+When prompted reboot you raspberrypi
+```
+
+## Update and upgrade system:
+
+This can be very long ......:confused:
+
+```
+> sudo apt-get update  
+> sudo apt-get upgrade  
+```
+
+## Install git and clone **rasplogger** project
+```
+> sudo apt-get install git
+
+> cd /home/pi
+> sudo git clone https://github.com/kroa38/RaspLogger.git
+```
+
+## External SSD Disk
+
+I recommend to save the database content to another location.  
+I use a external SSD(128Gb M2 Type SATA) plugged to the Micro USB port of the Rpi Zero.  
+This one is auto-mounted by adding a line on the fstab file :
+
+
+Create a directory inside home directory
+```
+> mkdir /home/USB_KEY  
+```
+
+--> Plug the SSD on the usb port  and type the command.
+```
+> blkid  
+
+/dev/sdb5: UUID="5347b3d2-e017-4314-8f60-bd7baa0655f4" TYPE="ext4" PARTUUID="11c4ae0c-05"
+
+```
+Note the **PARTUUID** of the usb ssd and then add a line
+to the **/etc/fstab** file to mount the key at boot  
+
+```
+PARTUUID=11c4ae0c-05 /home/pi/USB_KEY ext4 rw,user,auto,exec,discard,noatime  0      1  
+```
+
+Now the USB SSD is auto-mounted into the new partition in '/home/USB_KEY'
+
+## Database Backup
+
+The script **db_backup.sh** automatically backup the entire database to the USB Key  
+The script run once per day by using **Cron**.
+
+---
+
+# **SECURITY**
+---
 
 ## __Configure SSH__
 
 Good info from :
 https://linux-audit.com/audit-and-harden-your-ssh-configuration/
 
-i strongly recommand to setup this configuration for "/etc/ssh/sshd_config" file  
+i strongly recommand to setup this configuration for **/etc/ssh/sshd_config** file  
 
 ```
 IgnoreRhosts yes  
@@ -139,7 +205,7 @@ and comment the line :
 ```
 #auth,authpriv.*               /var/log/auth.log
 ```
-restart syslog 
+restart syslog
 ```
  sudo service rsyslog restart
 ```
@@ -152,28 +218,7 @@ This script install all necessary packages.
 sudo sh ./install.sh
 ```
 
-## __TimeZone, UART, I2C__
 
-Use the 'raspi-config' command to setup your timezone !
-
-For I2C and UART edit the file /boot/config.txt and add this two
-parameters:
-
-```
-#enable I2C
-dtparam=i2c_arm=on
-
-#Enable UART
-enable_uart=1
-```
-
-
-Edit also the file /boot/cmdline.txt and suppress the text :
-```
-console=serial0,115200  
-```
-example file  
-dwc_otg.lpm_enable=0 console=tty1 root=PARTUUID=dab3eba4-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait  
 
 ## __InfluxdB on RAPSBERRY PI__
 
@@ -200,7 +245,7 @@ cd influxdb
 mkdir data  
 chown influxdb:influxdb data
 mkdir wal  
-chown influxdb:influxdb wal 
+chown influxdb:influxdb wal
 ```
 
 - 2) Edit File influxdb.conf  
@@ -215,7 +260,7 @@ sudo nano /etc/influxdb/influxdb.conf
   dir = "/home/pi/influxdb/data"
   wal-dir = "/home/pi/influxdb/wal"
   wal-fsync-delay = "5s"
-  
+
 [http]
   # Determines whether HTTP endpoint is enabled.
   enabled = true
@@ -225,7 +270,7 @@ sudo nano /etc/influxdb/influxdb.conf
 
   # Determines whether user authentication is enabled over HTTP/HTTPS.
   auth-enabled = false
-  
+
 ```
 - 4) Start service  
 
@@ -251,7 +296,7 @@ systemctl status influxdb.service
 ```
 
 - 7) Init the databases and users  
-     
+
 This create the 3 databases and one admin user and one reader user  
 
 ```
@@ -268,15 +313,15 @@ Use influx_inspect command
 influx_inspect export -database ibeacon -datadir "/home/pi/USB_KEY/influxdb/data/" -waldir "/home/pi/USB_KEY/influxdb/wal/" -out "/home/pi/USB_KEY/tmp/ibeacon.csv"
 ```  
 - 9) Import database  
- 
+
 Drop the previous database  
- 
+
 Influx CLI :  
 ```
  Drop database ibeacon  
 ```
 After that exit influx cli and use influx command to import the database  
-``` 
+```
 influx -username 'admin' -password 'aP45YhN45' -import -path "/home/pi/USB_KEY/tmp/ibeacon2.csv"  
 ```
 
@@ -286,4 +331,4 @@ After this import you must re-allow grants privileges for users and databases:
 ```
 grant all on "ibeacon" to "admin"  
 grant read on "ibeacon" to "reader"  
-``` 
+```
