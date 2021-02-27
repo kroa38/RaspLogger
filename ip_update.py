@@ -26,10 +26,10 @@ def opendns():
         log_error("Fail to update OpenDNS %s" % r.text)
         exit()
         if debug_print:
-            print "Failed to update OpenDNS.", r.text
+            print("Failed to update OpenDNS.", r.text)
     else:
         if debug_print:
-            print "Successfully updated IP:", r.text
+            print("Successfully updated IP:", r.text)
             log_event("update OpenDNS ok: %s" % r.text)
 
 def duckdns():
@@ -47,11 +47,11 @@ def duckdns():
     if r.status_code != requests.codes.ok:
         log_error("Fail to update DuckDns: %s" % r.text)
         if debug_print:
-            print "Failed to update DuckDns: ", r.text
+            print("Failed to update DuckDns: ", r.text)
     else:
         #log_event("update DuckDNS ok: %s" % r.text)
         if debug_print:
-            print "DuckDns updated: ", r.text
+            print("DuckDns updated: ", r.text)
 
 
 if __name__ == "__main__":
