@@ -17,7 +17,7 @@ def rpi_sysinfo():
     global debug_print
 
     if debug_print:
-        print "**** SD Card Usage ****"
+        print("**** SD Card Usage ****")
 
     cmd = ['df', '-m', '--output=size', '/']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
@@ -40,14 +40,14 @@ def rpi_sysinfo():
         print ("Avail %d" % sd_avail)
 
     cmd = ['df', '-m', '--output=used', '/']
-    proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     o, e = proc.communicate()
     try:
-        sd_used = int(re.findall('\d+',o)[0]) 
+        sd_used = int(re.findall('\d+', o)[0])
     except:
         sd_used = 0
     if debug_print:
-        print ("Used %d" %sd_used)
+        print ("Used %d" % sd_used)
 
     cmd = ['df', '-m', '--output=pcent', '/']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
@@ -91,7 +91,7 @@ def rpi_sysinfo():
         print ("Influxdb wal Used %d" % sd_wal)
 
     if debug_print:
-        print "**** USB Key Usage ****"
+        print("**** USB Key Usage ****")
 
     cmd = ['df', '-m', '--output=size', '/home/pi/USB_KEY']
     proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
@@ -172,6 +172,6 @@ if __name__ == "__main__":
     json_body = rpi_sysinfo()
 
     if debug_print:
-        print json_body
+        print(json_body)
     else:
         write_to_dbase(json_body, "sysinfo")
