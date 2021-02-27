@@ -38,23 +38,23 @@ class TimeFunc:
         Out :
         """
         datestring = int(datetime.now().strftime("%Y"))
-        print datestring
+        print(datestring)
         datestring = int(datetime.now().strftime("%m"))
-        print datestring
+        print(datestring)
         datestring = int(datetime.now().strftime("%d"))
-        print datestring
+        print(datestring)
         datestring = datetime.now().strftime("%d-%m-%Y")
-        print datestring
+        print(datestring)
         datestring = datetime.now().strftime("%H:%M")
-        print datestring
+        print(datestring)
         datestring = int(datetime.now().strftime("%M"))
-        print datestring
+        print(datestring)
         datestring = datetime.now().strftime("%A")
-        print datestring
+        print(datestring)
         datestring = int(datetime.now().strftime("%w"))
-        print datestring
+        print(datestring)
         datestring = int(datetime.now().strftime("%W"))
-        print datestring
+        print(datestring)
         '''return calendar.timegm(datetime.strptime(datestring, "%Y").timetuple())'''
 
     @staticmethod
