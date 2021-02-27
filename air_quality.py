@@ -34,21 +34,21 @@ def get_atmo():
     
     if value_atmo_int < 10 :
         qual_atmo = "Très bon"
-    elif value_atmo_int > 10 and value_atmo_int <=40:
+    elif 10 < value_atmo_int <= 40:
         qual_atmo = "Bon"
-    elif value_atmo_int > 40 and value_atmo_int <=50:    
+    elif 40 < value_atmo_int <= 50:
         qual_atmo = "Moyen"
-    elif value_atmo_int > 50 and value_atmo_int <=80:    
+    elif 50 < value_atmo_int <= 80:
         qual_atmo = "Médiocre"  
-    elif value_atmo_int > 80 and value_atmo_int <=90:    
+    elif 80 < value_atmo_int <= 90:
         qual_atmo = "Mauvais"  
     else: 
         qual_atmo = "Très Mauvais"   
         
     #qual_atmo = str(data['indices']['data'][0]['qualificatif'])
     if debug_print:
-        print int(value_atmo)
-        print qual_atmo
+        print(int(value_atmo))
+        print(qual_atmo)
     jsony_body = [
         {
             "measurement": "IQA_Val",
@@ -83,6 +83,6 @@ if __name__ == "__main__":
     jsony_body = get_atmo()
     if jsony_body != 0:
         if debug_print:
-            print jsony_body
+            print(jsony_body)
         else:
-            write_to_dbase(jsony_body,"air_quality")
+            write_to_dbase(jsony_body, "air_quality")
