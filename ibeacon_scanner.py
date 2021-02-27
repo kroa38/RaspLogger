@@ -35,7 +35,7 @@ def callback(bt_addr, rssi, packet, additional_info):
         ble_data = str("rssi,%d,%s" % (rssi, packet))
         jsony_body = set_json(ble_data)
         if debug_ble:
-            print jsony_body
+            print(jsony_body)
         else:
             write_to_dbase(jsony_body,"ibeacon")
 
@@ -103,7 +103,7 @@ def set_json(ble_data):
         points.append(point)
 
     if debug_ble:
-        print points
+        print(points)
 
     return points
 
