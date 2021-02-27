@@ -45,7 +45,7 @@ import base64
 import gspread  # lib for google spreadsheet
 import json  # lib pour fichiers json
 import os.path  # lib pour test fichiers
-import urllib2  # lib pour requettes internet
+import urllib.request as urllib2  # lib pour requettes internet
 import requests
 import string
 import random
