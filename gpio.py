@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 import RPi.GPIO as GPIO
 import time
 from util_funct import check_internet, tweet_message
