@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python /home/pi/RaspLogger/ibeacon_scanner.py
+python3 /home/pi/RaspLogger/ibeacon_scanner.py
 
 
 
