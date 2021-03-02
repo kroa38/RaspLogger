@@ -322,7 +322,7 @@ def tweet_ip_address():
     :itype : none
     :rtype : none
     """
-    char_rdn = random.choice(string.letters)
+    char_rdn = random.choice(string.ascii_letters)
     currentpathdir = os.path.dirname(os.path.realpath(__file__))
     jsonfilename = os.path.join(currentpathdir, "credential.txt")
 
