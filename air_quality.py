@@ -1,10 +1,126 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import requests
+import requests, time, json
+from datetime import date
 import os.path
 from util_funct import get_json_data_from_file, log_error, log_event
 from util_dbase import write_to_dbase
+
+
+def get_atmo_alt():
+    """
+    new version of atmo aura
+    https://api.atmo-aura.fr/documentation
+    """
+    global debug_print
+
+    today = date.today()
+    date_str = today.strftime("%Y-%m-%d")
+    currentpathdir = os.path.dirname(os.path.realpath(__file__))
+    cred_file = os.path.join(currentpathdir, "credential.txt")
+    data_json = get_json_data_from_file(cred_file)
+    detail_communal = "https://api.atmo-aura.fr/api/v1/communes/38485/indices/atmo?commune_insee=38485&date_echeance="
+    api_token = data_json['Token_ARA']
+    url = "%s%s%s" % (detail_communal, date_str, "&api_token=")
+    url = "%s%s" % (url, api_token)
+    r = requests.get(url)
+    if r.status_code != requests.codes.ok:
+        log_error("api.atmo-aura.fr unreachable ...")
+        return 0
+    else:
+        if debug_print:
+            log_event("air_quality update ok")
+    retval = r.json()
+
+    if debug_print:
+        print("--------------------")
+        print(retval['data'][0]['qualificatif'])
+        print("--------------------")
+        print(retval['data'][0]['sous_indices'][0]['polluant_nom'])
+        print(retval['data'][0]['sous_indices'][0]['concentration'])
+        print(retval['data'][0]['sous_indices'][0]['indice'])
+        print("--------------------")
+        print(retval['data'][0]['sous_indices'][1]['polluant_nom'])
+        print(retval['data'][0]['sous_indices'][1]['concentration'])
+        print(retval['data'][0]['sous_indices'][1]['indice'])
+        print("--------------------")
+        print(retval['data'][0]['sous_indices'][2]['polluant_nom'])
+        print(retval['data'][0]['sous_indices'][2]['concentration'])
+        print(retval['data'][0]['sous_indices'][2]['indice'])
+        print("--------------------")
+        print(retval['data'][0]['sous_indices'][3]['polluant_nom'])
+        print(retval['data'][0]['sous_indices'][3]['concentration'])
+        print(retval['data'][0]['sous_indices'][3]['indice'])
+        print("--------------------")
+        print(retval['data'][0]['sous_indices'][4]['polluant_nom'])
+        print(retval['data'][0]['sous_indices'][4]['concentration'])
+        print(retval['data'][0]['sous_indices'][4]['indice'])
+        print("--------------------")
+        print(retval['data'][0]['polluants_majoritaires'])
+        print("--------------------")
+
+    my_body = [
+        {
+            "measurement": "Qualificatif",
+            "tags": {
+                "Location": 38170
+            },
+            "fields": {
+                "value": retval['data'][0]['qualificatif']
+            }
+        },
+        {
+            "measurement": retval['data'][0]['sous_indices'][0]['polluant_nom'],
+            "tags": {
+                "Location": 38170
+            },
+            "fields": {
+                "value": retval['data'][0]['sous_indices'][0]['concentration'],
+                "indice": retval['data'][0]['sous_indices'][0]['indice']
+            }
+        },
+        {
+            "measurement": retval['data'][0]['sous_indices'][1]['polluant_nom'],
+            "tags": {
+                "Location": 38170
+            },
+            "fields": {
+                "value": retval['data'][0]['sous_indices'][1]['concentration'],
+                "indice": retval['data'][0]['sous_indices'][1]['indice']
+            }
+        }, {
+            "measurement": retval['data'][0]['sous_indices'][2]['polluant_nom'],
+            "tags": {
+                "Location": 38170
+            },
+            "fields": {
+                "value": retval['data'][0]['sous_indices'][2]['concentration'],
+                "indice": retval['data'][0]['sous_indices'][2]['indice']
+            }
+        },
+        {
+            "measurement": retval['data'][0]['sous_indices'][3]['polluant_nom'],
+            "tags": {
+                "Location": 38170
+            },
+            "fields": {
+                "value": retval['data'][0]['sous_indices'][3]['concentration'],
+                "indice": retval['data'][0]['sous_indices'][3]['indice']
+            }
+        }, {
+            "measurement": retval['data'][0]['sous_indices'][4]['polluant_nom'],
+            "tags": {
+                "Location": 38170
+            },
+            "fields": {
+                "value": retval['data'][0]['sous_indices'][4]['concentration'],
+                "indice": retval['data'][0]['sous_indices'][4]['indice']
+            }
+        }
+
+    ]
+    return my_body
 
 
 def get_atmo():
@@ -50,7 +166,8 @@ def get_atmo():
     if debug_print:
         print(int(value_atmo))
         print(qual_atmo)
-    jsony_body = [
+
+    my_body = [
         {
             "measurement": "IQA_Val",
             "tags": {
@@ -70,7 +187,7 @@ def get_atmo():
             }
         }
     ]
-    return jsony_body
+    return my_body
 
 
 if __name__ == "__main__":
@@ -79,11 +196,11 @@ if __name__ == "__main__":
     for example every hour
     0 * * * * python /this_script.py > /dev/null 2>&1
     '''
-    debug_print = False
+    debug_print = True
 
-    jsony_body = get_atmo()
-    if jsony_body != 0:
+    my_json_body = get_atmo_alt()
+    if my_json_body != 0:
         if debug_print:
-            print(jsony_body)
+            print(my_json_body)
         else:
-            write_to_dbase(jsony_body, "air_quality")
+            write_to_dbase(my_json_body, "air_quality")
