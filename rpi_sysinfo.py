@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
 """
 This module add some function to monitor the Raspberrry health
 - File Usage
