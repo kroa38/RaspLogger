@@ -47,8 +47,8 @@ def set_json(ble_data):
     '''
     csv_reader = ble_data.split(',')
     uuid = csv_reader[5]
-    type = int(uuid[9:11], 0)
-    id = int(uuid[11:13], 0)
+    type = int(uuid[9:11])
+    id = int(uuid[11:13])
     mydict = {}
     points = []
     meas = "none"
