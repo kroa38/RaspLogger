@@ -1,5 +1,5 @@
 #!/bin/sh
 
-python /home/pi/RaspLogger/updateRTC.py
+python3 /home/pi/RaspLogger/updateRTC.py
 
 
