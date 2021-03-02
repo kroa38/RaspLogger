@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 
 # DS1338 Driver from DS1307 code
 
@@ -10,8 +11,8 @@
 # original code from below (DS1307 Code originally - had issues with 24 hour mode.  Removed 12 hour mode)
 
 
-#encoding: utf-8
- 
+# encoding: utf-8
+
 # Copyright (C) 2013 @XiErCh
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,7 +34,7 @@
 # SOFTWARE.
 
 from datetime import datetime
-#from timefunc import TimeFunc
+# from timefunc import TimeFunc
 import smbus
 
 
@@ -42,7 +43,7 @@ def _bcd_to_int(bcd):
     """
     out = 0
     for d in (bcd >> 4, bcd):
-        for p in (1, 2, 4 ,8):
+        for p in (1, 2, 4, 8):
             if d & 1:
                 out += p
             d >>= 1
@@ -73,54 +74,43 @@ class DS1338():
     _REG_YEAR = 0x06
     _REG_CONTROL = 0x07
 
-
     def __init__(self, twi=1, addr=0x68):
         self._bus = smbus.SMBus(twi)
         self._addr = addr
 
-
-
     def _write(self, register, data):
-        #print "addr =0x%x register = 0x%x data = 0x%x %i " % (self._addr, register, data,_bcd_to_int(data))
+        # print "addr =0x%x register = 0x%x data = 0x%x %i " % (self._addr, register, data,_bcd_to_int(data))
         self._bus.write_byte_data(self._addr, register, data)
-
 
     def _read(self, data):
 
         returndata = self._bus.read_byte_data(self._addr, data)
-        #print "addr = 0x%x data = 0x%x %i returndata = 0x%x %i " % (self._addr, data, data, returndata, _bcd_to_int(returndata))
+        # print "addr = 0x%x data = 0x%x %i returndata = 0x%x %i " % (self._addr, data, data, returndata, _bcd_to_int(returndata))
         return returndata
 
     def _read_seconds(self):
         return _bcd_to_int(self._read(self._REG_SECONDS))
 
-
     def _read_minutes(self):
         return _bcd_to_int(self._read(self._REG_MINUTES))
 
-
     def _read_hours(self):
         d = self._read(self._REG_HOURS)
-	if (d == 0x64):
-		d = 0x40
+        if d == 0x64:
+            d = 0x40
         return _bcd_to_int(d & 0x3F)
-
 
     def _read_day(self):
         return _bcd_to_int(self._read(self._REG_DAY))
 
-
     def _read_date(self):
         return _bcd_to_int(self._read(self._REG_DATE))
-
 
     def _read_month(self):
         return _bcd_to_int(self._read(self._REG_MONTH))
 
-
     def _read_year(self):
         return _bcd_to_int(self._read(self._REG_YEAR))
-
 
     def read_all(self):
         """Return a tuple such as (year, month, date, day, hours, minutes,
@@ -132,42 +122,40 @@ class DS1338():
 
     def timezone(self):
         """ return offset timezone
-        """ 
-        if ( (self._read_month() > 3) and (self._read_month() < 10) ):
-           tz = 2
-        elif ( (self._read_month() == 3)  and (self._read_date() >=25) ):
-           tz = 2
-        elif ( (self._read_month() == 10)  and (self._read_date() <=28) ):
-           tz = 2
+        """
+        if ((self._read_month() > 3) and (self._read_month() < 10)):
+            tz = 2
+        elif ((self._read_month() == 3) and (self._read_date() >= 25)):
+            tz = 2
+        elif ((self._read_month() == 10) and (self._read_date() <= 28)):
+            tz = 2
         else:
-           tz = 1
+            tz = 1
         return tz
 
     def read_str(self):
         """Return a string such as 'YY-DD-MMTHH-MM-SS'.
         """
         return '%02d-%02d-%02dT%02d:%02d:%02d' % (self._read_year(),
-                self._read_month(), self._read_date(), self._read_hours(),
-                self._read_minutes(), self._read_seconds())
-
+                                                  self._read_month(), self._read_date(), self._read_hours(),
+                                                  self._read_minutes(), self._read_seconds())
 
     def read_datetime(self, century=21, tzinfo=None):
         """Return the datetime.datetime object.
         """
         return datetime((century - 1) * 100 + self._read_year(),
-                self._read_month(), self._read_date(), self._read_hours(),
-                self._read_minutes(), self._read_seconds(), 0, tzinfo=tzinfo).isoformat()
+                        self._read_month(), self._read_date(), self._read_hours(),
+                        self._read_minutes(), self._read_seconds(), 0, tzinfo=tzinfo).isoformat()
 
-    def read_epoch(self,century=21,tzinfo=None):
-        cdt = datetime((century-1)*100 + self._read_year(),
-                self._read_month(), self._read_date(), self._read_hours() - self.timezone(),
-                self._read_minutes(), self._read_seconds(), 0, tzinfo=tzinfo)
+    def read_epoch(self, century=21, tzinfo=None):
+        cdt = datetime((century - 1) * 100 + self._read_year(),
+                       self._read_month(), self._read_date(), self._read_hours() - self.timezone(),
+                       self._read_minutes(), self._read_seconds(), 0, tzinfo=tzinfo)
 
-        return(cdt -  datetime(1970,1,1)).total_seconds()
-
+        return (cdt - datetime(1970, 1, 1)).total_seconds()
 
     def write_all(self, seconds=None, minutes=None, hours=None, day=None,
-            date=None, month=None, year=None, save_as_24h=True):
+                  date=None, month=None, year=None, save_as_24h=True):
         """Direct write un-none value.
         Range: seconds [0,59], minutes [0,59], hours [0,23],
                day [0,7], date [1-31], month [1-12], year [0-99].
@@ -207,20 +195,18 @@ class DS1338():
                 raise ValueError('Day is out of range [1,7].')
             self._write(self._REG_DAY, _int_to_bcd(day))
 
-
     def write_datetime(self, dt):
         """Write from a datetime.datetime object.
         """
         self.write_all(dt.second, dt.minute, dt.hour,
-                dt.isoweekday(), dt.day, dt.month, dt.year % 100)
+                       dt.isoweekday(), dt.day, dt.month, dt.year % 100)
 
     def write_ctrl(self):
-	"""write control register
-	"""
-	self._write(self._REG_CONTROL,16)
+        """write control register
+        """
+        self._write(self._REG_CONTROL, 16)
 
     def write_now(self):
         """Equal to DS1307.write_datetime(datetime.datetime.now()).
         """
         self.write_datetime(datetime.now())
-
