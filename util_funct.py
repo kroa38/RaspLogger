@@ -37,7 +37,8 @@ On the arduino install the packages :
   No space left on device: '/usr/lib/python2.7/site-packages/pytz-2015.2.dist-info'
 """
 import sys
-sys.path.append('/home/pi/.local/lib/python2.7/site-packages')    # to start script from rc.local (at boot)
+
+sys.path.append('/home/pi/.local/lib/python2.7/site-packages')  # to start script from rc.local (at boot)
 
 import time  # lib pour gestion heure
 import httplib2  # lib requette http
@@ -45,12 +46,9 @@ import base64
 import gspread  # lib for google spreadsheet
 import json  # lib pour fichiers json
 import os.path  # lib pour test fichiers
-import urllib.request as urllib2  # lib pour requettes internet
 import requests
 import string
 import random
-
-
 
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
@@ -97,7 +95,7 @@ def oauth2_build(scope):
             authorisation = gspread.authorize(credentials)
             # print 'Authorisation for SpreadSheets OK'
             return authorisation
-        except gspread.AuthenticationError:
+        except gspread.exceptions.GSpreadException:
             log_error("Oauth Spreadsheet error")
             # print 'Authorisation failure'
 
@@ -126,7 +124,7 @@ def drive_insert_file(file_name, folder_id):
             log_event(textmessage)
             # print textmessage
             return [file_id]
-        except errors.HttpError, e:
+        except errors as e:
             error = json.loads(e.content)
             error = error['error']['message']
             log_error("HttpError in function drive_insert_file() : " + error)
@@ -147,7 +145,7 @@ def drive_delete_file(file_id):
         drive_service.files().delete(fileId=file_id).execute()
         textmessage = 'File : %s deleted' % file_id
         log_event(textmessage)
-    except errors.HttpError, e:
+    except errors as e:
         error = json.loads(e.content)
         error = error['error']['message']
         log_error("HttpError in function : drive_delete_file() : " + error)
@@ -172,13 +170,13 @@ def print_files_in_folder(folder_id):
                     "No File in folder %s \r\t\t\t\t\tor bad folder_id in function :  print_files_in_folder() " % folder_id)
                 break
             for child in children.get('items', []):
-                print child['id']
+                print(child['id'])
             # file = service.files().get(fileId=child['id']).execute()
             #        print 'Title: %s' % file['title']
             page_token = children.get('nextPageToken')
             if not page_token:
                 break
-        except errors.HttpError, e:
+        except errors as e:
             error = json.loads(e.content)
             error = error['error']['message']
             log_error("HttpError in function : print_files_in_folder() : " + error)
@@ -196,8 +194,8 @@ def gmaillistmessage():
         threads = gmail_service.users().threads().list(userId='me').execute()
         if threads['threads']:
             for thread in threads['threads']:
-                print 'Thread ID: %s' % (thread['id'])
-    except errors.HttpError, e:
+                print('Thread ID: %s' % (thread['id']))
+    except errors as e:
         error = json.loads(e.content)
         error = error['error']['message']
         log_error("HttpError in function  : gmaillistmessage() : " + error)
@@ -217,7 +215,7 @@ def gmailsendmessage(message):
                    .execute())
         # print 'Message Id: %s' % message['id']
         log_event("Email Message Id: %s sent" % message['id'])
-    except errors.HttpError, e:
+    except errors as e:
         error = json.loads(e.content)
         error = error['error']['message']
         log_error("HttpError in function : gmailsendmessage()" + error)
@@ -262,7 +260,7 @@ def check_internet():
     """
 
     try:
-        _ = requests.get('http://www.google.fr/', timeout = 4)
+        _ = requests.get('http://www.google.fr/', timeout=4)
         log_event("Internet is Up !")
         return True
     except requests.ConnectionError:
@@ -292,12 +290,13 @@ def email_ip_addr():
 
     gmailsendmessage(get_ip_address())
 
+
 def tweet_message(msg):
     """ send a text message on twitter
     :itype : string
     :rtype : none
     """
-    char_rdn = random.choice(string.letters)
+    char_rdn = random.choice(string.ascii_letters)
     currentpathdir = os.path.dirname(os.path.realpath(__file__))
     jsonfilename = os.path.join(currentpathdir, "credential.txt")
 
@@ -313,8 +312,8 @@ def tweet_message(msg):
 
     try:
         t.statuses.update(status=message)
-    except :
-        log_error("Twitter error...")
+    except (TwitterError, ConnectionError) as err:
+        log_error("Twitter error..." + err)
 
 
 def tweet_ip_address():
@@ -336,9 +335,9 @@ def tweet_ip_address():
     t = Twitter(auth=OAuth(token, token_secret, consumer_key, consumer_secret))
     message = get_ip_address() + "   " + char_rdn
     try:
-        r = t.statuses.update(status=message)
-    except :
-        log_error("Twitter error...")
+        t.statuses.update(status=message)
+    except (TwitterError, ConnectionError) as err:
+        log_error("Twitter error..." + err)
 
 
 def log_error(error_message):
@@ -375,9 +374,8 @@ def log_event(event_message):
 # print_files_in_folder(folder)
 # gmaillistmessage()
 # gmailsendmessage("test de message")
-#check_internet()
+# check_internet()
 # print str(get_index())
 # put_index(12355)
 # print str(get_index())
-#tweet_message("hel i raapi")
-
+# tweet_message("hel i raapi")
