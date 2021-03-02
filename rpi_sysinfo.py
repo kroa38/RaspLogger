@@ -1,13 +1,13 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 This module add some function to monitor the Raspberrry health
 - File Usage
-- Space used on SD Card and USB Key
+- Space used on SD Card and USB SSD
 The collected info are sent to a database
 """
 from util_dbase import write_to_dbase
-import subprocess
-import re
+import subprocess, re
+
 
 def rpi_sysinfo():
     """
@@ -20,128 +20,129 @@ def rpi_sysinfo():
         print("**** SD Card Usage ****")
 
     cmd = ['df', '-m', '--output=size', '/']
-    proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     o, e = proc.communicate()
     try:
-        sd_size = int(re.findall('\d+',o)[1]) 
+        sd_size = int(o.split(b'\n')[1])
     except:
         sd_size = 0
     if debug_print:
-        print ("Size %d" % sd_size)
+        print("Size %d" % sd_size)
 
     cmd = ['df', '-m', '--output=avail', '/']
-    proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     o, e = proc.communicate()
     try:
-        sd_avail = int(re.findall('\d+',o)[0]) 
+        sd_avail = int(o.split(b'\n')[1])
     except:
         sd_avail = 0
     if debug_print:
-        print ("Avail %d" % sd_avail)
+        print("Avail %d" % sd_avail)
 
     cmd = ['df', '-m', '--output=used', '/']
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     o, e = proc.communicate()
     try:
-        sd_used = int(re.findall('\d+', o)[0])
+        sd_used = int(o.split(b'\n')[1])
     except:
         sd_used = 0
     if debug_print:
-        print ("Used %d" % sd_used)
+        print("Used %d" % sd_used)
 
     cmd = ['df', '-m', '--output=pcent', '/']
-    proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     o, e = proc.communicate()
-    o = o.split(' ')[1]
     try:
-        sd_pcent = int(re.findall('\d+',o)[0])
+        b = o.split(b'\n ')[1]
+        sd_pcent = int(b.split(b'%')[0])
     except:
         sd_pcent = 0
     if debug_print:
-        print ("Percent %d" % sd_pcent)
+        print("Percent %d" % sd_pcent)
 
-    cmd = ['du', '-sm', '/home/pi/USB_KEY/influxdb/meta']
-    proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    cmd = ['du', '-sm', '/home/pi/USB_SSD/influxdb/meta']
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     o, e = proc.communicate()
     try:
-        sd_meta = int(re.findall('\d+',o)[0])
+        sd_meta = int(o.split(b'\t')[0])
     except:
         sd_meta = 0
     if debug_print:
-        print ("Influxdb meta Used %d" % sd_meta)
+        print("Influxdb meta Used %d" % sd_meta)
 
-    cmd = ['du', '-sm', '/home/pi/USB_KEY/influxdb/data']
-    proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    cmd = ['du', '-sm', '/home/pi/USB_SSD/influxdb/data']
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     o, e = proc.communicate()
     try:
-        sd_data = int(re.findall('\d+',o)[0])
+        sd_data = int(o.split(b'\t')[0])
     except:
         sd_data = 0
     if debug_print:
-        print ("Influxdb data Used %d" % sd_data)
+        print("Influxdb data Used %d" % sd_data)
 
-    cmd = ['du', '-sm', '/home/pi/USB_KEY/influxdb/wal']
-    proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    cmd = ['du', '-sm', '/home/pi/USB_SSD/influxdb/wal']
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     o, e = proc.communicate()
     try:
-        sd_wal = int(re.findall('\d+',o)[0])
+        sd_wal = int(o.split(b'\t')[0])
     except:
         sd_wal = 0
     if debug_print:
-        print ("Influxdb wal Used %d" % sd_wal)
+        print("Influxdb wal Used %d" % sd_wal)
 
     if debug_print:
-        print("**** USB Key Usage ****")
+        print("**** USB SSD Usage ****")
 
-    cmd = ['df', '-m', '--output=size', '/home/pi/USB_KEY']
-    proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    cmd = ['df', '-m', '--output=size', '/home/pi/USB_SSD']
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     o, e = proc.communicate()
     try:
-        usb_size = int(re.findall('\d+',o)[1]) 
+        usb_size = int(o.split(b'\n')[1])
     except:
         usb_size = 0
     if debug_print:
-        print ("Size %d" % usb_size)
+        print("Size %d" % usb_size)
 
-    cmd = ['df', '-m', '--output=avail', '/home/pi/USB_KEY']
-    proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    cmd = ['df', '-m', '--output=avail', '/home/pi/USB_SSD']
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     o, e = proc.communicate()
     try:
-        usb_avail = int(re.findall('\d+',o)[0])
+        usb_avail = int(o.split(b'\n')[1])
     except:
         usb_avail = 0
     if debug_print:
-        print ("Avail %d" %usb_avail)
+        print("Avail %d" % usb_avail)
 
-    cmd = ['df', '-m', '--output=used', '/home/pi/USB_KEY']
-    proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    cmd = ['df', '-m', '--output=used', '/home/pi/USB_SSD']
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     o, e = proc.communicate()
     try:
-        usb_used = int(re.findall('\d+',o)[0])
+        usb_used = int(o.split(b'\n')[1])
     except:
         usb_used = 0
     if debug_print:
-        print ("Used %d" % usb_used)
+        print("Used %d" % usb_used)
 
-    cmd = ['df', '-m', '--output=pcent', '/home/pi/USB_KEY']
-    proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    cmd = ['df', '-m', '--output=pcent', '/home/pi/USB_SSD']
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     o, e = proc.communicate()
     try:
-        usb_pcent = int(re.findall('\d+',o)[0])
+        b = o.split(b'\n ')[1]
+        usb_pcent = int(b.split(b'%')[0])
     except:
         usb_pcent = 0
     if debug_print:
-        print ("Percent %d" % usb_pcent)
+        print("Percent %d" % usb_pcent)
 
-    cmd = ['du', '-sm', '/home/pi/USB_KEY/influxdb_backup']
-    proc = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    cmd = ['du', '-sm', '/home/pi/USB_SSD/influxdb_backup']
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     o, e = proc.communicate()
     try:
-        db_backup = int(re.findall('\d+',o)[0])
+        db_backup = int(o.split(b'\t')[0])
     except:
         db_backup = 0
     if debug_print:
-        print ("Influxdb backup size %d" % db_backup)
+        print("Influxdb backup size %d" % db_backup)
 
     json_body = [
         {"measurement": "SD_SIZE", "fields": {"value": sd_size}},
