@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python /home/pi/RaspLogger/air_quality.py
+python3 /home/pi/RaspLogger/air_quality.py
 
 
 
