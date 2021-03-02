@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python /home/pi/RaspLogger/gpio.py
+python3 /home/pi/RaspLogger/gpio.py
 
 
 
