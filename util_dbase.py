@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 import os.path
 from influxdb import InfluxDBClient
 from util_funct import get_json_data_from_file, log_event, log_error
