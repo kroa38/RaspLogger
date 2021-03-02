@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python /home/pi/RaspLogger/tweet_ip.py
+python3 /home/pi/RaspLogger/tweet_ip.py
 
 
 
