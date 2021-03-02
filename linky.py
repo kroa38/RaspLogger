@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 
 import time
 import sys
@@ -17,7 +18,7 @@ def capture_linky():
     """
     :return: dictionnary {'IINST': 410, 'HP': 213059463, 'IMAX': 90, 'HC': 123512034, 'PTEC': 'HC..', 'PAPP': 20165}
     """
-
+    tmp = "void string"
     ser = serial.Serial(
         port='/dev/ttyS0',
         baudrate=1200,
@@ -46,7 +47,7 @@ def capture_linky():
 
     linky = {"HP": 0, "HC": 0, "PTEC": '', "IINST": 0, "PAPP": 0, "IMAX": 0}
 
-    tmp = ser.read(10)  # read 10 char on serial
+    tmp = (ser.read(10)).decode("utf-8")  # read 10 char on serial
 
     if len(tmp) == 10:  # if linky is present ok go for capture
 
@@ -58,13 +59,13 @@ def capture_linky():
             tmp = ''
 
             for loop in range(0, 220):  # read max 220 char
-                tmp = ser.read(1)
+                tmp = (ser.read(1)).decode("utf-8")
                 if tmp == chr(2):  # Search for STX char
                     break
-            tmp = ser.read()
+            tmp = (ser.read()).decode("utf-8")
 
             for loop in range(0, 220):
-                tmp = ser.read(1)
+                tmp = (ser.read(1)).decode("utf-8")
                 if tmp != chr(3):  # ETX Char found
                     out += tmp
                 else:
@@ -213,7 +214,7 @@ if __name__ == "__main__":
     # test if we have receive data from serial
     if linky['HC'] != 0:
         json_body = linky_to_json(linky, arg)
-        # print json_body
+        # print(json_body)
         write_to_dbase(json_body, "linky")
     else:
         log_error("Linky Serial error !")
