@@ -1,5 +1,5 @@
 #!/bin/bash
 
-python /home/pi/RaspLogger/linky.py $1
+python3 /home/pi/RaspLogger/linky.py $1
 
 
