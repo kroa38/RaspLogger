@@ -25,7 +25,7 @@ def rpi_sysinfo():
     o, e = proc.communicate()
     try:
         sd_size = int(o.split(b'\n')[1])
-    except:
+    except subprocess.SubprocessError:
         sd_size = 0
     if debug_print:
         print("Size %d" % sd_size)
@@ -35,7 +35,7 @@ def rpi_sysinfo():
     o, e = proc.communicate()
     try:
         sd_avail = int(o.split(b'\n')[1])
-    except:
+    except subprocess.SubprocessError:
         sd_avail = 0
     if debug_print:
         print("Avail %d" % sd_avail)
@@ -45,7 +45,7 @@ def rpi_sysinfo():
     o, e = proc.communicate()
     try:
         sd_used = int(o.split(b'\n')[1])
-    except:
+    except subprocess.SubprocessError:
         sd_used = 0
     if debug_print:
         print("Used %d" % sd_used)
@@ -56,7 +56,7 @@ def rpi_sysinfo():
     try:
         b = o.split(b'\n ')[1]
         sd_pcent = int(b.split(b'%')[0])
-    except:
+    except subprocess.SubprocessError:
         sd_pcent = 0
     if debug_print:
         print("Percent %d" % sd_pcent)
@@ -66,7 +66,7 @@ def rpi_sysinfo():
     o, e = proc.communicate()
     try:
         sd_meta = int(o.split(b'\t')[0])
-    except:
+    except subprocess.SubprocessError:
         sd_meta = 0
     if debug_print:
         print("Influxdb meta Used %d" % sd_meta)
@@ -76,7 +76,7 @@ def rpi_sysinfo():
     o, e = proc.communicate()
     try:
         sd_data = int(o.split(b'\t')[0])
-    except:
+    except subprocess.SubprocessError:
         sd_data = 0
     if debug_print:
         print("Influxdb data Used %d" % sd_data)
@@ -86,7 +86,7 @@ def rpi_sysinfo():
     o, e = proc.communicate()
     try:
         sd_wal = int(o.split(b'\t')[0])
-    except:
+    except subprocess.SubprocessError:
         sd_wal = 0
     if debug_print:
         print("Influxdb wal Used %d" % sd_wal)
@@ -99,7 +99,7 @@ def rpi_sysinfo():
     o, e = proc.communicate()
     try:
         usb_size = int(o.split(b'\n')[1])
-    except:
+    except subprocess.SubprocessError:
         usb_size = 0
     if debug_print:
         print("Size %d" % usb_size)
@@ -109,7 +109,7 @@ def rpi_sysinfo():
     o, e = proc.communicate()
     try:
         usb_avail = int(o.split(b'\n')[1])
-    except:
+    except subprocess.SubprocessError:
         usb_avail = 0
     if debug_print:
         print("Avail %d" % usb_avail)
@@ -119,7 +119,7 @@ def rpi_sysinfo():
     o, e = proc.communicate()
     try:
         usb_used = int(o.split(b'\n')[1])
-    except:
+    except subprocess.SubprocessError:
         usb_used = 0
     if debug_print:
         print("Used %d" % usb_used)
@@ -130,7 +130,7 @@ def rpi_sysinfo():
     try:
         b = o.split(b'\n ')[1]
         usb_pcent = int(b.split(b'%')[0])
-    except:
+    except subprocess.SubprocessError:
         usb_pcent = 0
     if debug_print:
         print("Percent %d" % usb_pcent)
@@ -140,7 +140,7 @@ def rpi_sysinfo():
     o, e = proc.communicate()
     try:
         db_backup = int(o.split(b'\t')[0])
-    except:
+    except subprocess.SubprocessError:
         db_backup = 0
     if debug_print:
         print("Influxdb backup size %d" % db_backup)
