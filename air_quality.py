@@ -196,11 +196,11 @@ if __name__ == "__main__":
     for example every hour
     0 * * * * python /this_script.py > /dev/null 2>&1
     '''
-    debug_print = True
+    debug_print = False
 
     my_json_body = get_atmo_alt()
     if my_json_body != 0:
         if debug_print:
             print(my_json_body)
         else:
-            write_to_dbase(my_json_body, "air_quality")
+            write_to_dbase(my_json_body, "air_quality_new")
