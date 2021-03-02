@@ -4,14 +4,19 @@ import sys
 import time
 import site
 from datetime import datetime
-#import DS1338
-#from timefunc import TimeFunc
-from beacontools import BeaconScanner,IBeaconFilter
+# import DS1338
+# from timefunc import TimeFunc
+from beacontools import BeaconScanner, IBeaconFilter
 from influxdb import InfluxDBClient
 from util_dbase import write_to_dbase
 
-#rtc = DS1338.DS1338(1, 0x68)
+"""
+Bluetooth sensor
+Type 1 = T°,Hum, Press, Alt
+Type 2 = T°,Hum, Gaz, Alt, Lum, With ST BLUENRG-2 CHipset
+"""
 
+# rtc = DS1338.DS1338(1, 0x68)
 
 
 def callback(bt_addr, rssi, packet, additional_info):
@@ -24,13 +29,13 @@ def callback(bt_addr, rssi, packet, additional_info):
     '''
     global al
     global debug_ble
-    bl = [1234567890,"hello"]
+    bl = [1234567890, "hello"]
     bl[0] = int(time.time())
     bl[1] = str(packet).split(',')
     bl[1] = bl[1][3]
     bl[1] = bl[1][9:13]
     # if capture > 10s or sensor id is different.
-    if (bl[0]-al[0] > 10) or (bl[1] != al[1]):
+    if (bl[0] - al[0] > 10) or (bl[1] != al[1]):
         al[0] = bl[0]
         al[1] = bl[1]
         ble_data = str("rssi,%d,%s" % (rssi, packet))
@@ -38,7 +43,8 @@ def callback(bt_addr, rssi, packet, additional_info):
         if debug_ble:
             print(jsony_body)
         else:
-            write_to_dbase(jsony_body,"ibeacon")
+            write_to_dbase(jsony_body, "ibeacon")
+
 
 def set_json(ble_data):
     '''
@@ -52,6 +58,7 @@ def set_json(ble_data):
     mydict = {}
     points = []
     meas = "none"
+    Location = 'None'
     
     if type == 1:
         mydict["Rssi"] = int(csv_reader[1], 0)
@@ -66,10 +73,10 @@ def set_json(ble_data):
         else:
             mydict["Temperature"] = (2000 - mydict["Temperature"]) / 10
 
-	if id == 1:
-		Location = 'Chambre_Parents'
-	if id == 2:
-		Location = 'None'
+        if id == 1:
+            Location = 'Chambre_Parents'
+        if id == 2:
+            Location = 'None'
 
     if type == 2:
         mydict["Rssi"] = int(csv_reader[1], 0)
@@ -86,8 +93,7 @@ def set_json(ble_data):
             mydict["Temperature"] = (mydict["Temperature"] - 100) / 10
             mydict["ILS"] = 0
 
-	Location = 'None'
-
+        Location = 'None'
 
     for meas in mydict:
         point = {
@@ -95,7 +101,7 @@ def set_json(ble_data):
             "tags": {
                 "Sensor Number": id,
                 "Sensor Type": type,
-		"Location": Location
+                "Location": Location
             },
             "fields": {
                 "value": mydict[meas]
@@ -116,9 +122,8 @@ if __name__ == "__main__":
     debug_ble = False
     site.ENABLE_USER_SITE = False
     al = [1555087419, "9999"]
-    scanner = BeaconScanner(callback,device_filter=IBeaconFilter(uuid="2332a4c2"))
+    scanner = BeaconScanner(callback, device_filter=IBeaconFilter(uuid="2332a4c2"))
     scanner.start()
     while True:
         time.sleep(5)
-    #scanner.stop()
-
+    # scanner.stop()
