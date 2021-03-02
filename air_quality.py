@@ -3,16 +3,17 @@
 
 import requests
 import os.path
-from util_funct import get_json_data_from_file, log_error,log_event
+from util_funct import get_json_data_from_file, log_error, log_event
 from util_dbase import write_to_dbase
 
+
 def get_atmo():
-    '''
+    """
     token like :
     {
     'Token_ARA':'d54eefdrce645682f71b445715d0'
     }
-    '''
+    """
     global debug_print
 
     currentpathdir = os.path.dirname(os.path.realpath(__file__))
@@ -31,21 +32,21 @@ def get_atmo():
     data = r.json()
     value_atmo = float(data['indices']['data'][0]['valeur'])
     value_atmo_int = round(value_atmo)
-    
-    if value_atmo_int < 10 :
+
+    if value_atmo_int < 10:
         qual_atmo = "Très bon"
     elif 10 < value_atmo_int <= 40:
         qual_atmo = "Bon"
     elif 40 < value_atmo_int <= 50:
         qual_atmo = "Moyen"
     elif 50 < value_atmo_int <= 80:
-        qual_atmo = "Médiocre"  
+        qual_atmo = "Médiocre"
     elif 80 < value_atmo_int <= 90:
-        qual_atmo = "Mauvais"  
-    else: 
-        qual_atmo = "Très Mauvais"   
-        
-    #qual_atmo = str(data['indices']['data'][0]['qualificatif'])
+        qual_atmo = "Mauvais"
+    else:
+        qual_atmo = "Très Mauvais"
+
+        # qual_atmo = str(data['indices']['data'][0]['qualificatif'])
     if debug_print:
         print(int(value_atmo))
         print(qual_atmo)
@@ -65,7 +66,7 @@ def get_atmo():
                 "Location": 38000
             },
             "fields": {
-                "value":  qual_atmo
+                "value": qual_atmo
             }
         }
     ]
