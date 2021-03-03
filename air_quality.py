@@ -2,11 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import requests
-from datetime import date
 import os.path
 from util_funct import get_json_data_from_file, log_error, log_event
 from util_dbase import write_to_dbase
-from math import *
+from math import ceil
 
 
 def get_atmo_new():
