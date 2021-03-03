@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import requests, time, json
+import requests
 from datetime import date
 import os.path
 from util_funct import get_json_data_from_file, log_error, log_event
