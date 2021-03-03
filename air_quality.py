@@ -31,41 +31,19 @@ def get_atmo_new():
             log_event("air_quality update ok")
     retval = r.json()
 
-    if debug_print:
-        print("--------------------")
-        print(retval['data'][0]['qualificatif'])
-        print("--------------------")
-        print(retval['data'][0]['sous_indices'][0]['polluant_nom'])
-        print(retval['data'][0]['sous_indices'][0]['concentration'])
-        print(retval['data'][0]['sous_indices'][0]['indice'])
-        print("--------------------")
-        print(retval['data'][0]['sous_indices'][1]['polluant_nom'])
-        print(retval['data'][0]['sous_indices'][1]['concentration'])
-        print(retval['data'][0]['sous_indices'][1]['indice'])
-        print("--------------------")
-        print(retval['data'][0]['sous_indices'][2]['polluant_nom'])
-        print(retval['data'][0]['sous_indices'][2]['concentration'])
-        print(retval['data'][0]['sous_indices'][2]['indice'])
-        print("--------------------")
-        print(retval['data'][0]['sous_indices'][3]['polluant_nom'])
-        print(retval['data'][0]['sous_indices'][3]['concentration'])
-        print(retval['data'][0]['sous_indices'][3]['indice'])
-        print("--------------------")
-        print(retval['data'][0]['sous_indices'][4]['polluant_nom'])
-        print(retval['data'][0]['sous_indices'][4]['concentration'])
-        print(retval['data'][0]['sous_indices'][4]['indice'])
-        print("--------------------")
-        print("Polluants_majoritaires")
-        print(retval['data'][0]['polluants_majoritaires'])
-        print("--------------------")
-
-        for indice in range(5):
-            ig = ig + retval['data'][0]['sous_indices'][indice]['indice']
-        ig = ceil(ig / 5)
+    for indice in range(5):
         if debug_print:
-            print('Indice global')
-            print(ig)
+            print(retval['data'][0]['sous_indices'][indice]['polluant_nom'])
+            print(retval['data'][0]['sous_indices'][indice]['concentration'])
+            print(retval['data'][0]['sous_indices'][indice]['indice'])
             print("--------------------")
+        ig = ig + retval['data'][0]['sous_indices'][indice]['indice']
+
+    ig = ceil(ig / 5)
+    if debug_print:
+        print('Indice global')
+        print(ig)
+        print("--------------------")
 
     my_body = [
         {
@@ -170,7 +148,6 @@ def get_atmo():
     else:
         qual_atmo = "Très Mauvais"
 
-        # qual_atmo = str(data['indices']['data'][0]['qualificatif'])
     if debug_print:
         print(int(value_atmo))
         print(qual_atmo)
@@ -202,9 +179,9 @@ if __name__ == "__main__":
     '''
     start this script with cron : sudo crontab -e 
     for example every hour
-    0 * * * * python /this_script.py > /dev/null 2>&1
+    0 * * * * python3 /this_script.py > /dev/null 2>&1
     '''
-    debug_print = False
+    debug_print = True
 
     my_json_body = get_atmo_new()
     if my_json_body != 0:
