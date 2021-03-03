@@ -6,23 +6,22 @@ from datetime import date
 import os.path
 from util_funct import get_json_data_from_file, log_error, log_event
 from util_dbase import write_to_dbase
+from math import *
 
 
-def get_atmo_alt():
+def get_atmo_new():
     """
     new version of atmo aura
     https://api.atmo-aura.fr/documentation
     """
     global debug_print
-
-    today = date.today()
-    date_str = today.strftime("%Y-%m-%d")
+    ig = 0
     currentpathdir = os.path.dirname(os.path.realpath(__file__))
     cred_file = os.path.join(currentpathdir, "credential.txt")
     data_json = get_json_data_from_file(cred_file)
     detail_communal = "https://api.atmo-aura.fr/api/v1/communes/38485/indices/atmo?commune_insee=38485&date_echeance="
     api_token = data_json['Token_ARA']
-    url = "%s%s%s" % (detail_communal, date_str, "&api_token=")
+    url = "%s%s%s" % (detail_communal, 'now', "&api_token=")
     url = "%s%s" % (url, api_token)
     r = requests.get(url)
     if r.status_code != requests.codes.ok:
@@ -57,8 +56,17 @@ def get_atmo_alt():
         print(retval['data'][0]['sous_indices'][4]['concentration'])
         print(retval['data'][0]['sous_indices'][4]['indice'])
         print("--------------------")
+        print("Polluants_majoritaires")
         print(retval['data'][0]['polluants_majoritaires'])
         print("--------------------")
+
+        for indice in range(5):
+            ig = ig + retval['data'][0]['sous_indices'][indice]['indice']
+        ig = ceil(ig / 5)
+        if debug_print:
+            print('Indice global')
+            print(ig)
+            print("--------------------")
 
     my_body = [
         {
@@ -67,7 +75,8 @@ def get_atmo_alt():
                 "Location": 38170
             },
             "fields": {
-                "value": retval['data'][0]['qualificatif']
+                "value": retval['data'][0]['qualificatif'],
+                "indice_global": ig
             }
         },
         {
@@ -76,7 +85,7 @@ def get_atmo_alt():
                 "Location": 38170
             },
             "fields": {
-                "value": retval['data'][0]['sous_indices'][0]['concentration'],
+                "value": ceil(retval['data'][0]['sous_indices'][0]['concentration']),
                 "indice": retval['data'][0]['sous_indices'][0]['indice']
             }
         },
@@ -86,7 +95,7 @@ def get_atmo_alt():
                 "Location": 38170
             },
             "fields": {
-                "value": retval['data'][0]['sous_indices'][1]['concentration'],
+                "value": ceil(retval['data'][0]['sous_indices'][1]['concentration']),
                 "indice": retval['data'][0]['sous_indices'][1]['indice']
             }
         }, {
@@ -95,7 +104,7 @@ def get_atmo_alt():
                 "Location": 38170
             },
             "fields": {
-                "value": retval['data'][0]['sous_indices'][2]['concentration'],
+                "value": ceil(retval['data'][0]['sous_indices'][2]['concentration']),
                 "indice": retval['data'][0]['sous_indices'][2]['indice']
             }
         },
@@ -105,7 +114,7 @@ def get_atmo_alt():
                 "Location": 38170
             },
             "fields": {
-                "value": retval['data'][0]['sous_indices'][3]['concentration'],
+                "value": ceil(retval['data'][0]['sous_indices'][3]['concentration']),
                 "indice": retval['data'][0]['sous_indices'][3]['indice']
             }
         }, {
@@ -114,7 +123,7 @@ def get_atmo_alt():
                 "Location": 38170
             },
             "fields": {
-                "value": retval['data'][0]['sous_indices'][4]['concentration'],
+                "value": ceil(retval['data'][0]['sous_indices'][4]['concentration']),
                 "indice": retval['data'][0]['sous_indices'][4]['indice']
             }
         }
@@ -198,7 +207,7 @@ if __name__ == "__main__":
     '''
     debug_print = False
 
-    my_json_body = get_atmo_alt()
+    my_json_body = get_atmo_new()
     if my_json_body != 0:
         if debug_print:
             print(my_json_body)
