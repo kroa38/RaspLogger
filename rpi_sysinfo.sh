@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python /home/pi/RaspLogger/rpi_sysinfo.py
+python3 /home/pi/RaspLogger/rpi_sysinfo.py
