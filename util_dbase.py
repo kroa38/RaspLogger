@@ -29,12 +29,18 @@ def write_to_dbase(jsony_body, db_name):
         if db_name == 'sysinfo':
             client.create_retention_policy('autogen', '7d', '1', db_name, False, '7d')
         else:
-            client.create_retention_policy('autogen', '0s', '1', db_name, False, '31d')
+            try:
+                client.create_retention_policy('autogen', '0s', '1', db_name, False, '31d')
+            except:
+                log_error("Database policy error when creating database")
 
-            # grant privilege for grafana user
+        # grant privilege for grafana reader user
         db_user = data_json['DATABASE_USER_READER']
         client.grant_privilege('read', db_name, db_user)
-
+        # grant privilege for grafana admin user
+        db_user = data_json['DATABASE_USER_ADMIN']
+        client.grant_privilege('all', db_name, db_user)
+        
     result = client.write_points(jsony_body)
     if not result:
         log_error("Database write error")
