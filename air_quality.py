@@ -52,8 +52,7 @@ def get_atmo_new():
                 "Location": 38170
             },
             "fields": {
-                "value": retval['data'][0]['qualificatif'],
-                "indice_global": ig
+                "value": ig
             }
         },
         {
@@ -62,8 +61,7 @@ def get_atmo_new():
                 "Location": 38170
             },
             "fields": {
-                "value": ceil(retval['data'][0]['sous_indices'][0]['concentration']),
-                "indice": retval['data'][0]['sous_indices'][0]['indice']
+                "value": ceil(retval['data'][0]['sous_indices'][0]['concentration'])
             }
         },
         {
@@ -72,8 +70,7 @@ def get_atmo_new():
                 "Location": 38170
             },
             "fields": {
-                "value": ceil(retval['data'][0]['sous_indices'][1]['concentration']),
-                "indice": retval['data'][0]['sous_indices'][1]['indice']
+                "value": ceil(retval['data'][0]['sous_indices'][1]['concentration'])
             }
         }, {
             "measurement": retval['data'][0]['sous_indices'][2]['polluant_nom'],
@@ -81,8 +78,7 @@ def get_atmo_new():
                 "Location": 38170
             },
             "fields": {
-                "value": ceil(retval['data'][0]['sous_indices'][2]['concentration']),
-                "indice": retval['data'][0]['sous_indices'][2]['indice']
+                "value": ceil(retval['data'][0]['sous_indices'][2]['concentration'])
             }
         },
         {
@@ -91,8 +87,7 @@ def get_atmo_new():
                 "Location": 38170
             },
             "fields": {
-                "value": ceil(retval['data'][0]['sous_indices'][3]['concentration']),
-                "indice": retval['data'][0]['sous_indices'][3]['indice']
+                "value": ceil(retval['data'][0]['sous_indices'][3]['concentration'])
             }
         }, {
             "measurement": retval['data'][0]['sous_indices'][4]['polluant_nom'],
@@ -100,8 +95,7 @@ def get_atmo_new():
                 "Location": 38170
             },
             "fields": {
-                "value": ceil(retval['data'][0]['sous_indices'][4]['concentration']),
-                "indice": retval['data'][0]['sous_indices'][4]['indice']
+                "value": ceil(retval['data'][0]['sous_indices'][4]['concentration'])
             }
         }
 
@@ -181,7 +175,7 @@ if __name__ == "__main__":
     for example every hour
     0 * * * * python3 /this_script.py > /dev/null 2>&1
     '''
-    debug_print = True
+    debug_print = False
 
     my_json_body = get_atmo_new()
     if my_json_body != 0:
