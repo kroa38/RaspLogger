@@ -151,18 +151,17 @@ restart syslog
 
 ## Add new Packages
 
-After boot start the install packages run the command:
+After boot install new packages.
 
+run the command:
 ```
 sudo apt-get install $(cat pkglist.txt) -y
-
 ```
 ## Use PIP to install new Python Packages
 
 run the command:
 ```
 sudo pip install -r requirements
-
 ```
 ## Database Backup
 
