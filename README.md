@@ -8,9 +8,21 @@
 
  -> Display data from Grafana Cloud service
 
-## Install a Fresh Raspbian Lite image.
+## Bootcode.bin
 
-Use Raspberry Pi Imager for creating the SD card    
+The Rpi can't boot directly from USB but this little bootcode can help you.
+
+Format an SD card as FAT32 and copy on the latest bootcode.bin. The SD card must be 
+present in the Raspberry Pi for it to boot. Once bootcode.bin is loaded from the SD card,
+the Raspberry Pi continues booting using USB host mode.
+
+link for bootcode.bin
+https://github.com/raspberrypi/firmware/raw/master/boot/bootcode.bin
+
+
+## Install a Fresh Raspbian Lite image.(USB SSD disk)
+
+Use Raspberry Pi Imager for creating the system on your USB SSD Disk    
 Choose OS :   **Raspebrry Pi OS Lite(32-bit)**
 
 ## Setup WiFi
@@ -18,7 +30,7 @@ Create a file : "wpa_supplicant.conf"  into the "boot" partition
 insert the lines below and replace COUNTRY, SSID and PASSWORD by yours  
 
 ```
-country=COUNTRY
+country=FR
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 network={
@@ -60,6 +72,21 @@ Example of lines
 ```
 dwc_otg.lpm_enable=0 console=tty1 root=PARTUUID=dab3eba4-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait  
 ```
+## User Account (Since OS Bullseye)
+
+Create a file named "userconf" into the "boot" partition  
+
+This file should contain a single line of text, consisting of username:encrypted-password 
+So your desired username, followed immediately by a colon, followed immediately by an encrypted
+representation of the password you want to use.
+
+To generate the encrypted password, the easiest way is to use OpenSSL on a Raspberry Pi 
+that is already running – open a terminal window and enter
+```
+echo 'mypassword' | openssl passwd -6 -stdin
+```
+This will produce what looks like a string of random characters, which is actually
+an encrypted version of the supplied password.
 
 ## Reboot
 
