@@ -149,16 +149,20 @@ restart syslog
 > sudo git clone https://github.com/kroa38/RaspLogger.git
 ```
 
-## Start the Install Script
+## Start the Install new Packages
 
-After boot start the install script :
-This script install all necessary packages.  
+After boot start the install packages :
 
 ```
-sudo su
-sh ./install.sh
-```
+sudo apt-get install $(cat pkglist.txt) -y
 
+```
+## Start the Install nof new Python3 Packages
+
+```
+sudo pip install -r requirements
+
+```
 ## Database Backup
 
 The script **db_backup.sh** automatically backup the entire database to the USB Key  
