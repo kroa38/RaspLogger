@@ -149,13 +149,14 @@ restart syslog
 > sudo git clone https://github.com/kroa38/RaspLogger.git
 ```
 
-## Start the Install new Packages
+## Add new Packages
 
-After boot start the install packages :
+After boot start the install packages run the command:
 
 ```
 sudo apt-get install $(cat pkglist.txt) -y
 
+run the command:
 ```
 ## Use PIP to install new Python Packages
 
