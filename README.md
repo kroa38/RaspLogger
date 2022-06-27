@@ -157,7 +157,7 @@ After boot start the install packages :
 sudo apt-get install $(cat pkglist.txt) -y
 
 ```
-## Start the Install nof new Python3 Packages
+## Use PIP to install new Python Packages
 
 ```
 sudo pip install -r requirements
