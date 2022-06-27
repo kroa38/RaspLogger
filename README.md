@@ -156,10 +156,10 @@ After boot start the install packages run the command:
 ```
 sudo apt-get install $(cat pkglist.txt) -y
 
-run the command:
 ```
 ## Use PIP to install new Python Packages
 
+run the command:
 ```
 sudo pip install -r requirements
 
