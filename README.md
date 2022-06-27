@@ -24,8 +24,27 @@ https://github.com/raspberrypi/firmware/raw/master/boot/bootcode.bin
 
 Use Raspberry Pi Imager for creating the system on your USB SSD Disk    
 Choose OS :   **Raspebrry Pi OS Lite(32-bit)**
+This version use less than 400Mb of storage
 
-## Setup WiFi
+Use **Option** to set Wifi, SSH, and Account Password
+
+## User Account (deprecated methode)
+
+Create a file named "userconf" into the "boot" partition  
+
+This file should contain a single line of text, consisting of username:encrypted-password 
+So your desired username, followed immediately by a colon, followed immediately by an encrypted
+representation of the password you want to use.
+
+To generate the encrypted password, the easiest way is to use OpenSSL on a Raspberry Pi 
+that is already running – open a terminal window and enter
+```
+echo 'mypassword' | openssl passwd -6 -stdin
+```
+This will produce what looks like a string of random characters, which is actually
+an encrypted version of the supplied password.
+
+## Setup WiFi (deprecated methode)
 Create a file : "wpa_supplicant.conf"  into the "boot" partition
 insert the lines below and replace COUNTRY, SSID and PASSWORD by yours  
 
@@ -39,7 +58,7 @@ network={
        key_mgmt=WPA-PSK
     }
 ```
-## Setup SSH  
+## Setup SSH  (deprecated methode)
 
 Create an empty file named "ssh" into the "boot" partition  
 ```
@@ -47,6 +66,8 @@ Create an empty file named "ssh" into the "boot" partition
 ```
 I recommend to read this good blog for the first install on the Raspberry Pi Zero :
 https://medium.com/@aallan/setting-up-a-headless-raspberry-pi-zero-3ded0b83f274  
+
+
 
 ## UART, I2C
 
@@ -72,32 +93,19 @@ Example of lines
 ```
 dwc_otg.lpm_enable=0 console=tty1 root=PARTUUID=dab3eba4-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait  
 ```
-## User Account (Since OS Bullseye)
 
-Create a file named "userconf" into the "boot" partition  
-
-This file should contain a single line of text, consisting of username:encrypted-password 
-So your desired username, followed immediately by a colon, followed immediately by an encrypted
-representation of the password you want to use.
-
-To generate the encrypted password, the easiest way is to use OpenSSL on a Raspberry Pi 
-that is already running – open a terminal window and enter
-```
-echo 'mypassword' | openssl passwd -6 -stdin
-```
-This will produce what looks like a string of random characters, which is actually
-an encrypted version of the supplied password.
 
 ## Reboot
 
-Plug the SD card into the raspberry-pi and reboot
+Plug the SD card into the raspberry-pi, connect the USB SSD disk
+to the port and reboot (boot 2 times or more)
 
 login:
 
 ```
 ssh pi@192.168.1.xx
 ```
-use 'raspberry' as password
+use your password for login
 
 ## TimeZone, Language
 
