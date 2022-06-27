@@ -28,46 +28,6 @@ This version use less than 400Mb of storage
 
 Use **Option** to set Wifi, SSH, and Account Password
 
-## User Account (deprecated methode)
-
-Create a file named "userconf" into the "boot" partition  
-
-This file should contain a single line of text, consisting of username:encrypted-password 
-So your desired username, followed immediately by a colon, followed immediately by an encrypted
-representation of the password you want to use.
-
-To generate the encrypted password, the easiest way is to use OpenSSL on a Raspberry Pi 
-that is already running – open a terminal window and enter
-```
-echo 'mypassword' | openssl passwd -6 -stdin
-```
-This will produce what looks like a string of random characters, which is actually
-an encrypted version of the supplied password.
-
-## Setup WiFi (deprecated methode)
-Create a file : "wpa_supplicant.conf"  into the "boot" partition
-insert the lines below and replace COUNTRY, SSID and PASSWORD by yours  
-
-```
-country=FR
-ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-update_config=1
-network={
-       ssid="SSID"
-       psk="PASSWORD"
-       key_mgmt=WPA-PSK
-    }
-```
-## Setup SSH  (deprecated methode)
-
-Create an empty file named "ssh" into the "boot" partition  
-```
-> sudo touch ssh
-```
-I recommend to read this good blog for the first install on the Raspberry Pi Zero :
-https://medium.com/@aallan/setting-up-a-headless-raspberry-pi-zero-3ded0b83f274  
-
-
 
 ## UART, I2C
 
@@ -115,16 +75,6 @@ sudo raspi-config
 
 ```
 
-## Expand filesystem
-Expand the root partition to use the full space of the SD card  
-```
-> sudo raspi-config
--> advance option
--> expand filesystem
-
-When prompted reboot you raspberrypi
-```
-
 ## Update and upgrade system:
 
 This can be very long ......:confused:
@@ -133,6 +83,7 @@ This can be very long ......:confused:
 > sudo apt-get update  
 > sudo apt-get upgrade  
 ```
+
 # **SECURITY**
 ---
 
@@ -216,21 +167,16 @@ The script run once per day by using **Cron**.
 ---
 
 
-
 ## __InfluxdB on RAPSBERRY PI__
 
- Prefered Version: 1.7.6-1
 
-- 1) Update, Upgrade, Install  
+- 1) Install  
 
 ```
-sudo apt-get update  
-sudo apt-get upgrade  
 sudo apt-get install apt-transport-https  
 sudo apt-get install curl  
 curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -  
 echo "deb https://repos.influxdata.com/debian stretch stable" | sudo tee /etc/apt/sources.list.d/influxdb.list     
-sudo apt-get update  
 sudo apt-get install influxdb  
 ```
 
@@ -253,10 +199,6 @@ sudo nano /etc/influxdb/influxdb.conf
 - 3) modify data and http section  
 
 ```
-[data]
-  dir = "/home/pi/influxdb/data"
-  wal-dir = "/home/pi/influxdb/wal"
-  wal-fsync-delay = "5s"
 
 [http]
   # Determines whether HTTP endpoint is enabled.
