@@ -133,58 +133,6 @@ This can be very long ......:confused:
 > sudo apt-get update  
 > sudo apt-get upgrade  
 ```
-
-## Start the Install Script
-
-After boot start the install script :
-This script install all necessary packages.  
-
-```
-sudo su
-sh ./install.sh
-```
-## Github : clone **rasplogger** project
-```
-> cd /home/pi
-> sudo git clone https://github.com/kroa38/RaspLogger.git
-```
-
-## External SSD Disk
-
-I recommend to save the database content to another location.  
-I use a external SSD(128Gb M2 Type SATA) plugged to the Micro USB port of the Rpi Zero.  
-This one is auto-mounted by adding a line on the fstab file :
-
-
-Create a directory inside home directory
-```
-> mkdir /home/USB_SSD  
-```
-
---> Plug the SSD on the usb port  and type the command.
-```
-> blkid  
-
-/dev/sda1: UUID="b5292053-8e93-4e3d-b298-136ef6fee196" TYPE="ext4" PARTUUID="c20396db-01"
-
-
-```
-Note the **PARTUUID** of the usb ssd and then add a line
-to the **/etc/fstab** file to mount the key at boot  
-
-```
-PARTUUID=11c4ae0c-05 /home/pi/USB_SSD ext4 rw,user,auto,exec,discard,noatime  0      1  
-```
-
-Now the USB SSD is auto-mounted into the new partition in '/home/USB_KEY'
-
-## Database Backup
-
-The script **db_backup.sh** automatically backup the entire database to the USB Key  
-The script run once per day by using **Cron**.
-
----
-
 # **SECURITY**
 ---
 
@@ -228,8 +176,6 @@ auth  optional  pam_faildelay.so  delay=10000000
 
 ## __SYSLOG__
 
-
-
 due to the huge amount of attack on ssh port i recommand
 to remove auth log.
 
@@ -244,6 +190,32 @@ restart syslog
 ```
  sudo service rsyslog restart
 ```
+
+
+## Github : clone **rasplogger** project
+```
+> cd /home/pi
+> sudo git clone https://github.com/kroa38/RaspLogger.git
+```
+
+## Start the Install Script
+
+After boot start the install script :
+This script install all necessary packages.  
+
+```
+sudo su
+sh ./install.sh
+```
+
+## Database Backup
+
+The script **db_backup.sh** automatically backup the entire database to the USB Key  
+The script run once per day by using **Cron**.
+
+---
+
+
 
 ## __InfluxdB on RAPSBERRY PI__
 
