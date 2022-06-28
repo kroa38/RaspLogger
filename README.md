@@ -184,26 +184,14 @@ echo "deb https://repos.influxdata.com/debian stretch stable" | sudo tee /etc/ap
 sudo apt-get install influxdb  
 ```
 
-switch to the directory /home/pi and type:
-```
-mkdir influxdb
-chown influxdb:influxdb influxdb  
-cd influxdb  
-mkdir data  
-chown influxdb:influxdb data
-mkdir wal  
-chown influxdb:influxdb wal
-```
-
 - 2) Edit File influxdb.conf  
 
 ```
 sudo nano /etc/influxdb/influxdb.conf
 ```
-- 3) modify data and http section  
+modify data and http section  
 
 ```
-
 [http]
   # Determines whether HTTP endpoint is enabled.
   enabled = true
