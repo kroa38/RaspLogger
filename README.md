@@ -138,6 +138,10 @@ restart syslog
  sudo service rsyslog restart
 ```
 
+## Install Git
+```
+> sudo apt-get install git -y
+```
 
 ## Github : clone **rasplogger** project
 ```
