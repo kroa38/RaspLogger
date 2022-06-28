@@ -189,7 +189,7 @@ sudo apt-get install influxdb
 ```
 sudo nano /etc/influxdb/influxdb.conf
 ```
-modify data and http section  
+- 3) Modify data and http section  
 
 ```
 [http]
