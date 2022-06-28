@@ -88,6 +88,7 @@ This can be very long ......:confused:
 ```
 > cd $home
 > sudo git clone https://github.com/kroa38/RaspLogger.git
+> sudo chown -R pi:pi RaspLogger/
 > cd Rasplogger/
 ```
 
