@@ -59,7 +59,7 @@ to the port and reboot (wait almost 3min before login)
 login:
 
 ```
-ssh pi@192.168.1.xx
+> ssh pi@192.168.1.xx
 ```
 use your password for login
 
@@ -67,7 +67,7 @@ use your password for login
 
 Set time-zone and language
 ```
-sudo raspi-config
+> sudo raspi-config
 
 ```
 
@@ -155,13 +155,13 @@ After boot install new packages.
 
 run the command:
 ```
-sudo apt-get install $(cat pkglist.txt) -y
+> sudo apt-get install $(cat pkglist.txt) -y
 ```
 ## Use PIP to install new Python Packages
 
 run the command:
 ```
-sudo pip install -r requirements
+> sudo pip install -r requirements
 ```
 ## Database Backup
 
@@ -177,17 +177,17 @@ The script run once per day by using **Cron**.
 - 1) Install  
 
 ```
-sudo apt-get install apt-transport-https  
-sudo apt-get install curl  
-curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -  
-echo "deb https://repos.influxdata.com/debian bullseye stable" | sudo tee /etc/apt/sources.list.d/influxdb.list     
-sudo apt-get install influxdb  
+> sudo apt-get install apt-transport-https  
+> sudo apt-get install curl  
+> curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -  
+> echo "deb https://repos.influxdata.com/debian bullseye stable" | sudo tee /etc/apt/sources.list.d/influxdb.list     
+> sudo apt-get install influxdb  
 ```
 
 - 2) Edit File influxdb.conf  
 
 ```
-sudo nano /etc/influxdb/influxdb.conf
+> sudo nano /etc/influxdb/influxdb.conf
 ```
 - 3) Modify data and http section  
 
@@ -206,24 +206,24 @@ sudo nano /etc/influxdb/influxdb.conf
 - 4) Start service  
 
 ```
-sudo service influxdb restart
+> sudo service influxdb restart
 ```
 - 5) Enable service  
 
 ```
-systemctl enable influxdb.service
+> systemctl enable influxdb.service
 ```
 - 6) or if you encounter an unmask error  
 
 
  ```
-systemctl unmask influxdb.service
-systemctl enable influxdb.service
+> systemctl unmask influxdb.service
+> systemctl enable influxdb.service
 ```
 - 7) Check if service is running  
 
 ```
-systemctl status influxdb.service
+> systemctl status influxdb.service
 ```
 
 - 7) Init the databases and users  
@@ -231,7 +231,7 @@ systemctl status influxdb.service
 This create the 3 databases and one admin user and one reader user  
 
 ```
-python util_dbase.py
+> python util_dbase.py
 ```
 Important !!
 option "auth-enabled = false" must be declared into  /etc/influxdb/influxdb.conf  
