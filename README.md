@@ -26,7 +26,7 @@ Use Raspberry Pi Imager for creating the system on your USB SSD Disk
 Choose OS :   **Raspebrry Pi OS Lite(32-bit)**
 This version use less than 400Mb of storage
 
-Use **Option** to set Wifi, SSH, and Account Password
+Use **Option** to set I2C, Wifi, SSH, and Account Password
 
 
 ## UART, I2C
