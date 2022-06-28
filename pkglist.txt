@@ -7,3 +7,14 @@ python3-dev
 python3-pip
 python3-venv 
 libcairo2-dev
+libgirepository1.0-dev
+build-essential
+libreadline-dev
+libssl-dev
+zlib1g-dev
+libsqlite3-dev
+llvm
+libncurses5-dev
+libncursesw5-dev
+xz-utils
+tk-dev
