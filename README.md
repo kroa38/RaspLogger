@@ -86,16 +86,15 @@ This can be very long ......:confused:
 
 ## Github : clone **rasplogger** project
 ```
-> cd /home/pi
+> cd $home
 > sudo git clone https://github.com/kroa38/RaspLogger.git
+> cd Rasplogger/
 ```
 
 ## Add new Packages
 
 After boot install new packages.
-
 ```
-> cd Rasplogger/
 > sudo apt-get install $(cat pkglist.txt) -y
 ```
 ## Use PIP to install new Python Packages
