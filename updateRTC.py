@@ -10,7 +10,7 @@ if __name__ == "__main__":
 
     rtc = DS1338.DS1338(1, 0x68)
 
-    if check_internet() == "1":
+    if check_internet():
         rtc.write_now()
         rtc.write_ctrl()
         log_event("rtc updated")
