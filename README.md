@@ -149,19 +149,19 @@ The script run once per day by using **Cron**.
 - 5) Enable service  
 
 ```
-> systemctl enable influxdb.service
+> sudo systemctl enable influxdb.service
 ```
 - 6) or if you encounter an unmask error  
 
 
  ```
-> systemctl unmask influxdb.service
-> systemctl enable influxdb.service
+> sudo systemctl unmask influxdb.service
+> sudo systemctl enable influxdb.service
 ```
 - 7) Check if service is running  
 
 ```
-> systemctl status influxdb.service
+> sudo systemctl status influxdb.service
 ```
 
 - 7) Init the databases and users  
