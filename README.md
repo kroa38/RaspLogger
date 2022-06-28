@@ -84,7 +84,7 @@ This can be very long ......:confused:
 > sudo apt-get install git -y
 ```
 
-## Github : clone **rasplogger** project
+## Github : clone **Rasplogger** project
 ```
 > cd $home
 > sudo git clone https://github.com/kroa38/RaspLogger.git
