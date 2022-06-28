@@ -46,19 +46,15 @@ enable_uart=1
 ## Edit cmdline.txt
 
 Edit also the file /boot/cmdline.txt and suppress the text :
+The Uart port is dedicated for Linky data acquisition
 ```
 console=serial0,115200  
 ```
-Example of lines
-```
-dwc_otg.lpm_enable=0 console=tty1 root=PARTUUID=dab3eba4-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait  
-```
-
 
 ## Reboot
 
 Plug the SD card into the raspberry-pi, connect the USB SSD disk
-to the port and reboot (boot 2 times or more)
+to the port and reboot (wait almost 3min before login)
 
 login:
 
@@ -67,7 +63,7 @@ ssh pi@192.168.1.xx
 ```
 use your password for login
 
-## TimeZone, Language
+## Configure TimeZone, Language
 
 Set time-zone and language
 ```
