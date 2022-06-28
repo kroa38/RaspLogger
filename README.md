@@ -100,7 +100,7 @@ After boot install new packages.
 ## Use PIP to install new Python Packages
 
 ```
-> sudo pip install -r requirements
+> sudo pip install -r requirements.txt
 ```
 
 ## Database Backup
