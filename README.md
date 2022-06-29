@@ -166,9 +166,9 @@ The script run once per day by using **Cron**.
 > influx --version
 ```
 
-- 8) Init the databases and users  
+- 8) Init databases users  
 
-This create the 3 databases and one admin user and one reader user  
+This create 2 users one admin user and one reader user  
 
 ```
 > python util_dbase.py
