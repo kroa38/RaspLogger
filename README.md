@@ -5,9 +5,10 @@
  Collect Air Quality (grad data from web)  
  Collect I/O Event  (door event or other)
  Store data to InfluxdB  
+ Display data from Grafana Cloud service  
 
- -> Display data from Grafana Cloud service
-
+ **Raspberry-Pi Zero W with Debian Bullseye OS and Python3.9  (Major update in June 2022)**  
+   
 ## Bootcode.bin
 
 The Rpi can't boot directly from USB but this little bootcode can help you.
