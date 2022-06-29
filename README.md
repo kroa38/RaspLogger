@@ -114,7 +114,6 @@ The script run once per day by using **Cron**.
 
 ## __InfluxdB on RAPSBERRY PI__
 
-
 - 1) Install InfluxdB  
 
 ```
@@ -160,13 +159,14 @@ The script run once per day by using **Cron**.
 > sudo systemctl unmask influxdb.service
 > sudo systemctl enable influxdb.service
 ```
-- 7) Check if service is running  
+- 7) Check if service is running and check version  
 
 ```
 > sudo systemctl status influxdb.service
+> influx --version
 ```
 
-- 7) Init the databases and users  
+- 8) Init the databases and users  
 
 This create the 3 databases and one admin user and one reader user  
 
