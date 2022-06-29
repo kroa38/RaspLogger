@@ -92,13 +92,13 @@ This can be very long ......:confused:
 > cd Rasplogger/
 ```
 
-## Add new Packages
+## Add Packages
 
 After boot install new packages.
 ```
 > sudo apt-get install $(cat pkglist.txt) -y
 ```
-## Use PIP to install new Python Packages
+## Add Python Packages
 
 ```
 > sudo pip install -r requirements.txt
