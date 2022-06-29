@@ -45,6 +45,10 @@ class IBeaconAdvertisement(object):
         """Get beacon properties."""
         return {'uuid': self.uuid, 'major': self.major, 'minor': self.minor}
 
+    #def __str__(self):
+    #    return "IBeaconAdvertisement<tx_power: %d, uuid: %s, major: %d, minor: %d>" \
+    #           % (self.tx_power, self.uuid, self.major, self.minor)
+    
     def __str__(self):
         return "dBm_1m,%d,uuid,%s,major,%d,minor,%d" \
-               % (self.tx_power, self.uuid, self.major, self.minor)
+               % (self.tx_power, self.uuid, self.major, self.minor)               
