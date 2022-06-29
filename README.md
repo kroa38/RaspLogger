@@ -108,7 +108,7 @@ locate where is installed the python package for **beacontools** by using this c
 ```
 > python -m site
 ```
-Generaly the package is in /usr/local/lib/python3.9/dist-packages/beacontools
+Generaly the package is in /usr/local/lib/python3.9/dist-packages/beacontools  
 Go to the located directory and replace the 2 next files.
 ```
 > sudo cp /home/pi/RaspLogger/beacontools_mod/device_filters.py .
