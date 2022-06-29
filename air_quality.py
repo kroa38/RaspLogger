@@ -129,7 +129,7 @@ def get_atmo():
     value_atmo = float(data['indices']['data'][0]['valeur'])
     value_atmo_int = round(value_atmo)
 
-    if value_atmo_int < 10:
+    if value_atmo_int <= 10:
         qual_atmo = "Très bon"
     elif 10 < value_atmo_int <= 40:
         qual_atmo = "Bon"

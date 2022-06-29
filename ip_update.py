@@ -61,7 +61,7 @@ if __name__ == "__main__":
     for example every hour
     0 * * * * python /this_script.py > /dev/null 2>&1
     '''
-    debug_print = False
+    debug_print = True
     opendns()
     duckdns()
 
