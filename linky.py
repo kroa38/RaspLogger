@@ -209,12 +209,16 @@ if __name__ == "__main__":
     0/15 * * * * python ../../this_script.py > /dev/null 2>&1
     arg : hour, day, week, month, year
     '''
+    debug_print = False
     arg = str(sys.argv[1])
     linky = capture_linky()
     # test if we have receive data from serial
     if linky['HC'] != 0:
         json_body = linky_to_json(linky, arg)
-        # print(json_body)
-        write_to_dbase(json_body, "linky")
+        
+        if debug_print:
+            print(json_body)
+        else:
+            write_to_dbase(json_body, "Linky")
     else:
         log_error("Linky Serial error !")

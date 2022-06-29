@@ -28,7 +28,7 @@ def callback(bt_addr, rssi, packet, additional_info):
     :return:
     '''
     global al
-    global debug_ble
+    global debug_print
     bl = [1234567890, "hello"]
     bl[0] = int(time.time())
     bl[1] = str(packet).split(',')
@@ -40,10 +40,10 @@ def callback(bt_addr, rssi, packet, additional_info):
         al[1] = bl[1]
         ble_data = str("rssi,%d,%s" % (rssi, packet))
         jsony_body = set_json(ble_data)
-        if debug_ble:
+        if debug_print:
             print(jsony_body)
         else:
-            write_to_dbase(jsony_body, "ibeacon")
+            write_to_dbase(jsony_body, "Sensors")
 
 
 def set_json(ble_data):
@@ -109,7 +109,7 @@ def set_json(ble_data):
         }
         points.append(point)
 
-    if debug_ble:
+    if debug_print:
         print(points)
 
     return points
@@ -119,7 +119,7 @@ if __name__ == "__main__":
     '''
     Start this script in background with : " sudo beacontest.py & "
     '''
-    debug_ble = False
+    debug_print = False
     site.ENABLE_USER_SITE = False
     al = [1555087419, "9999"]
     scanner = BeaconScanner(callback, device_filter=IBeaconFilter(uuid="2332a4c2"))

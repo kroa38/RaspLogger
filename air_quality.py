@@ -47,7 +47,7 @@ def get_atmo_new():
 
     my_body = [
         {
-            "measurement": "Qualificatif",
+            "measurement": "IQA",
             "tags": {
                 "Location": 38170
             },
@@ -182,4 +182,4 @@ if __name__ == "__main__":
         if debug_print:
             print(my_json_body)
         else:
-            write_to_dbase(my_json_body, "air_quality_new")
+            write_to_dbase(my_json_body, "Atmo")

@@ -50,7 +50,7 @@ def duckdns():
         if debug_print:
             print("Failed to update DuckDns: ", r.text)
     else:
-        #log_event("update DuckDNS ok: %s" % r.text)
+        log_event("update DuckDNS ok: %s" % r.text)
         if debug_print:
             print("DuckDns updated: ", r.text)
 
