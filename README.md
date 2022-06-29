@@ -98,6 +98,12 @@ After boot install new packages.
 ```
 > sudo apt-get install $(cat pkglist.txt) -y
 ```
+
+## Grant the python executable permission to access BT raw socket data
+```
+sudo setcap 'cap_net_raw,cap_net_admin+eip' "$(readlink -f "$(which python3)")"
+```
+
 ## Add Python Packages
 
 ```
