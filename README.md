@@ -87,8 +87,7 @@ This can be very long ......:confused:
 ## Github : clone **Rasplogger** project
 ```
 > cd $home
-> sudo git clone https://github.com/kroa38/RaspLogger.git
-> sudo chown -R pi:pi RaspLogger/
+> git clone https://github.com/kroa38/RaspLogger.git
 > cd Rasplogger/
 ```
 
