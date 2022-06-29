@@ -65,7 +65,7 @@ use your password for login
 
 ## Configure TimeZone, Language
 
-Set time-zone and language
+Set time-zone and language and I2C
 ```
 > sudo raspi-config
 ```
