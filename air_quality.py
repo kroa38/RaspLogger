@@ -175,7 +175,7 @@ if __name__ == "__main__":
     for example every hour
     0 * * * * python3 /this_script.py > /dev/null 2>&1
     '''
-    debug_print = False
+    debug_print = True
 
     my_json_body = get_atmo_new()
     if my_json_body != 0:

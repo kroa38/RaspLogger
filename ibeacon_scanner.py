@@ -119,7 +119,7 @@ if __name__ == "__main__":
     '''
     Start this script in background with : " sudo beacontest.py & "
     '''
-    debug_print = False
+    debug_print = True
     site.ENABLE_USER_SITE = False
     al = [1555087419, "9999"]
     scanner = BeaconScanner(callback, device_filter=IBeaconFilter(uuid="2332a4c2"))
