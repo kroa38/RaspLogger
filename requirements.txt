@@ -1,4 +1,4 @@
-beacontools
+beacontools[scan]
 cachetools
 six
 certifi
