@@ -122,15 +122,8 @@ Go to the located directory and replace the 2 next files.
 > sudo cp /home/pi/RaspLogger/beacontools_mod/ibeacon.py packet_types/.
 ```
 ---
-## Database Backup
 
-The script **db_backup.sh** automatically backup the entire database to the USB Key  
-The script run once per day by using **Cron**.
-
----
-
-
-## __InfluxdB on RAPSBERRY PI__
+## __InfluxdB__  
 
 - 1) Install InfluxdB  
 
@@ -193,7 +186,17 @@ This create 2 users one admin user and one reader user
 ```
 Important !!
 option "auth-enabled = false" must be declared into  /etc/influxdb/influxdb.conf  
-and be changed to "auth-enabled = true" after !
+and be changed to "auth-enabled = true" after !  
+  
+  
+
+- 8) Init Crontab
+
+See README.MD into the 'cron' directory for shceduling the differents task with cron
+
+
+---
+## TIPS
 
 - 8) Export database into CSV format
 
@@ -221,3 +224,8 @@ After this import you must re-allow grants privileges for users and databases:
 grant all on "ibeacon" to "admin"  
 grant read on "ibeacon" to "reader"  
 ```
+---
+## Database Backup
+
+The script **db_backup.sh** automatically backup the entire database to the USB Key  
+The script run once per day by using **Cron**.
