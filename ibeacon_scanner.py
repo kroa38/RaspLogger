@@ -109,9 +109,6 @@ def set_json(ble_data):
         }
         points.append(point)
 
-    if debug_print:
-        print(points)
-
     return points
 
 
