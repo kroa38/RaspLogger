@@ -6,7 +6,7 @@ import site
 from datetime import datetime
 # import DS1338
 # from timefunc import TimeFunc
-from beacontools import BeaconScanner, IBeaconFilter
+from beacontools import BeaconScanner, IBeaconFilter, BluetoothAddressType
 from influxdb import InfluxDBClient
 from util_dbase import write_to_dbase
 
