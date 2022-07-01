@@ -229,3 +229,10 @@ grant read on "ibeacon" to "reader"
 
 The script **db_backup.sh** automatically backup the entire database to the USB Key  
 The script run once per day by using **Cron**.
+
+---
+## Internet Provider
+
+configure NAT/PAT on your router to have access to SSH and InfluxdB
+
+
