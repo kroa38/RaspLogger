@@ -22,6 +22,7 @@ def get_atmo_new():
     api_token = data_json['Token_ARA']
     url = "%s%s%s" % (detail_communal, 'now', "&api_token=")
     url = "%s%s" % (url, api_token)
+    print(url)
     r = requests.get(url)
     if r.status_code != requests.codes.ok:
         log_error("api.atmo-aura.fr unreachable ...")
@@ -30,24 +31,26 @@ def get_atmo_new():
         if debug_print:
             log_event("air_quality update ok")
     retval = r.json()
+    print (retval)
 
+    ig = 0
     for indice in range(5):
         if debug_print:
             print(retval['data'][0]['sous_indices'][indice]['polluant_nom'])
             print(retval['data'][0]['sous_indices'][indice]['concentration'])
-            print(retval['data'][0]['sous_indices'][indice]['indice'])
+            print("indice=", retval['data'][0]['sous_indices'][indice]['indice'])
             print("--------------------")
-        ig = ig + retval['data'][0]['sous_indices'][indice]['indice']
+        if  retval['data'][0]['sous_indices'][indice]['indice'] > ig:
+            ig = retval['data'][0]['sous_indices'][indice]['indice']
 
-    ig = ceil(ig / 5)
     if debug_print:
         print('Indice global')
-        print(ig)
+        print("indice=", ig)
         print("--------------------")
 
     my_body = [
         {
-            "measurement": "IQA",
+            "measurement": "Qualificatif",
             "tags": {
                 "Location": 38170
             },
@@ -129,7 +132,7 @@ def get_atmo():
     value_atmo = float(data['indices']['data'][0]['valeur'])
     value_atmo_int = round(value_atmo)
 
-    if value_atmo_int <= 10:
+    if value_atmo_int < 10:
         qual_atmo = "Très bon"
     elif 10 < value_atmo_int <= 40:
         qual_atmo = "Bon"
@@ -182,4 +185,4 @@ if __name__ == "__main__":
         if debug_print:
             print(my_json_body)
         else:
-            write_to_dbase(my_json_body, "Atmo")
+            write_to_dbase(my_json_body, "air_quality_new")
