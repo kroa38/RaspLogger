@@ -7,19 +7,15 @@
 
 #-----------------------------------------------------------------------
 
-*/15 * * * * bash /home/pi/RaspLogger/linky.sh hour > /dev/null 2>&1
-59 23 * * * bash /home/pi/RaspLogger/linky.sh day > /dev/null 2>&1
-58 23 * * 0 bash /home/pi/RaspLogger/linky.sh week > /dev/null 2>&1
-00 00 1 * * bash /home/pi/RaspLogger/linky.sh month > /dev/null 2>&1
-56 23 31 12 * bash /home/pi/RaspLogger/linky.sh year > /dev/null 2>&1
+*/15 * * * * bash /home/pi/RaspLogger/linky.sh > /dev/null 2>&1
 17 * * * * bash /home/pi/RaspLogger/air_quality.sh > /dev/null 2>&1
 21 */2 * * * bash /home/pi/RaspLogger/ip_update.sh > /dev/null 2>&1
-#12 02 * * * bash /home/pi/RaspLogger/db_backup.sh > /dev/null 2>&1
-#20 01 * * * bash /home/pi/RaspLogger/rpi_sysinfo.sh > /dev/null 2>&1
-#reboot commented(sometimes raspberry pi freeze at reboot)
-#5 3 * * 6 bash /home/pi/RaspLogger/reboot_pi.sh > /dev/null 2>&1
+
+#restart ibeacon_scanner after reboot (run in background)
 @reboot bash /home/pi/RaspLogger/ibeacon_scanner.sh > /dev/null 2>&1
-@reboot bash /home/pi/RaspLogger/tweet_ip.sh > /dev/null 2>&1
+
+#if you want to tweet your IP address uncomment the line below
+#@reboot bash /home/pi/RaspLogger/tweet_ip.sh > /dev/null 2>&1
 
 #-----------------------------------------------------------------------
 
