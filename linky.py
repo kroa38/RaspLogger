@@ -149,46 +149,31 @@ def linky_to_json(linky_dict):
 
     json_body = [
         {
-            "measurement": "Index_HC",
-            "tags": {
-                "Location": "Linky"
-            },
+            "measurement": "HC",
             "fields": {
                 "value": linky_dict['HC']
             }
         },
         {
-            "measurement": "Index_HP",
-            "tags": {
-                "Location": "Linky"
-            },
+            "measurement": "HP",
             "fields": {
                 "value": linky_dict['HP']
             }
         },
         {
-            "measurement": "Current_A",
-            "tags": {
-                "Location": "Linky"
-            },
+            "measurement": "IINST",
             "fields": {
                 "value": linky_dict['IINST']
             }
         },
         {
-            "measurement": "Power_VA",
-            "tags": {
-                "Location": "Linky"
-            },
+            "measurement": "PAPP",
             "fields": {
                 "value": linky_dict['PAPP']
             }
         },
         {
-            "measurement": "Imax_A",
-            "tags": {
-                "Location": "Linky"
-            },
+            "measurement": "IMAX",
             "fields": {
                 "value": linky_dict['IMAX']
             }
