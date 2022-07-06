@@ -141,7 +141,7 @@ def capture_linky():
     return linky
 
 
-def linky_to_json(linky_dict, occurence):
+def linky_to_json(linky_dict):
     """
     :param   dictionnary
     :return: json array
@@ -151,8 +151,7 @@ def linky_to_json(linky_dict, occurence):
         {
             "measurement": "Index_HC",
             "tags": {
-                "Location": "Linky",
-                "Occurence": occurence
+                "Location": "Linky"
             },
             "fields": {
                 "value": linky_dict['HC']
@@ -161,8 +160,7 @@ def linky_to_json(linky_dict, occurence):
         {
             "measurement": "Index_HP",
             "tags": {
-                "Location": "Linky",
-                "Occurence": occurence
+                "Location": "Linky"
             },
             "fields": {
                 "value": linky_dict['HP']
@@ -171,8 +169,7 @@ def linky_to_json(linky_dict, occurence):
         {
             "measurement": "Current_A",
             "tags": {
-                "Location": "Linky",
-                "Occurence": occurence
+                "Location": "Linky"
             },
             "fields": {
                 "value": linky_dict['IINST']
@@ -181,8 +178,7 @@ def linky_to_json(linky_dict, occurence):
         {
             "measurement": "Power_VA",
             "tags": {
-                "Location": "Linky",
-                "Occurence": occurence
+                "Location": "Linky"
             },
             "fields": {
                 "value": linky_dict['PAPP']
@@ -191,8 +187,7 @@ def linky_to_json(linky_dict, occurence):
         {
             "measurement": "Imax_A",
             "tags": {
-                "Location": "Linky",
-                "Occurence": occurence
+                "Location": "Linky"
             },
             "fields": {
                 "value": linky_dict['IMAX']
@@ -210,11 +205,10 @@ if __name__ == "__main__":
     arg : hour, day, week, month, year
     '''
     debug_print = True
-    arg = str(sys.argv[1])
     linky = capture_linky()
     # test if we have receive data from serial
     if linky['HC'] != 0:
-        json_body = linky_to_json(linky, arg)    
+        json_body = linky_to_json(linky)    
         if debug_print:
             print(json_body)
         else:
