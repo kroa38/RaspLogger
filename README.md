@@ -235,4 +235,12 @@ The script run once per day by using **Cron**.
 
 configure NAT/PAT on your router to have access to SSH and InfluxdB
 
+---
+## Check if Raspberry Pi is alive by using Cronitor
+
+see : https://cronitor.io/ and register to create your own monitor  
+Personnaly i have added a 'Checks' every 6 minutes  
+Type : TCP  
+Endpoint : mypi.duckdns.org:8086
+
 
