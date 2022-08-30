@@ -30,3 +30,14 @@ sudo ls -l /var/spool/cron/crontabs
 -rw------- 1 root crontab  201 30 juin  21:57 root
 ```
 
+# Reboot Raspberry Pi for a good Healthy
+
+Use cron for restarting the raspberry Pi every week  
+Edit job for user root
+```
+>sudo crontab -e
+
+#This will reboot the rapsberry pi every thuesday at 0h05min
+0 0 * * 6 /sbin/shutdown -r +5
+
+```
