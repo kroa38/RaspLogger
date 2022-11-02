@@ -229,6 +229,14 @@ grant read on "ibeacon" to "reader"
 
 The script **db_backup.sh** automatically backup the entire database to the USB Key  
 The script run once per day by using **Cron**.
+---
+
+## Infux CLI (Usefull command)
+
+Connect to CLI with readable date:
+```
+influx -username 'admin' -password 'aP45YhN45' -precision RFC3339
+```
 
 ---
 ## Internet Provider
