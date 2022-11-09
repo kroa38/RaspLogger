@@ -175,6 +175,20 @@ Go to the located directory and replace the 2 next files.
 ```
 > sudo systemctl status influxdb.service
 > influx --version
+
+or
+
+> curl -sL -I localhost:8086/ping
+
+HTTP/1.1 204 No Content
+Content-Type: application/json
+Request-Id: 2f1d59f3-6011-11ed-8018-b827eb8b75bc
+X-Influxdb-Build: OSS
+X-Influxdb-Version: 1.8.10
+X-Request-Id: 2f1d59f3-6011-11ed-8018-b827eb8b75bc
+Date: Wed, 09 Nov 2022 09:30:43 GMT
+
+Success is marked by the 204 No Content return value.
 ```
 
 - 8) Init databases users  
