@@ -212,6 +212,14 @@ See README.MD into the 'cron' directory for shceduling the differents task with 
 ---
 ## TIPS
 
+- 8) Curl example
+
+Here we need to count the number of sample from now -5h 
+```  
+curl -G http://localhost:8086/query --data-urlencode "u=username" --data-urlencode "p=password" --data-urlencode "db=Sensors" --data-urlencode "q=SELECT count(*) FROM \"Temperature\" WHERE (\"Sensor Type\" = '1' AND \"Sensor Number\" = '1' AND time > now() -5h)"
+
+```  
+
 - 8) Export database into CSV format
 
 Use influx_inspect command  
