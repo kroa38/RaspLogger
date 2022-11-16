@@ -4,6 +4,7 @@
 #each beacon is sent every 15min (4 per hour)
 #if we don't receive during the last 2h more than 4 beacon
 #it means bluetooth is stuck and then we restart bleutooth
+# error logged into the file error.log
 
 
 #create a variable for collecting the nb of beacon
