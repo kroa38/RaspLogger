@@ -1,4 +1,5 @@
-# Root cron file
+# Root cron file 
+# use sudo crontab -e and enter the line below
 
 # check Influxdb and Bluetooth every hour
 0 * * * * bash /home/pi/RaspLogger/check_database.sh > /dev/null 2>&1
