@@ -11,13 +11,15 @@ val=0
 
 #curl command to retrieve the count value in json and parse it using jq
 #we retrieve the nb of beacons received during last 2 hours
-val =`curl -s -G http://localhost:8086/query --data-urlencode "u=name" --data-urlencode "p=password" --data-urlencode "db=Sensors" --data-urlencode "q=SELECT count(*) FROM \"Temperature\" WHERE (\"Sensor Type\" = '1' AND \"Sensor Number\" = '1' AND time > now() -5h)" | jq -r '.results[0].series[0].values[0][1] | tonumber'`
+
+val=`curl -s -G http://localhost:8086/query --data-urlencode "u=reader" --data-urlencode "p=123456" --data-urlencode "db=Sensors" --data-urlencode "q=SELECT count(*) FROM \"Temperature\" WHERE (\"Sensor Type\" = '1' AND \"Sensor Number\" = '1' AND time > now() -2h)" | jq -r '.results[0].series[0].values[0][1] | tonumber'`
 
 wait
 
 # compare the value with 4 be
 if [ $val -lt 4 ]
 then
+    echo "$(date) bluetooth error => restart bluetooth" >>/home/pi/RapsLogger/error.log
     echo "bluetooth is stuck:  Count =  $val"
     killall -9 python3 > /dev/null 2>&1
     wait
@@ -34,5 +36,5 @@ then
     python3 /home/pi/RaspLogger/ibeacon_scanner.py& > /dev/null 2>&1
     echo "restart ibeacon scanner"
 else
-    echo "bluetooth is alive:  Count =  $val"
+    echo "$(date) : Bluetooth is alive"
 fi
