@@ -12,7 +12,7 @@ val=0
 #curl command to retrieve the count value in json and parse it using jq
 #we retrieve the nb of beacons received during last 2 hours
 
-val=`curl -s -G http://localhost:8086/query --data-urlencode "u=reader" --data-urlencode "p=123456" --data-urlencode "db=Sensors" --data-urlencode "q=SELECT count(*) FROM \"Temperature\" WHERE (\"Sensor Type\" = '1' AND \"Sensor Number\" = '1' AND time > now() -2h)" | jq -r '.results[0].series[0].values[0][1] | tonumber'`
+val=`curl -s -G http://localhost:8086/query --data-urlencode "u=username" --data-urlencode "p=password" --data-urlencode "db=Sensors" --data-urlencode "q=SELECT count(*) FROM \"Temperature\" WHERE (\"Sensor Type\" = '1' AND \"Sensor Number\" = '1' AND time > now() -2h)" | jq -r '.results[0].series[0].values[0][1] | tonumber'`
 
 wait
 
