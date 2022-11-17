@@ -24,7 +24,9 @@
 
 #-----------------------------------------------------------------------
 
+#update linky avery 15min
 */15 * * * * bash /home/pi/RaspLogger/linky.sh > /dev/null 2>&1
+#update air quality every hour
 17 * * * * bash /home/pi/RaspLogger/air_quality.sh > /dev/null 2>&1
 
 #if you want to tweet your IP address uncomment the line below
