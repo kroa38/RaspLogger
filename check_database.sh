@@ -15,13 +15,15 @@ val=`curl -s -G http://localhost:8086/query --data-urlencode "u=username" --data
 
 wait
 
-# compare the value with 4 be
+
 if [ $val ]
 then
+    # if Atmo database exist then check bluetooth 
     echo "$(date) : Influxdb is alive"
     /bin/bash /home/pi/RaspLogger/check_bluetooth.sh
     wait
 else
+    # log error and reboot
     echo "$(date) : InfluxdB access error => Reboot" >>/home/pi/RaspLogger/error.log
     /bin/bash /home/pi/RaspLogger/reboot_rpi.sh
 fi
