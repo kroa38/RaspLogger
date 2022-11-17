@@ -10,6 +10,9 @@
 
 # start ibeacon script at reboot
 @reboot bash /home/pi/RaspLogger/ibeacon_scanner.sh > /dev/null 2>&1
+
+# update IP address every hour
+1 * * * * bash /home/pi/RaspLogger/ip_update.sh > /dev/null 2>&1
 ```
 
 # Crontab file for user 'pi'        
@@ -23,7 +26,6 @@
 
 */15 * * * * bash /home/pi/RaspLogger/linky.sh > /dev/null 2>&1
 17 * * * * bash /home/pi/RaspLogger/air_quality.sh > /dev/null 2>&1
-21 */2 * * * bash /home/pi/RaspLogger/ip_update.sh > /dev/null 2>&1
 
 #if you want to tweet your IP address uncomment the line below
 #@reboot bash /home/pi/RaspLogger/tweet_ip.sh > /dev/null 2>&1
