@@ -1,3 +1,4 @@
+![My RaspberryPi](https://cronitor.io/badges/LaKpY0/production/i2LbMgtyyHVqQLkjYapnDrzqfQ4.svg)
 # __Raspberrypi Zero-W with data Sensor and InfluxdB__
 
  Collect data from Bluetooth Sensor (Temp, Hum, Press,Gaz,Batt Level)  
