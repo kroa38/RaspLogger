@@ -10,7 +10,7 @@
 
  **Raspberry-Pi Zero W with Debian Bullseye OS and Python3.9  (Major update in June 2022)**  
  
- ![](Diagram_Setup.png)  
+ 
     
 ## Bootcode.bin
 
