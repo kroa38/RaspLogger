@@ -110,7 +110,7 @@ sudo setcap 'cap_net_raw,cap_net_admin+eip' "$(readlink -f "$(which python3)")"
 ## Add Python Packages
 
 ```
-> sudo pip install -r requirements.txt
+> cat requirements.txt | xargs -n 1 pip install
 ```
 ## Beacontools (little fork)
 
