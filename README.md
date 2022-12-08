@@ -128,13 +128,26 @@ Go to the located directory and replace the 2 next files.
 
 ## __InfluxdB__  
 
-- 1) Install InfluxdB  
+- 1) Install InfluxdB  (auto)
 
 ```
 > curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -  
 > echo "deb https://repos.influxdata.com/debian bullseye stable" | sudo tee /etc/apt/sources.list.d/influxdb.list     
 > sudo apt-get install influxdb  
 > sudo apt-get install influxdb-client 
+```
+
+- 1.1) Install InfluxdB  (manualy)
+
+Download Influx from repository:
+Take a look into the directory :  https://repos.influxdata.com/debian/packages
+search for most recent deb package for armhf and download it
+```
+wget https://repos.influxdata.com/debian/packages/influxdb_1.8.10_armhf.deb
+```
+Install Influxdb :
+```
+sudo dpkg influxdb_1.8.10_armhf.deb
 ```
 
 - 2) Edit File influxdb.conf  
