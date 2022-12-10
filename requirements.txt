@@ -17,6 +17,7 @@ ipaddress
 keyring
 keyrings.alt
 oauth2client
+psutil
 pyasn1
 pyasn1-modules
 PyBluez
