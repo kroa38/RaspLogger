@@ -289,4 +289,13 @@ Personnaly i have added a 'Checks' every 6 minutes
 Type : TCP  
 Endpoint : mypi.duckdns.org:8086
 
+## Disable Power Managment inf WiFi
+
+Sometimes WiFi freeze on my raspberry and the after some search on web  
+in found this solution.  
+
+```
+sudo iwconfig wlan0 power off
+```  
+or put this line on /etc/rc.local
 
