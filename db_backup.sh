@@ -5,7 +5,7 @@ echo "Start db backup"
 influxd backup -portable /home/pi/DB_BACKUP/tmp/ > /home/pi/RaspLogger/db_backup.log
 if [ 'cat db_backup.log | grep "backup complete" ' ]
 then
-    echo "$(date) Influxd backup success " >> /home/pi/RaspLogger/event.log
+    echo "$(date) InfluxdB backup success " >> /home/pi/RaspLogger/event.log
     if [ -d "/home/pi/DB_BACKUP/influxdb_backup" ]
     then
         echo "remove and rename directory"
