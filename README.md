@@ -263,10 +263,11 @@ grant all on "ibeacon" to "admin"
 grant read on "ibeacon" to "reader"  
 ```
 ---
-## Database Backup
+## Database Backup  
 
-The script **db_backup.sh** automatically backup the entire database to the USB Key  
-The script run once per day by using **Cron**.
+The script **db_backup.sh** automatically backup the entire database to the disk  
+The script run once per week by using cron in su mode.
+
 ---
 
 ## Infux CLI (Usefull command)
@@ -289,7 +290,7 @@ Personnaly i have added a 'Checks' every 6 minutes
 Type : TCP  
 Endpoint : mypi.duckdns.org:8086
 
-## Disable Power Managment inf WiFi
+## Disable Power Managment for WiFi
 
 Sometimes WiFi freeze on my raspberry and the after some search on web  
 in found this solution.  
