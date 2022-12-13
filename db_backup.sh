@@ -16,7 +16,7 @@ then
         mv /home/pi/DB_BACKUP/tmp /home/pi/DB_BACKUP/influxdb_backup
     fi
 else
-    echo " $(date) influd backup fail" >> /home/pi/RaspLogger/error.log
+    echo " $(date) infludB backup fail" >> /home/pi/RaspLogger/error.log
 fi
 
 echo "end backup"
