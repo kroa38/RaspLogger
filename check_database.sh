@@ -24,6 +24,6 @@ then
     wait
 else
     # log error and reboot
-    echo "$(date) : InfluxdB access error => Reboot" >>/home/pi/RaspLogger/error.log
+    echo "$(date) : InfluxdB access error => Reboot" >> /home/pi/RaspLogger/error.log
     /bin/bash /home/pi/RaspLogger/reboot_rpi.sh
 fi
