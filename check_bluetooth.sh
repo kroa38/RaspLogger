@@ -20,22 +20,28 @@ wait
 # compare the value with 4 be
 if [ $val -lt 4 ]
 then
-    echo "$(date) bluetooth error => restart bluetooth" >>/home/pi/RapsLogger/error.log
-    echo "bluetooth is stuck:  Count =  $val"
+    echo "$(date) Bluetooth error => restart Bluetooth and WiFi" >> /home/pi/RaspLogger/error.log
+    #stop wifi
+    ip link set wlan down
+    wait
+    #start wifi
+    ip link set wlan up
+    wait
+    #echo "bluetooth is stuck:  Count =  $val"
+    #echo "kill python"
     killall -9 python3 > /dev/null 2>&1
     wait
-    echo "kill python"
+    #echo "stop bluetooth"
     systemctl stop bluetooth.service > /dev/null 2>&1
     wait
-    echo "stop bluetooth"
+    #echo "enable bluetooth"
     systemctl enable bluetooth.service > /dev/null 2>&1
     wait
-    echo "enable bluetooth"
+    #echo "restart bluetooth"
     systemctl restart bluetooth.service > /dev/null 2>&1
     wait
-    echo "restart bluetooth"
+    #echo "restart ibeacon scanner"
     python3 /home/pi/RaspLogger/ibeacon_scanner.py& > /dev/null 2>&1
-    echo "restart ibeacon scanner"
 else
-    echo "$(date) : Bluetooth is alive"
+    #echo "$(date) : Bluetooth is alive"
 fi
