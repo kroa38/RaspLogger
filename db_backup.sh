@@ -1,19 +1,11 @@
 #!/bin/bash
-# Backup database to DB_BACKUP directory
-# make sure dir home/pi/DB_BACKUP exist
-# make sure dir home/pi/DB_BACKUP/tmp exist
-# or modify this script to create and test theses dir...
+# Backup database
 
-echo "***********************************"
-echo "         BACKUP DATABASE           "
-echo "***********************************"
-
-echo "USB key is present"
-echo "start backup"
-influxd backup -portable /home/pi/DB_BACKUP/tmp/ > db_backup.log
+echo "Start db backup"
+influxd backup -portable /home/pi/DB_BACKUP/tmp/ > /home/pi/RaspLogger/db_backup.log
 if [ 'cat db_backup.log | grep "backup complete" ' ]
 then
-    echo "influxd backup ok"
+    echo "$(date) Influxd backup success " >> /home/pi/RaspLogger/event.log
     if [ -d "/home/pi/DB_BACKUP/influxdb_backup" ]
     then
         echo "remove and rename directory"
@@ -24,9 +16,7 @@ then
         mv /home/pi/DB_BACKUP/tmp /home/pi/DB_BACKUP/influxdb_backup
     fi
 else
-    echo "influd backup fail"
+    echo " $(date) influd backup fail" >> /home/pi/RaspLogger/error.log
 fi
 
-echo "END BACKUP"
-echo "***********************************"
-
+echo "end backup"
