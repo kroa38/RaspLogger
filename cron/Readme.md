@@ -6,7 +6,7 @@
 #add this lines:
 
 # check Influxdb and Bluetooth every hour
-0 * * * * bash /home/pi/RaspLogger/check_database.sh > /dev/null 2>&1
+0 * * * * bash /home/pi/RaspLogger/health_check.sh > /dev/null 2>&1
 
 # start ibeacon script at reboot
 @reboot bash /home/pi/RaspLogger/ibeacon_scanner.sh > /dev/null 2>&1
