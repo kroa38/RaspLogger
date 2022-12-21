@@ -7,14 +7,18 @@
 
 # check Influxdb and Bluetooth every hour
 0 * * * * bash /home/pi/RaspLogger/health_check.sh > /dev/null 2>&1
-
 # start ibeacon script at reboot
 @reboot bash /home/pi/RaspLogger/ibeacon_scanner.sh > /dev/null 2>&1
-# log date time at reboot
+# Log reboot date time to database
 @reboot bash /home/pi/RaspLogger/reboot_info.sh > /dev/null 2>&1
 
-# update IP address every hour
+#update ip every hour
 1 * * * * bash /home/pi/RaspLogger/ip_update.sh > /dev/null 2>&1
+#backup database every Saturday at 04h05min
+5 4 * * 6 bash /home/pi/RaspLogger/db_backup.sh > /dev/null 2>&1
+#reboot Rpi evry week Saturday at 02h02min
+2 2 * * 6 bash /home/pi/RaspLogger/reboot_rpi.sh > /dev/null 2>&1
+
 ```
 
 # Crontab file for user 'pi'        
@@ -26,13 +30,14 @@
 
 #-----------------------------------------------------------------------
 
-# update linky avery 15min
+#linky every 15 minutes
 */15 * * * * bash /home/pi/RaspLogger/linky.sh > /dev/null 2>&1
-# update air quality every hour
+
+#air quality update every hour
 17 * * * * bash /home/pi/RaspLogger/air_quality.sh > /dev/null 2>&1
 
-# if you want to tweet your IP address uncomment the line below
-#@reboot bash /home/pi/RaspLogger/tweet_ip.sh > /dev/null 2>&1
+#check memory every hour
+4 * * * * bash /home/pi/RaspLogger/memory_info.sh > /dev/null 2>&1
 
 #-----------------------------------------------------------------------
 
