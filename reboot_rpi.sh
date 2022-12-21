@@ -1,4 +1,5 @@
 #!/bin/bash
+# Launch this script for rebooting the Rpi (sudo mode)
 
 service influxdb stop
 wait
