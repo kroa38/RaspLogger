@@ -10,6 +10,8 @@
 
 # start ibeacon script at reboot
 @reboot bash /home/pi/RaspLogger/ibeacon_scanner.sh > /dev/null 2>&1
+# log date time at reboot
+@reboot bash /home/pi/RaspLogger/reboot_info.sh > /dev/null 2>&1
 
 # update IP address every hour
 1 * * * * bash /home/pi/RaspLogger/ip_update.sh > /dev/null 2>&1
